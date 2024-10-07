@@ -1,0 +1,511 @@
+package org.firstinspires.ftc.teamcode.common.camera;
+
+import org.openftc.easyopencv.OpenCvPipeline;
+
+import org.opencv.calib3d.Calib3d;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfPoint3f;
+import org.opencv.core.Point3;
+import org.opencv.core.Point;
+import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AngleDetection extends OpenCvPipeline
+{
+
+    Mat ycrcbMat = new Mat();
+    Mat crMat = new Mat();
+    Mat cbMat = new Mat();
+
+    Mat blueThresholdMat = new Mat();
+
+    Mat morphedBlueThreshold = new Mat();
+
+    Mat contoursOnPlainImageMat = new Mat();
+
+    static final int BLUE_MASK_THRESHOLD = 150;
+
+    Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
+    Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
+
+    /*
+     * Colors
+     */
+    static final Scalar BLUE = new Scalar(0, 0, 255);
+    double cameraHeight = 45.72; //centimeters maybe? i'm going crazy
+
+    static class AnalyzedStone
+    {
+        double angle;
+        String color;
+        Mat rvec;
+        Mat tvec;
+        double x;
+        double y;
+    }
+
+    ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
+    volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
+
+    Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
+    MatOfDouble distCoeffs = new MatOfDouble();
+
+    enum Stage
+    {
+        FINAL,
+        YCrCb,
+        MASKS,
+        MASKS_NR,
+        CONTOURS;
+    }
+
+    Stage[] stages = Stage.values();
+
+    int stageNum = 0;
+
+    public AngleDetection()
+    {
+        double fx = 800;
+        double fy = 800;
+        double cx = 320;
+        double cy = 240;
+
+        cameraMatrix.put(0, 0,
+                fx, 0, cx,
+                0, fy, cy,
+                0, 0, 1);
+
+        distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
+    }
+
+    @Override
+    public void onViewportTapped()
+    {
+        int nextStageNum = stageNum + 1;
+
+        if(nextStageNum >= stages.length)
+        {
+            nextStageNum = 0;
+        }
+
+        stageNum = nextStageNum;
+    }
+
+    @Override
+    public Mat processFrame(Mat input)
+    {
+        internalStoneList.clear();
+        findContours(input);
+
+        clientStoneList = new ArrayList<>(internalStoneList);
+
+        switch (stages[stageNum])
+        {
+            case YCrCb:
+            {
+                return ycrcbMat;
+            }
+
+            case FINAL:
+            {
+                return input;
+            }
+
+            case MASKS:
+            {
+                Mat masks = new Mat();
+                Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
+                return masks;
+            }
+
+            case MASKS_NR:
+            {
+                Mat masksNR = new Mat();
+                Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
+                return masksNR;
+            }
+
+            case CONTOURS:
+            {
+                return contoursOnPlainImageMat;
+            }
+        }
+
+        return input;
+    }
+
+    public ArrayList<AnalyzedStone> getDetectedStones()
+    {
+        return clientStoneList;
+    }
+
+    void findContours(Mat input)
+    {
+        Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
+        Core.extractChannel(ycrcbMat, cbMat, 2); // Cb channel index is 2
+        Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
+        morphMask(blueThresholdMat, morphedBlueThreshold);
+
+        ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
+        Imgproc.findContours(morphedBlueThreshold, blueContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+
+        if (!blueContoursList.isEmpty()) {
+            double lowestY = Double.MIN_VALUE;
+            MatOfPoint contourClosestToBottom = null;
+
+            for (MatOfPoint contour : blueContoursList) {
+                // Draw each contour in blue
+                analyzeContour(contour, input, "Blue");
+
+                for (Point point : contour.toArray()) {
+                    if (point.y > lowestY) {
+                        lowestY = point.y;
+                        contourClosestToBottom = contour;
+                    }
+                }
+            }
+
+            if (contourClosestToBottom != null) {
+                analyzeContour(contourClosestToBottom, input, "Green");
+            }
+        }
+    }
+
+
+
+    void morphMask(Mat input, Mat output)
+    {
+        Imgproc.erode(input, output, erodeElement);
+        Imgproc.erode(output, output, erodeElement);
+
+        Imgproc.dilate(output, output, dilateElement);
+        Imgproc.dilate(output, output, dilateElement);
+    }
+
+
+    void analyzeContour(MatOfPoint contour, Mat input, String color)
+    {
+        Point[] points = contour.toArray();
+        MatOfPoint2f contour2f = new MatOfPoint2f(points);
+
+        RotatedRect rotatedRectFitToContour = Imgproc.minAreaRect(contour2f);
+        drawRotatedRect(rotatedRectFitToContour, input, color);
+
+        double rotRectAngle = rotatedRectFitToContour.angle;
+        if (rotatedRectFitToContour.size.width < rotatedRectFitToContour.size.height)
+        {
+            rotRectAngle += 90;
+        }
+
+        double angle = -(rotRectAngle - 180);
+        drawTagText(rotatedRectFitToContour, Integer.toString((int) Math.round(angle)) + " deg", input, color);
+
+        double objectWidth = 10.0;
+        double objectHeight = 5.0;
+
+        MatOfPoint3f objectPoints = new MatOfPoint3f(
+                new Point3(-objectWidth / 2, -objectHeight / 2, 0),
+                new Point3(objectWidth / 2, -objectHeight / 2, 0),
+                new Point3(objectWidth / 2, objectHeight / 2, 0),
+                new Point3(-objectWidth / 2, objectHeight / 2, 0)
+        );
+
+        Point[] rectPoints = new Point[4];
+        rotatedRectFitToContour.points(rectPoints);
+
+        Point[] orderedRectPoints = orderPoints(rectPoints);
+
+        MatOfPoint2f imagePoints = new MatOfPoint2f(orderedRectPoints);
+
+        // Solve PnP
+        Mat rvec = new Mat();
+        Mat tvec = new Mat();
+
+        boolean success = Calib3d.solvePnP(
+                objectPoints,
+                imagePoints,
+                cameraMatrix,
+                distCoeffs,
+                rvec,
+                tvec
+        );
+
+        if (success)
+        {
+            // Draw only the largest area axis on the image
+            drawLargestAreaAxis(input, rvec, tvec, cameraMatrix, distCoeffs);
+
+            AnalyzedStone analyzedStone = new AnalyzedStone();
+            analyzedStone.angle = rotRectAngle;
+            analyzedStone.color = color;
+            analyzedStone.rvec = rvec;
+            analyzedStone.tvec = tvec;
+            internalStoneList.add(analyzedStone);
+        }
+    }
+
+    public MatOfPoint3f axisPoints;
+    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
+    {
+        double axisLength = 5.0;
+
+        axisPoints = new MatOfPoint3f(
+                new Point3(0, 0, 0),                   // Origin
+                new Point3(axisLength, 0, 0),           // X axis
+                new Point3(0, axisLength, 0),           // Y axis
+                new Point3(0, 0, -axisLength)           // Z axis
+        );
+
+
+        MatOfPoint2f imagePoints = new MatOfPoint2f();
+        Calib3d.projectPoints(axisPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+        Point[] imgPts = imagePoints.toArray();
+        int largestAreaIndex = getLargestArea(imgPts);
+
+        // Draw only the axis corresponding to the largest area
+        if (largestAreaIndex == 0) {
+            // Draw only X axis (red) for XY plane
+            Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
+        } else if (largestAreaIndex == 1) {
+            // Draw only Z axis (blue) for XZ plane
+            Imgproc.line(img, imgPts[0], imgPts[3], new Scalar(255, 0, 0), 2); // Z axis in blue
+        } else if (largestAreaIndex == 2) {
+            // Draw only Y axis (green) for YZ plane
+            Imgproc.line(img, imgPts[0], imgPts[2], new Scalar(0, 255, 0), 2); // Y axis in green
+        }
+    }
+
+
+    // Helper function to calculate the area of a triangle in 2D space
+    double calculateArea(Point p0, Point p1, Point p2) {
+        return Math.abs((p0.x * (p1.y - p2.y) +
+                p1.x * (p2.y - p0.y) +
+                p2.x * (p0.y - p1.y)) / 2.0);
+    }
+
+    // Helper function to determine the largest area and return the index of the largest axis pair
+    int getLargestArea(Point[] imgPts) {
+        double areaXY = calculateArea(imgPts[0], imgPts[1], imgPts[2]); // Triangle formed by Origin, X, Y
+        double areaXZ = calculateArea(imgPts[0], imgPts[1], imgPts[3]); // Triangle formed by Origin, X, Z
+        double areaYZ = calculateArea(imgPts[0], imgPts[2], imgPts[3]); // Triangle formed by Origin, Y, Z
+
+        // Find the largest area and return the corresponding axis index
+        if (areaXY >= areaXZ && areaXY >= areaYZ) {
+            return 0; // XY axis has the largest area
+        } else if (areaXZ >= areaXY && areaXZ >= areaYZ) {
+            return 1; // XZ axis has the largest area
+        } else {
+            return 2; // YZ axis has the largest area
+        }
+    }
+
+
+    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
+    {
+        // Length of the axis lines
+        double axisLength = 5.0;
+
+        // Define the points in 3D space for the axes
+        MatOfPoint3f axisPoints = new MatOfPoint3f(
+                new Point3(0, 0, 0),
+                new Point3(axisLength, 0, 0),
+                new Point3(0, axisLength, 0),
+                new Point3(0, 0, -axisLength) // Z axis pointing away from the camera
+        );
+
+        // Project the 3D points to 2D image points
+        MatOfPoint2f imagePoints = new MatOfPoint2f();
+        Calib3d.projectPoints(axisPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
+
+        Point[] imgPts = imagePoints.toArray();
+
+        // Draw the axis lines
+        Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
+//        Imgproc.line(img, imgPts[0], imgPts[2], new Scalar(0, 255, 0), 2); // Y axis in green
+//        Imgproc.line(img, imgPts[0], imgPts[3], new Scalar(255, 0, 0), 2); // Z axis in blue
+    }
+
+    static Point[] orderPoints(Point[] pts)
+    {
+        // Orders the array of 4 points in the order: top-left, top-right, bottom-right, bottom-left
+        Point[] orderedPts = new Point[4];
+
+        // Sum and difference of x and y coordinates
+        double[] sum = new double[4];
+        double[] diff = new double[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            sum[i] = pts[i].x + pts[i].y;
+            diff[i] = pts[i].y - pts[i].x;
+        }
+
+        // Top-left point has the smallest sum
+        int tlIndex = indexOfMin(sum);
+        orderedPts[0] = pts[tlIndex];
+
+        // Bottom-right point has the largest sum
+        int brIndex = indexOfMax(sum);
+        orderedPts[2] = pts[brIndex];
+
+        // Top-right point has the smallest difference
+        int trIndex = indexOfMin(diff);
+        orderedPts[1] = pts[trIndex];
+
+        // Bottom-left point has the largest difference
+        int blIndex = indexOfMax(diff);
+        orderedPts[3] = pts[blIndex];
+
+        return orderedPts;
+    }
+
+    static int indexOfMin(double[] array)
+    {
+        int index = 0;
+        double min = array[0];
+
+        for (int i = 1; i < array.length; i++)
+        {
+            if (array[i] < min)
+            {
+                min = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static int indexOfMax(double[] array)
+    {
+        int index = 0;
+        double max = array[0];
+
+        for (int i = 1; i < array.length; i++)
+        {
+            if (array[i] > max)
+            {
+                max = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
+    {
+        Scalar colorScalar = getColorScalar(color);
+
+        Imgproc.putText(
+                mat, // The buffer we're drawing on
+                text, // The text we're drawing
+                new Point( // The anchor point for the text
+                        rect.center.x - 50,  // x anchor point
+                        rect.center.y + 25), // y anchor point
+                Imgproc.FONT_HERSHEY_PLAIN, // Font
+                1, // Font size
+                colorScalar, // Font color
+                1); // Font thickness
+    }
+
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
+    {
+        /*
+         * Draws a rotated rect by drawing each of the 4 lines individually
+         */
+
+        Point[] points = new Point[4];
+        rect.points(points);
+
+        Scalar colorScalar = getColorScalar(color);
+
+        for (int i = 0; i < 4; ++i)
+        {
+            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
+        }
+    }
+
+    static Scalar getColorScalar(String color)
+    {
+        if (color.equals("Green")) {
+            return new Scalar(0, 255, 0); // Green color
+        }
+        return BLUE;
+    }
+
+    public double getAngleOfGreenSample() {
+        AnalyzedStone greenSample = null;
+        double highestYCoordinate = Double.MAX_VALUE;
+
+        // Make a copy of the list to iterate over
+        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
+        for (AnalyzedStone stone : stonesCopy) {
+            if (stone != null && "Green".equals(stone.color) && stone.tvec != null) {
+                double[] yValueArray = stone.tvec.get(1, 0);
+                if (yValueArray != null && yValueArray.length > 0) {
+                    double yValue = yValueArray[0]; // Extracting the y-coordinate of translation vector
+                    if (yValue < highestYCoordinate) {
+                        highestYCoordinate = yValue;
+                        greenSample = stone;
+                    }
+                }
+            }
+        }
+
+        if (greenSample != null) {
+            return greenSample.angle;
+        } else {
+            return Double.NaN;  // Indicate that no green sample was found
+        }
+    }
+
+    public Point getGreenSampleCoordinates() {
+        AnalyzedStone greenSample = null;
+
+        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
+        // Loop through the internal stone list to find the green sample
+        for (AnalyzedStone stone : stonesCopy) {
+            if (stone != null && "Green".equals(stone.color) && stone.tvec != null) {
+                greenSample = stone;
+                break;
+            }
+        }
+
+        // If we found a green sample, calculate its coordinates
+        if (greenSample != null) {
+            // Extract tvec values which represent the translation vector
+            double[] tvecValues = new double[3];
+            greenSample.tvec.get(0, 0, tvecValues);
+
+            // Extract x and y from tvec directly
+            double x = tvecValues[0]; // Original unit (e.g., cm)
+            double y = tvecValues[1]; // Original unit (e.g., cm)
+
+            // Convert to inches (assuming the original unit is centimeters)
+
+            x = Math.round((x / 2.54) * 10.0) / 10.0;
+            y = -Math.round((y / 2.54) * 10.0) / 10.0;
+
+            // Store these coordinates in the sample and return as a point
+            greenSample.x = x;
+            greenSample.y = y;
+
+            // Calculate center point if needed (currently just returning the translated point)
+            // If the sample has more specific corner points, you could average them
+            return new Point(greenSample.x, greenSample.y);
+        } else {
+            return null; // No green sample found
+        }
+    }
+
+}
