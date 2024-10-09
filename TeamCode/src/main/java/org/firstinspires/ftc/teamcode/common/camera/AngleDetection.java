@@ -24,7 +24,6 @@ public class AngleDetection extends OpenCvPipeline
 {
 
     Mat ycrcbMat = new Mat();
-    Mat crMat = new Mat();
     Mat cbMat = new Mat();
 
     Mat blueThresholdMat = new Mat();
@@ -38,11 +37,8 @@ public class AngleDetection extends OpenCvPipeline
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
 
-    /*
-     * Colors
-     */
     static final Scalar BLUE = new Scalar(0, 0, 255);
-    double cameraHeight = 45.72; //centimeters maybe? i'm going crazy
+    double cameraHeight = 45.72;
 
     static class AnalyzedStone
     {
@@ -181,8 +177,6 @@ public class AngleDetection extends OpenCvPipeline
         }
     }
 
-
-
     void morphMask(Mat input, Mat output)
     {
         Imgproc.erode(input, output, erodeElement);
@@ -227,7 +221,6 @@ public class AngleDetection extends OpenCvPipeline
 
         MatOfPoint2f imagePoints = new MatOfPoint2f(orderedRectPoints);
 
-        // Solve PnP
         Mat rvec = new Mat();
         Mat tvec = new Mat();
 
@@ -242,7 +235,6 @@ public class AngleDetection extends OpenCvPipeline
 
         if (success)
         {
-            // Draw only the largest area axis on the image
             drawLargestAreaAxis(input, rvec, tvec, cameraMatrix, distCoeffs);
 
             AnalyzedStone analyzedStone = new AnalyzedStone();
@@ -272,35 +264,26 @@ public class AngleDetection extends OpenCvPipeline
 
         Point[] imgPts = imagePoints.toArray();
         int largestAreaIndex = getLargestArea(imgPts);
-
-        // Draw only the axis corresponding to the largest area
         if (largestAreaIndex == 0) {
-            // Draw only X axis (red) for XY plane
             Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
         } else if (largestAreaIndex == 1) {
-            // Draw only Z axis (blue) for XZ plane
             Imgproc.line(img, imgPts[0], imgPts[3], new Scalar(255, 0, 0), 2); // Z axis in blue
         } else if (largestAreaIndex == 2) {
-            // Draw only Y axis (green) for YZ plane
             Imgproc.line(img, imgPts[0], imgPts[2], new Scalar(0, 255, 0), 2); // Y axis in green
         }
     }
 
-
-    // Helper function to calculate the area of a triangle in 2D space
     double calculateArea(Point p0, Point p1, Point p2) {
         return Math.abs((p0.x * (p1.y - p2.y) +
                 p1.x * (p2.y - p0.y) +
                 p2.x * (p0.y - p1.y)) / 2.0);
     }
 
-    // Helper function to determine the largest area and return the index of the largest axis pair
     int getLargestArea(Point[] imgPts) {
         double areaXY = calculateArea(imgPts[0], imgPts[1], imgPts[2]); // Triangle formed by Origin, X, Y
         double areaXZ = calculateArea(imgPts[0], imgPts[1], imgPts[3]); // Triangle formed by Origin, X, Z
         double areaYZ = calculateArea(imgPts[0], imgPts[2], imgPts[3]); // Triangle formed by Origin, Y, Z
 
-        // Find the largest area and return the corresponding axis index
         if (areaXY >= areaXZ && areaXY >= areaYZ) {
             return 0; // XY axis has the largest area
         } else if (areaXZ >= areaXY && areaXZ >= areaYZ) {
@@ -310,13 +293,10 @@ public class AngleDetection extends OpenCvPipeline
         }
     }
 
-
     void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
     {
-        // Length of the axis lines
         double axisLength = 5.0;
 
-        // Define the points in 3D space for the axes
         MatOfPoint3f axisPoints = new MatOfPoint3f(
                 new Point3(0, 0, 0),
                 new Point3(axisLength, 0, 0),
@@ -324,24 +304,18 @@ public class AngleDetection extends OpenCvPipeline
                 new Point3(0, 0, -axisLength) // Z axis pointing away from the camera
         );
 
-        // Project the 3D points to 2D image points
         MatOfPoint2f imagePoints = new MatOfPoint2f();
         Calib3d.projectPoints(axisPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
 
         Point[] imgPts = imagePoints.toArray();
 
-        // Draw the axis lines
         Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
-//        Imgproc.line(img, imgPts[0], imgPts[2], new Scalar(0, 255, 0), 2); // Y axis in green
-//        Imgproc.line(img, imgPts[0], imgPts[3], new Scalar(255, 0, 0), 2); // Z axis in blue
     }
 
     static Point[] orderPoints(Point[] pts)
     {
-        // Orders the array of 4 points in the order: top-left, top-right, bottom-right, bottom-left
         Point[] orderedPts = new Point[4];
 
-        // Sum and difference of x and y coordinates
         double[] sum = new double[4];
         double[] diff = new double[4];
 
@@ -351,19 +325,15 @@ public class AngleDetection extends OpenCvPipeline
             diff[i] = pts[i].y - pts[i].x;
         }
 
-        // Top-left point has the smallest sum
         int tlIndex = indexOfMin(sum);
         orderedPts[0] = pts[tlIndex];
 
-        // Bottom-right point has the largest sum
         int brIndex = indexOfMax(sum);
         orderedPts[2] = pts[brIndex];
 
-        // Top-right point has the smallest difference
         int trIndex = indexOfMin(diff);
         orderedPts[1] = pts[trIndex];
 
-        // Bottom-left point has the largest difference
         int blIndex = indexOfMax(diff);
         orderedPts[3] = pts[blIndex];
 
@@ -407,23 +377,19 @@ public class AngleDetection extends OpenCvPipeline
         Scalar colorScalar = getColorScalar(color);
 
         Imgproc.putText(
-                mat, // The buffer we're drawing on
-                text, // The text we're drawing
-                new Point( // The anchor point for the text
-                        rect.center.x - 50,  // x anchor point
-                        rect.center.y + 25), // y anchor point
-                Imgproc.FONT_HERSHEY_PLAIN, // Font
-                1, // Font size
-                colorScalar, // Font color
-                1); // Font thickness
+                mat,
+                text,
+                new Point(
+                        rect.center.x - 50,
+                        rect.center.y + 25),
+                Imgproc.FONT_HERSHEY_PLAIN,
+                1,
+                colorScalar,
+                1);
     }
 
     static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
     {
-        /*
-         * Draws a rotated rect by drawing each of the 4 lines individually
-         */
-
         Point[] points = new Point[4];
         rect.points(points);
 
@@ -447,7 +413,6 @@ public class AngleDetection extends OpenCvPipeline
         AnalyzedStone greenSample = null;
         double highestYCoordinate = Double.MAX_VALUE;
 
-        // Make a copy of the list to iterate over
         List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
         for (AnalyzedStone stone : stonesCopy) {
             if (stone != null && "Green".equals(stone.color) && stone.tvec != null) {
@@ -465,7 +430,7 @@ public class AngleDetection extends OpenCvPipeline
         if (greenSample != null) {
             return greenSample.angle;
         } else {
-            return Double.NaN;  // Indicate that no green sample was found
+            return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
 
@@ -488,8 +453,8 @@ public class AngleDetection extends OpenCvPipeline
             greenSample.tvec.get(0, 0, tvecValues);
 
             // Extract x and y from tvec directly
-            double x = tvecValues[0]; // Original unit (e.g., cm)
-            double y = tvecValues[1]; // Original unit (e.g., cm)
+            double x = tvecValues[0]; // Original unit (cm)
+            double y = tvecValues[1]; // Original unit (cm)
 
             // Convert to inches (assuming the original unit is centimeters)
 
@@ -501,11 +466,9 @@ public class AngleDetection extends OpenCvPipeline
             greenSample.y = y;
 
             // Calculate center point if needed (currently just returning the translated point)
-            // If the sample has more specific corner points, you could average them
             return new Point(greenSample.x, greenSample.y);
         } else {
             return null; // No green sample found
         }
     }
-
 }
