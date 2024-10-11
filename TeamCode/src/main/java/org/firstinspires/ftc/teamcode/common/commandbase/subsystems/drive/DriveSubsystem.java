@@ -9,9 +9,9 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
+import org.firstinspires.ftc.teamcode.common.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.common.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.common.trajectorysequence.TrajectorySequenceBuilder;
 
 import java.util.List;
 

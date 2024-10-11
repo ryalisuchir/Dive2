@@ -13,11 +13,18 @@ public class IntakeRotationSubsystem extends SubsystemBase {
     public IntakeRotationSubsystem(RobotHardware robot) {
         this.robot = robot;
     }
-    public void intakeRotationReset() {
-        robot.intakeRotation.setPosition(0.5);
+    public void updateRotation(Double rotationValue) {
+        if (rotationValue == null) {
+            robot.intakeRotation.setPosition(0.5);
+        } else {
+            robot.intakeRotation.setPosition(rotationValue);
+        }
     }
-    public void intakeRotation(Double rotationAngle) {
-        robot.intakeRotation.setPosition(rotationAngle);
-    }
+//    public void intakeRotationReset() {
+//        robot.intakeRotation.setPosition(0.5);
+//    }
+//    public void intakeRotation(Double rotationAngle) {
+//        robot.intakeRotation.setPosition(rotationAngle);
+//    }
 
 }
