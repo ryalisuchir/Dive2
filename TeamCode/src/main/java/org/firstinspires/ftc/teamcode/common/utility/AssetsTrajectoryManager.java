@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.util;
+package org.firstinspires.ftc.teamcode.common.utility;
 
 import androidx.annotation.Nullable;
 

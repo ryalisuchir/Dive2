@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.hardware;
 
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.CoaxialState.REST;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoFailState.GOOD;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoState.REST;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.FourBarState.RESTING;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.IntakeClawState.CLOSED;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.OPEN;
@@ -27,7 +27,14 @@ public class Globals {
         RETRACTING,
         REST
     }
-    Globals.ExtendoState extendoState = REST;
+    Globals.ExtendoState extendoState = ExtendoState.REST;
+
+    public enum OuttakeState {
+        EXTENDING,
+        RETRACTING,
+        REST
+    }
+    Globals.OuttakeState outtakeState = OuttakeState.REST;
 
     public enum IntakeClawState {
         OPEN,
@@ -50,6 +57,11 @@ public class Globals {
         RESTING
     }
     Globals.FourBarState fourBarState = RESTING;
+
+    public enum CoaxialState {
+        REST
+    }
+    Globals.CoaxialState coaxialState = REST;
 
     // Lift Subsystem Constants
     //TODO: Tune these values:

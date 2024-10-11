@@ -12,6 +12,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.camera.AngleDetection;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.IntakeClawSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.IntakeCoaxialSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.IntakeRotationSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeClawSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeRotationSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
+import org.firstinspires.ftc.teamcode.common.drive.SampleMecanumDrive;
+import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -26,10 +38,21 @@ public class RobotHardware {
     public Servo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw; //Outtake servos
     public VoltageSensor batteryVoltageSensor;
 
+    public Intake4BarSubsystem intake4BarSubsystem;
+    public IntakeClawSubsystem intakeClawSubsystem;
+    public IntakeCoaxialSubsystem intakeCoaxialSubsystem;
+    public IntakeRotationSubsystem intakeRotationSubsystem;
+    public OuttakeArmSubsystem outtakeArmSubsystem;
+    public OuttakeClawSubsystem outtakeClawSubsystem;
+    public OuttakeRotationSubsystem outtakeRotationSubsystem;
+    public DepositSubsystem depositSubsystem;
+    public ExtendoSubsystem extendoSubsystem;
+    public DriveSubsystem driveSubsystem;
+
     private double voltage = 0.0;
     private ElapsedTime voltageTimer;
-//    public OpenCvWebcam sampleCamera;
-//    AngleDetection sampleDetection;
+    public OpenCvWebcam sampleCamera;
+    AngleDetection sampleDetection;
 
     private static RobotHardware instance = null;
     public boolean enabled;
@@ -83,31 +106,61 @@ public class RobotHardware {
         Servo rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
         Servo outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
 
-//        if (Globals.AUTO) {
-//            sampleDetection = new AngleDetection();
-//            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//            sampleCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
-//            sampleCamera.setPipeline(sampleDetection = new AngleDetection());
-//            sampleCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-//                @Override
-//                public void onOpened() {
-//                    sampleCamera.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
-//                }
-//
-//                @Override
-//                public void onError(int errorCode) {
-//                }
-//            });
-//
-//            FtcDashboard.getInstance().startCameraStream(sampleCamera, 60);
-//        }
+
+        intake4BarSubsystem = new Intake4BarSubsystem(getInstance());
+        intakeClawSubsystem = new IntakeClawSubsystem(getInstance());
+        intakeCoaxialSubsystem = new IntakeCoaxialSubsystem(getInstance());
+        intakeRotationSubsystem = new IntakeRotationSubsystem(getInstance());
+        outtakeArmSubsystem = new OuttakeArmSubsystem(getInstance());
+        outtakeClawSubsystem = new OuttakeClawSubsystem(getInstance());
+        outtakeRotationSubsystem = new OuttakeRotationSubsystem(getInstance());
+        depositSubsystem = new DepositSubsystem(getInstance());
+        extendoSubsystem = new ExtendoSubsystem(getInstance());
+        driveSubsystem = new DriveSubsystem(new SampleMecanumDrive(hardwareMap), false);
+
+
+        if (Globals.AUTO) {
+            sampleDetection = new AngleDetection();
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            sampleCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
+            sampleCamera.setPipeline(sampleDetection = new AngleDetection());
+            sampleCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+                @Override
+                public void onOpened() {
+                    sampleCamera.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+                }
+            });
+
+            FtcDashboard.getInstance().startCameraStream(sampleCamera, 60);
+        }
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
     }
-//    public void stopCameraStream() {
-//        sampleCamera.closeCameraDeviceAsync(() -> System.out.println("Stopped camera."));
-//    }
+
+    public double getSampleAngle() {
+        if (!Double.isNaN(sampleDetection.getAngleOfGreenSample())) {
+            return sampleDetection.getAngleOfGreenSample();
+        } else {
+            return -1;
+        }
+    }
+
+    public Point getSamplePosition() {
+        if (sampleDetection.getGreenSampleCoordinates() != null) {
+            return sampleDetection.getGreenSampleCoordinates();
+        } else {
+            return new Point(0,0);
+        }
+    }
+
+    public void stopCameraStream() {
+        sampleCamera.closeCameraDeviceAsync(() -> System.out.println("Stopped camera."));
+    }
 
     public double getVoltage() {
         return voltage;
