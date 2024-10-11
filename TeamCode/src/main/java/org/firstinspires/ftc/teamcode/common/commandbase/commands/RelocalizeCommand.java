@@ -14,8 +14,6 @@ public class RelocalizeCommand extends SequentialCommandGroup {
     private Point samplePosition;
     private Pose2d currentPosition;
     private TrajectorySequence relocalizeTrajectory;
-    double lastDetectedBlue = 0;
-    Point lastDetectedPoint = new Point(0, 0);
 
     public RelocalizeCommand() {
         super.addCommands(new WaitCommand(50),
