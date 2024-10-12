@@ -57,26 +57,32 @@ public class AngleDetection extends OpMode {
     public void init_loop() {
         double greenAngle = sampleDetection.getAngleOfGreenSample();
         double clawAngle;
-
+        double greenSampleArea = sampleDetection.getGreenSampleArea();
         Point greenPoint = sampleDetection.getGreenSampleCoordinates();
 
         if (Double.isNaN(greenAngle)) {
             telemetry.addData("Last Detected At: ", lastDetectedBlue);
             telemetry.addData("Point Detected At: ", lastDetectedPoint);
-            telemetry.addLine("No Blue Sample Detected");
         } else {
             // Update lastDetectedBlue with modulo 180
             lastDetectedBlue = greenAngle % 170;
             lastDetectedPoint = greenPoint;
-            lastDetectedArea = sampleDetection.getGreenSampleArea();
             telemetry.addData("Last Detected At: ", greenAngle);
             telemetry.addData("Point Detected At: ", greenPoint);
+        }
+
+        if (Double.isNaN(greenSampleArea)) {
+            telemetry.addData("Last Detected Area: ", lastDetectedArea);
+            telemetry.addLine("No Blue Sample Detected");
+        } else {
+            lastDetectedArea = greenSampleArea;
+            telemetry.addData("Last Deteced Area: ", greenSampleArea);
         }
 
         clawAngle = lastDetectedBlue / 180; // Claw angle between 0 and 1
         telemetry.addData("Claw Angle: ", clawAngle);
         claw.setPosition(clawAngle);
-        telemetry.addData("Area: ", lastDetectedArea);
+
         telemetry.update();
     }
 

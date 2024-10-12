@@ -447,46 +447,30 @@ public class AngleDetection extends OpenCvPipeline
             return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
-    private double findValidGreenSampleArea(List<AnalyzedStone> stones) {
-        for (AnalyzedStone stone : stones) {
-            if (stone != null) {
-                System.out.println("Checking stone: " + stone.color); // Debug output
-                if ("Green".equals(stone.color) && stone.contour != null) {
-                    double area = Imgproc.contourArea(stone.contour);
-                    System.out.println("Calculated area: " + area); // Debug output
-                    // Check the area and return if it's valid
-                    if (area <= 4000) {
-                        return area; // Return the area if it is <= 4000
-                    }
-                } else {
-                    System.out.println("Stone is not green or contour is null"); // Debug output
-                }
-            } else {
-                System.out.println("Stone is null"); // Debug output
-            }
-        }
-        return Double.NaN; // Indicate no valid green sample found
-    }
 
     public double getGreenSampleArea() {
-        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
-        double area = findValidGreenSampleArea(stonesCopy);
+        AnalyzedStone greenSample = null;
+        double highestYCoordinate = Double.MAX_VALUE;
 
-        // If area is invalid, find the next green sample with area <= 4000
-        if (Double.isNaN(area)) {
-            System.out.println("No valid area found, searching for next valid sample..."); // Debug output
-            for (AnalyzedStone stone : stonesCopy) {
-                if (stone != null && "Green".equals(stone.color) && stone.contour != null) {
-                    double nextArea = Imgproc.contourArea(stone.contour);
-                    System.out.println("Next calculated area: " + nextArea); // Debug output
-                    if (nextArea <= 4000) {
-                        return nextArea; // Return the next valid area found
+        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
+        for (AnalyzedStone stone : stonesCopy) {
+            if (stone != null && "Green".equals(stone.color) && stone.tvec != null) {
+                double[] yValueArray = stone.tvec.get(1, 0);
+                if (yValueArray != null && yValueArray.length > 0) {
+                    double yValue = yValueArray[0]; // Extracting the y-coordinate of translation vector
+                    if (yValue < highestYCoordinate) {
+                        highestYCoordinate = yValue;
+                        greenSample = stone;
                     }
                 }
             }
         }
 
-        return area; // Return the area found, or NaN if none was valid
+        if (greenSample != null) {
+            return Imgproc.contourArea(greenSample.contour);
+        } else {
+            return Double.NaN;  // Indicate that no "green" sample was found
+        }
     }
 
 
