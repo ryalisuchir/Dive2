@@ -33,6 +33,7 @@ public class AngleDetection extends OpenCvPipeline
     Mat contoursOnPlainImageMat = new Mat();
 
     static final int BLUE_MASK_THRESHOLD = 150;
+    public double AREA_THRESHOLD = 4000;
 
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
@@ -168,7 +169,6 @@ public class AngleDetection extends OpenCvPipeline
         if (!blueContoursList.isEmpty()) {
             double lowestY = Double.MIN_VALUE;
             MatOfPoint contourClosestToBottom = null;
-            double areaThreshold = 4000; // Define the area threshold
 
             for (MatOfPoint contour : blueContoursList) {
                 // Draw each contour in blue
@@ -180,7 +180,7 @@ public class AngleDetection extends OpenCvPipeline
                 for (Point point : contour.toArray()) {
                     if (point.y > lowestY) {
                         // Check if the area is above the threshold
-                        if (contourArea > areaThreshold) {
+                        if (contourArea > AREA_THRESHOLD) {
                             // If the area is above the threshold, do not select this contour
                             continue;
                         } else {
@@ -447,25 +447,48 @@ public class AngleDetection extends OpenCvPipeline
             return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
+    private double findValidGreenSampleArea(List<AnalyzedStone> stones) {
+        for (AnalyzedStone stone : stones) {
+            if (stone != null) {
+                System.out.println("Checking stone: " + stone.color); // Debug output
+                if ("Green".equals(stone.color) && stone.contour != null) {
+                    double area = Imgproc.contourArea(stone.contour);
+                    System.out.println("Calculated area: " + area); // Debug output
+                    // Check the area and return if it's valid
+                    if (area <= 4000) {
+                        return area; // Return the area if it is <= 4000
+                    }
+                } else {
+                    System.out.println("Stone is not green or contour is null"); // Debug output
+                }
+            } else {
+                System.out.println("Stone is null"); // Debug output
+            }
+        }
+        return Double.NaN; // Indicate no valid green sample found
+    }
 
     public double getGreenSampleArea() {
-        AnalyzedStone greenSample = null;
-
         List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
-        for (AnalyzedStone stone : stonesCopy) {
-            if (stone != null && "Green".equals(stone.color) && stone.contour != null) {
-                greenSample = stone;
-                break;
+        double area = findValidGreenSampleArea(stonesCopy);
+
+        // If area is invalid, find the next green sample with area <= 4000
+        if (Double.isNaN(area)) {
+            System.out.println("No valid area found, searching for next valid sample..."); // Debug output
+            for (AnalyzedStone stone : stonesCopy) {
+                if (stone != null && "Green".equals(stone.color) && stone.contour != null) {
+                    double nextArea = Imgproc.contourArea(stone.contour);
+                    System.out.println("Next calculated area: " + nextArea); // Debug output
+                    if (nextArea <= 4000) {
+                        return nextArea; // Return the next valid area found
+                    }
+                }
             }
         }
 
-        if (greenSample != null) {
-            // Calculate the area of the contour using Imgproc.contourArea
-            return Imgproc.contourArea(greenSample.contour);
-        } else {
-            return Double.NaN;  // Indicate that no "green" sample was found
-        }
+        return area; // Return the area found, or NaN if none was valid
     }
+
 
     public Point getGreenSampleCoordinates() {
         AnalyzedStone greenSample = null;
