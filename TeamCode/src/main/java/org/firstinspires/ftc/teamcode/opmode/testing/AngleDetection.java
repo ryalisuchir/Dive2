@@ -8,8 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -21,6 +19,7 @@ public class AngleDetection extends OpMode {
     private VisionPortal visionPortal;
     OpenCvWebcam webcam;
     double lastDetectedBlue = 0;
+    double lastDetectedArea = 0;
     Point lastDetectedPoint = new Point(0,0);
     Servo claw;
 
@@ -69,6 +68,7 @@ public class AngleDetection extends OpMode {
             // Update lastDetectedBlue with modulo 180
             lastDetectedBlue = greenAngle % 170;
             lastDetectedPoint = greenPoint;
+            lastDetectedArea = sampleDetection.getGreenSampleArea();
             telemetry.addData("Last Detected At: ", greenAngle);
             telemetry.addData("Point Detected At: ", greenPoint);
         }
@@ -76,6 +76,7 @@ public class AngleDetection extends OpMode {
         clawAngle = lastDetectedBlue / 180; // Claw angle between 0 and 1
         telemetry.addData("Claw Angle: ", clawAngle);
         claw.setPosition(clawAngle);
+        telemetry.addData("Area: ", lastDetectedArea);
         telemetry.update();
     }
 

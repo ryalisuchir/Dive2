@@ -48,6 +48,7 @@ public class AngleDetection extends OpenCvPipeline
         Mat tvec;
         double x;
         double y;
+        MatOfPoint contour; // Add a field to store the contour of the stone
     }
 
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
@@ -145,8 +146,17 @@ public class AngleDetection extends OpenCvPipeline
         return clientStoneList;
     }
 
-    void findContours(Mat input)
+
+    void morphMask(Mat input, Mat output)
     {
+        Imgproc.erode(input, output, erodeElement);
+        Imgproc.erode(output, output, erodeElement);
+
+        Imgproc.dilate(output, output, dilateElement);
+        Imgproc.dilate(output, output, dilateElement);
+    }
+
+    void findContours(Mat input) {
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(ycrcbMat, cbMat, 2); // Cb channel index is 2
         Imgproc.threshold(cbMat, blueThresholdMat, BLUE_MASK_THRESHOLD, 255, Imgproc.THRESH_BINARY);
@@ -158,37 +168,40 @@ public class AngleDetection extends OpenCvPipeline
         if (!blueContoursList.isEmpty()) {
             double lowestY = Double.MIN_VALUE;
             MatOfPoint contourClosestToBottom = null;
+            double areaThreshold = 4000; // Define the area threshold
 
             for (MatOfPoint contour : blueContoursList) {
                 // Draw each contour in blue
                 analyzeContour(contour, input, "Blue");
 
+                // Calculate the contour area
+                double contourArea = Imgproc.contourArea(contour);
+
                 for (Point point : contour.toArray()) {
                     if (point.y > lowestY) {
-                        lowestY = point.y;
-                        contourClosestToBottom = contour;
+                        // Check if the area is above the threshold
+                        if (contourArea > areaThreshold) {
+                            // If the area is above the threshold, do not select this contour
+                            continue;
+                        } else {
+                            lowestY = point.y;
+                            contourClosestToBottom = contour; // Only select if the area is below the threshold
+                        }
                     }
                 }
             }
 
             if (contourClosestToBottom != null) {
                 analyzeContour(contourClosestToBottom, input, "Green");
+            } else {
+                // If no valid contour found under the area threshold, you might want to handle this case
+                // For example, you could analyze the next lowest contour if desired
+                // This code will already process contours in the loop, so consider adding a fallback here if needed
             }
         }
     }
 
-    void morphMask(Mat input, Mat output)
-    {
-        Imgproc.erode(input, output, erodeElement);
-        Imgproc.erode(output, output, erodeElement);
-
-        Imgproc.dilate(output, output, dilateElement);
-        Imgproc.dilate(output, output, dilateElement);
-    }
-
-
-    void analyzeContour(MatOfPoint contour, Mat input, String color)
-    {
+    void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
         MatOfPoint2f contour2f = new MatOfPoint2f(points);
 
@@ -196,8 +209,7 @@ public class AngleDetection extends OpenCvPipeline
         drawRotatedRect(rotatedRectFitToContour, input, color);
 
         double rotRectAngle = rotatedRectFitToContour.angle;
-        if (rotatedRectFitToContour.size.width < rotatedRectFitToContour.size.height)
-        {
+        if (rotatedRectFitToContour.size.width < rotatedRectFitToContour.size.height) {
             rotRectAngle += 90;
         }
 
@@ -233,8 +245,7 @@ public class AngleDetection extends OpenCvPipeline
                 tvec
         );
 
-        if (success)
-        {
+        if (success) {
             drawLargestAreaAxis(input, rvec, tvec, cameraMatrix, distCoeffs);
 
             AnalyzedStone analyzedStone = new AnalyzedStone();
@@ -242,9 +253,12 @@ public class AngleDetection extends OpenCvPipeline
             analyzedStone.color = color;
             analyzedStone.rvec = rvec;
             analyzedStone.tvec = tvec;
+            analyzedStone.x = -1; // Initializing x and y to -1 or any default value
+            analyzedStone.y = -1;
             internalStoneList.add(analyzedStone);
         }
     }
+
 
     public MatOfPoint3f axisPoints;
     void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
@@ -429,6 +443,25 @@ public class AngleDetection extends OpenCvPipeline
 
         if (greenSample != null) {
             return greenSample.angle;
+        } else {
+            return Double.NaN;  // Indicate that no "green" sample was found
+        }
+    }
+
+    public double getGreenSampleArea() {
+        AnalyzedStone greenSample = null;
+
+        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
+        for (AnalyzedStone stone : stonesCopy) {
+            if (stone != null && "Green".equals(stone.color) && stone.contour != null) {
+                greenSample = stone;
+                break;
+            }
+        }
+
+        if (greenSample != null) {
+            // Calculate the area of the contour using Imgproc.contourArea
+            return Imgproc.contourArea(greenSample.contour);
         } else {
             return Double.NaN;  // Indicate that no "green" sample was found
         }
