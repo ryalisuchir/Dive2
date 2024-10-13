@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.testing;
+package org.firstinspires.ftc.teamcode.opmode.testing.camera;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.common.camera.kalman.KalmanFilter;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -80,7 +81,15 @@ public class AngleDetection extends OpMode {
         }
 
         clawAngle = lastDetectedBlue / 180; // Claw angle between 0 and 1
-        telemetry.addData("Claw Angle: ", clawAngle);
+        double estimate;
+        double Q = 0.3; // High values put more emphasis on the sensor.
+        double R = 3; // High Values put more emphasis on regression.
+        int N = 3; // The number of estimates in the past we perform regression on.
+        KalmanFilter filter = new KalmanFilter(Q,R,N);
+            double currentValue = clawAngle;  // imaginary, noisy sensor
+            estimate = filter.estimate(currentValue); // smoothed sensor
+
+        telemetry.addData("Claw Angle: ", estimate);
         claw.setPosition(clawAngle);
 
         telemetry.update();
