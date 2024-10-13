@@ -52,6 +52,7 @@ public class Globals {
 
     public enum FourBarState {
         INTAKE,
+        SCANNING, //optimal height for auto scanning
         LOW,
         TRANSFER,
         RESTING
@@ -87,9 +88,10 @@ public class Globals {
     public static double INTAKE_CLAW_TRANSFER = 0.3;
     public static double INTAKE_CLAW_CLOSED = 1;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.036;
-    public static double INTAKE_FOURBAR_LOW = 0.359; //In case we decide to drop intake further to grab
-    public static double INTAKE_FOURBAR_TRANSFER = 0.472;
-    public static double INTAKE_FOURBAR_RESTING = 0.33;
+    public static double INTAKE_FOURBAR_INTAKE = 0.15;
+    public static double INTAKE_FOURBAR_SCANNING = 0.35;
+    public static double INTAKE_FOURBAR_LOW = 0.1; //In case we decide to drop intake further to grab
+    public static double INTAKE_FOURBAR_TRANSFER = 1;
+    public static double INTAKE_FOURBAR_RESTING = 0.7;
 
 }

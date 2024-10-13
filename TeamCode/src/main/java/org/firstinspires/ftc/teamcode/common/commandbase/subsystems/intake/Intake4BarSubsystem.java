@@ -23,6 +23,9 @@ public class Intake4BarSubsystem extends SubsystemBase {
             case INTAKE:
                 robot.intake4Bar.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
                 break;
+            case SCANNING:
+                robot.intake4Bar.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
+                break;
             case LOW:
                 robot.intake4Bar.setPosition(Globals.INTAKE_FOURBAR_LOW);
             case TRANSFER:
