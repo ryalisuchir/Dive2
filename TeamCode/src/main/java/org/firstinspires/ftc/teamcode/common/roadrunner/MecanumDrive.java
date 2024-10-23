@@ -55,6 +55,8 @@ import java.util.List;
 @Config
 public class MecanumDrive {
     public static class Params {
+        //TODO: Ahnaf mentioned wheels aren't moving in proper orientation. Reverse correct ones, or reverse all.
+        
         // IMU orientation
         // TODO: fill in these values based on
         //   see https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html?highlight=imu#physical-hub-mounting
