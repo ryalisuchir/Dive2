@@ -39,9 +39,9 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @Photon
 @Config
 public class RobotHardware {
-    public PhotonDcMotor leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
-    public PhotonDcMotor leftLift, rightLift; //Outtake lift motors
-    public PhotonDcMotor extendoMotor; //Intake extension motor
+    public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
+    public DcMotorEx leftLift, rightLift; //Outtake lift motors
+    public DcMotorEx extendoMotor; //Intake extension motor
     public PhotonServo intakeRotation, intakeClaw, intakeCoaxial, intake4Bar; //Intake servos
     public PhotonServo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw; //Outtake servos
     public PhotonLynxVoltageSensor batteryVoltageSensor;
@@ -78,13 +78,13 @@ public class RobotHardware {
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         voltageTimer = new ElapsedTime();
         //Configuration of all motors:
-        leftFront = hardwareMap.get(PhotonDcMotor.class, "leftFront");
-        leftRear = hardwareMap.get(PhotonDcMotor.class, "leftRear");
-        rightRear = hardwareMap.get(PhotonDcMotor.class, "rightRear");
-        rightFront = hardwareMap.get(PhotonDcMotor.class, "rightFront");
-        leftLift = hardwareMap.get(PhotonDcMotor.class, "leftLift");
-        rightLift = hardwareMap.get(PhotonDcMotor.class, "rightLift");
-        extendoMotor = hardwareMap.get(PhotonDcMotor.class, "extendoMotor");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
+        rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
+        extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
 
         //Reversing motors:
         leftFront.setDirection(DcMotor.Direction.REVERSE);
