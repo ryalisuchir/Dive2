@@ -64,9 +64,9 @@ public class MecanumDrive {
         public double trackWidthTicks = 11.838583;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.14912766956106221;
-        public double kV = 0.165;
-        public double kA = 0.05;
+        public double kS = 0.15;
+        public double kV = 0.13;
+        public double kA = 0.047;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -80,7 +80,7 @@ public class MecanumDrive {
         // path controller gains
         public double axialGain = 4.2;
         public double lateralGain = 6.3;
-        public double headingGain = 4.1; // shared with turn
+        public double headingGain = 8; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;

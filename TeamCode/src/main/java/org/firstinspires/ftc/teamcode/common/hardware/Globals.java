@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.IntakeClawS
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.OPEN;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Pose2d;
 
 @Config
 public class Globals {
@@ -93,5 +94,7 @@ public class Globals {
     public static double INTAKE_FOURBAR_LOW = 0.1; //In case we decide to drop intake further to grab
     public static double INTAKE_FOURBAR_TRANSFER = 1;
     public static double INTAKE_FOURBAR_RESTING = 0.7;
+
+    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(30, 63, Math.toRadians(270.00));
 
 }

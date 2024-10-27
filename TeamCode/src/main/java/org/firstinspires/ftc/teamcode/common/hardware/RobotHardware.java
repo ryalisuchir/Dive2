@@ -4,10 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
-import com.outoftheboxrobotics.photoncore.Photon;
 import com.outoftheboxrobotics.photoncore.hardware.PhotonLynxVoltageSensor;
-import com.outoftheboxrobotics.photoncore.hardware.motor.PhotonDcMotor;
-import com.outoftheboxrobotics.photoncore.hardware.servo.PhotonServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -36,14 +33,13 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Photon
 @Config
 public class RobotHardware {
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
     public DcMotorEx leftLift, rightLift; //Outtake lift motors
     public DcMotorEx extendoMotor; //Intake extension motor
-    public PhotonServo intakeRotation, intakeClaw, intakeCoaxial, intake4Bar; //Intake servos
-    public PhotonServo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw; //Outtake servos
+    public Servo intakeRotation, intakeClaw, intakeCoaxial, intake4Bar; //Intake servos
+    public Servo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw; //Outtake servos
     public PhotonLynxVoltageSensor batteryVoltageSensor;
 
     public Intake4BarSubsystem intake4BarSubsystem;
@@ -87,8 +83,10 @@ public class RobotHardware {
         extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
 
         //Reversing motors:
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFront.setDirection(DcMotorEx.Direction.FORWARD);
+        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        leftRear.setDirection(DcMotorEx.Direction.REVERSE);
 
         //Setting all motors to stop:
         leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -105,14 +103,14 @@ public class RobotHardware {
         extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Setting all servos:
-        Servo intakeRotation = hardwareMap.get(PhotonServo.class, "intakeRotation");
-        Servo intakeClaw = hardwareMap.get(PhotonServo.class, "intakeClaw");
-        Servo intakeCoaxial = hardwareMap.get(PhotonServo.class, "intakeCoaxial");
-        Servo intake4Bar = hardwareMap.get(PhotonServo.class, "intake4Bar");
-        Servo outtakeRotation = hardwareMap.get(PhotonServo.class, "outtakeRotation");
-        Servo leftOuttakeArm = hardwareMap.get(PhotonServo.class, "leftOuttakeArm");
-        Servo rightOuttakeArm = hardwareMap.get(PhotonServo.class, "rightOuttakeArm");
-        Servo outtakeClaw = hardwareMap.get(PhotonServo.class, "outtakeClaw");
+        Servo intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
+        Servo intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+        Servo intakeCoaxial = hardwareMap.get(Servo.class, "intakeCoaxial");
+        Servo intake4Bar = hardwareMap.get(Servo.class, "intake4Bar");
+        Servo outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
+        Servo leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
+        Servo rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
+        Servo outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
 
         intake4BarSubsystem = new Intake4BarSubsystem(getInstance());
         intakeClawSubsystem = new IntakeClawSubsystem(getInstance());

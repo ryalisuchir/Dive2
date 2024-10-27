@@ -20,6 +20,10 @@ public class DriveSubsystem extends SubsystemBase {
         drive.updatePoseEstimate();
     }
 
+    public void setPoseEstimate(Pose2d initialPose) {
+        drive.pose = initialPose;
+    }
+
     public TrajectoryActionBuilder trajectoryActionBuilder(Pose2d startPose) {
         return drive.actionBuilder(startPose);
     }
