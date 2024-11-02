@@ -64,8 +64,6 @@ public class PinpointDrive extends MecanumDrive {
         return pinpoint.getVelocityRR();
     }
 
-
-    // for debug logging
     public static final class FTCPoseMessage {
         public long timestamp;
         public double x;

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Config
 public class IntakeCoaxialSubsystem extends SubsystemBase { //This will be kept constant at all times.
 
-    private RobotHardware robot;
+    private final RobotHardware robot;
     public Globals.CoaxialState coaxialState = Globals.CoaxialState.REST;
 
     public IntakeCoaxialSubsystem(RobotHardware robot) {
@@ -17,10 +17,8 @@ public class IntakeCoaxialSubsystem extends SubsystemBase { //This will be kept 
     }
     public void update(Globals.CoaxialState coaxialStateA) {
         coaxialState = coaxialStateA;
-        robot.intakeCoaxial.setPosition(0);
+        robot.intakeCoaxial1.setPosition(0);
+        robot.intakeCoaxial2.setPosition(0);
     }
-//    public void coaxialRest() {
-//        robot.intakeCoaxial.setPosition(0);
-//    }
 
 }

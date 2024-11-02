@@ -11,12 +11,12 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Config
 public class IntakeClawSubsystem extends SubsystemBase {
 
-    private RobotHardware robot;
+    private final RobotHardware robot;
     public Globals.IntakeClawState clawState = OPEN;
 
     public IntakeClawSubsystem(RobotHardware robot) {
         this.robot = robot;
-        update(Globals.IntakeClawState.OPEN);
+//        update(Globals.IntakeClawState.OPEN);
     }
 
     public void update (Globals.IntakeClawState intakeClawState) {
@@ -32,15 +32,4 @@ public class IntakeClawSubsystem extends SubsystemBase {
                 robot.intakeClaw.setPosition(Globals.INTAKE_CLAW_TRANSFER);
         }
     }
-
-//    public void intakeGrab() {
-//       robot.intakeClaw.setPosition(Globals.INTAKE_CLAW_CLOSED);
-//    }
-//    public void intakeRelease() {
-//        robot.intakeClaw.setPosition(Globals.INTAKE_CLAW_OPEN);
-//    }
-//    public void intakeTransferRelease() {
-//        robot.intakeClaw.setPosition(Globals.INTAKE_CLAW_TRANSFER);
-//    }
-
 }

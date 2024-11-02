@@ -3,6 +3,9 @@ package com.example.meepmeep;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
+import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
+import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueLight;
+import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
@@ -17,16 +20,33 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setColorScheme(new ColorSchemeBlueLight())
+                .setConstraints(60, 50, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(30, 63, Math.toRadians(270.00)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(30, 63, Math.toRadians(-90)))
                 .splineToConstantHeading(new Vector2d(6.36, 32.65), Math.toRadians(270.00))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(53, 43.10, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(60.16, 42.05, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(61.20, 50.58, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(58, 42.05, Math.toRadians(140)), Math.toRadians(140))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(60.68, 52.15, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(23.77, 0.96, Math.toRadians(180.00)), Math.toRadians(180.00))
                 .build());
 
         Image fieldBackground = null;
-        try { fieldBackground = ImageIO.read(new File("/Users/rrrr/Downloads/Juice-INTO-THE-DEEP-Light.png")); }
+        try { fieldBackground = ImageIO.read(new File("/Users/rrrr/Juice-INTO-THE-DEEP-Black.png")); }
         catch(IOException ignored) {}
 
         meepMeep.setBackground(fieldBackground)

@@ -38,7 +38,9 @@ public class RobotHardware {
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
     public DcMotorEx leftLift, rightLift; //Outtake lift motors
     public DcMotorEx extendoMotor; //Intake extension motor
-    public Servo intakeRotation, intakeClaw, intakeCoaxial, intake4Bar; //Intake servos
+    //1 is left
+    //2 is right
+    public Servo intakeRotation, intakeClaw, intakeCoaxial1, intakeCoaxial2, intake4Bar1, intake4Bar2; //Intake servos
     public Servo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw; //Outtake servos
     public PhotonLynxVoltageSensor batteryVoltageSensor;
 
@@ -71,16 +73,16 @@ public class RobotHardware {
         return instance;
     }
 
-    public void init(HardwareMap hardwareMap, Telemetry telemetry) {
+    public void init(HardwareMap hardwareMap, Pose2d initialPose) {
         voltageTimer = new ElapsedTime();
         //Configuration of all motors:
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
-        rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
-        extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
+//        leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
+//        rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
+//        extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
 
         //Reversing motors:
         rightRear.setDirection(DcMotorEx.Direction.FORWARD);
@@ -89,60 +91,62 @@ public class RobotHardware {
         leftRear.setDirection(DcMotorEx.Direction.REVERSE);
 
         //Setting all motors to stop:
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        extendoMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        extendoMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Resetting encoders (RR will take care of drivetrain motors):
-        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Setting all servos:
         Servo intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
         Servo intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
-        Servo intakeCoaxial = hardwareMap.get(Servo.class, "intakeCoaxial");
-        Servo intake4Bar = hardwareMap.get(Servo.class, "intake4Bar");
-        Servo outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
-        Servo leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
-        Servo rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
-        Servo outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+        Servo intakeCoaxial1 = hardwareMap.get(Servo.class, "intakeCoaxial1");
+//        Servo intakeCoaxial2 = hardwareMap.get(Servo.class, "intakeCoaxial2");
+        Servo intake4Bar1 = hardwareMap.get(Servo.class, "intake4Bar1");
+        Servo intake4Bar2 = hardwareMap.get(Servo.class, "intake4Bar2");
+//        Servo outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
+//        Servo leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
+//        Servo rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
+//        Servo outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
 
         intake4BarSubsystem = new Intake4BarSubsystem(getInstance());
         intakeClawSubsystem = new IntakeClawSubsystem(getInstance());
         intakeCoaxialSubsystem = new IntakeCoaxialSubsystem(getInstance());
         intakeRotationSubsystem = new IntakeRotationSubsystem(getInstance());
-        outtakeArmSubsystem = new OuttakeArmSubsystem(getInstance());
-        outtakeClawSubsystem = new OuttakeClawSubsystem(getInstance());
-        outtakeRotationSubsystem = new OuttakeRotationSubsystem(getInstance());
-        depositSubsystem = new DepositSubsystem(getInstance());
-        extendoSubsystem = new ExtendoSubsystem(getInstance());
-        driveSubsystem = new DriveSubsystem(new PinpointDrive(hardwareMap, new Pose2d(0,0,0)), false);
+//        outtakeArmSubsystem = new OuttakeArmSubsystem(getInstance());
+//        outtakeClawSubsystem = new OuttakeClawSubsystem(getInstance());
+//        outtakeRotationSubsystem = new OuttakeRotationSubsystem(getInstance());
+//        depositSubsystem = new DepositSubsystem(getInstance());
+//        extendoSubsystem = new ExtendoSubsystem(getInstance());
+        driveSubsystem = new DriveSubsystem(new PinpointDrive(hardwareMap, initialPose), false);
 
-        if (Globals.AUTO) {
-            sampleDetection = new AngleDetection();
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-            sampleCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
-            sampleCamera.setPipeline(sampleDetection = new AngleDetection());
-            sampleCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    sampleCamera.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
-                }
-
-                @Override
-                public void onError(int errorCode) {
-                }
-            });
-
-            FtcDashboard.getInstance().startCameraStream(sampleCamera, 60);
-        }
+//        if (Globals.AUTO) {
+//            sampleDetection = new AngleDetection();
+//            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//            sampleCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
+//            sampleCamera.setPipeline(sampleDetection = new AngleDetection());
+//            sampleCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//                @Override
+//                public void onOpened() {
+//                    sampleCamera.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
+//                }
+//
+//                @Override
+//                public void onError(int errorCode) {
+//                }
+//            });
+//
+//            FtcDashboard.getInstance().startCameraStream(sampleCamera, 60);
+//        }
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
-        batteryVoltageSensor = hardwareMap.getAll(PhotonLynxVoltageSensor.class).iterator().next();
+//        batteryVoltageSensor = hardwareMap.getAll(PhotonLynxVoltageSensor.class).iterator().next();
 
     }
 

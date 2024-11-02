@@ -95,6 +95,7 @@ public class Globals {
     public static double INTAKE_FOURBAR_TRANSFER = 1;
     public static double INTAKE_FOURBAR_RESTING = 0.7;
 
+    public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(30, 63, Math.toRadians(270.00));
 
 }
