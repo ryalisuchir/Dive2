@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmode.testing;
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -40,6 +42,26 @@ public class MecanumTest extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
         Action movement1Left = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
                 .splineToConstantHeading(new Vector2d(6.36, 32.65), Math.toRadians(270.00))
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(53, 43.10, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(60.16, 42.05, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(61.20, 50.58, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(58, 42.05, Math.toRadians(140)), Math.toRadians(140))
+                .waitSeconds(2)
+                .splineToLinearHeading(new Pose2d(60.68, 52.15, Math.toRadians(60)), Math.toRadians(60))
+                .waitSeconds(2)
+                .setReversed(true)
+                .splineToLinearHeading(
+                        new Pose2d(23.77, 0.96, Math.toRadians(180.00)), Math.toRadians(180.00),
+                        new AngularVelConstraint(80)
+                )
                 .build();
 
         CommandScheduler.getInstance().schedule(

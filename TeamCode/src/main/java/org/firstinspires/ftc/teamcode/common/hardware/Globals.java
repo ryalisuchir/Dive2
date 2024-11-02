@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.common.hardware;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.CoaxialState.REST;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoFailState.GOOD;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.FourBarState.RESTING;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.IntakeClawState.CLOSED;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.OPEN;
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeRotationState.TRANSFER;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -44,12 +44,34 @@ public class Globals {
     }
     Globals.IntakeClawState intakeClawState = CLOSED;
 
+    public enum IntakeRotationState {
+        REST,
+        TRANSFER,
+        AUTO_1,
+        AUTO_2,
+        AUTO_3
+    }
+    Globals.IntakeRotationState intakeRotationState = IntakeRotationState.TRANSFER;
+
+    public enum IntakeCoaxialState {
+        REST,
+        TRANSFER,
+        INTAKE
+    }
+    Globals.IntakeCoaxialState intakeCoaxialState = IntakeCoaxialState.REST;
+
     public enum OuttakeClawState {
         OPEN,
         CLOSED,
         OPEN_TRANSFER
     }
     Globals.OuttakeClawState outtakeClawState = OPEN;
+
+    public enum OuttakeRotationState {
+        EXIT,
+        TRANSFER
+    }
+    Globals.OuttakeRotationState outtakeRotationState = TRANSFER;
 
     public enum FourBarState {
         INTAKE,
@@ -59,11 +81,6 @@ public class Globals {
         RESTING
     }
     Globals.FourBarState fourBarState = RESTING;
-
-    public enum CoaxialState {
-        REST
-    }
-    Globals.CoaxialState coaxialState = REST;
 
     // Lift Subsystem Constants
     //TODO: Tune these values:
@@ -83,17 +100,30 @@ public class Globals {
     public static double OUTTAKE_CLAW_TRANSFER = 0.3;
     public static double OUTTAKE_CLAW_CLOSED = 1;
 
+    public static double OUTTAKE_ROTATION_TRANSFER = 0;
+    public static double OUTTAKE_ROTATION_EXIT = 1;
+
     //Intake Subsystem Constants
     //TODO: Tune these values:
     public static double INTAKE_CLAW_OPEN = 0;
     public static double INTAKE_CLAW_TRANSFER = 0.3;
     public static double INTAKE_CLAW_CLOSED = 1;
 
+    public static double INTAKE_ROTATION_REST = 0;
+    public static double INTAKE_ROTATION_TRANSFER = 0.5;
+    public static double INTAKE_ROTATION_AUTO_1 = 0.5;
+    public static double INTAKE_ROTATION_AUTO_2 = 0.6;
+    public static double INTAKE_ROTATION_AUTO_3 = 0.8;
+
     public static double INTAKE_FOURBAR_INTAKE = 0.15;
     public static double INTAKE_FOURBAR_SCANNING = 0.35;
     public static double INTAKE_FOURBAR_LOW = 0.1; //In case we decide to drop intake further to grab
     public static double INTAKE_FOURBAR_TRANSFER = 1;
     public static double INTAKE_FOURBAR_RESTING = 0.7;
+
+    public static double INTAKE_COAXIAL_RESTING = 0;
+    public static double INTAKE_COAXIAL_INTAKE = 0.5;
+    public static double INTAKE_COAXIAL_TRANSFER = 1;
 
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(30, 63, Math.toRadians(270.00));

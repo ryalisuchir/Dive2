@@ -2,23 +2,36 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @Config
-public class IntakeCoaxialSubsystem extends SubsystemBase { //This will be kept constant at all times.
+public class IntakeCoaxialSubsystem extends SubsystemBase {
 
-    private final RobotHardware robot;
-    public Globals.CoaxialState coaxialState = Globals.CoaxialState.REST;
+    private final Servo coaxialLeft, coaxialRight;
+    public Globals.IntakeCoaxialState intakeCoaxialState = Globals.IntakeCoaxialState.REST;
 
-    public IntakeCoaxialSubsystem(RobotHardware robot) {
-        this.robot = robot;
+    public IntakeCoaxialSubsystem(Servo coaxialLeftInput, Servo coaxialRightInput) {
+        coaxialLeft = coaxialLeftInput;
+        coaxialRight = coaxialRightInput;
     }
-    public void update(Globals.CoaxialState coaxialStateA) {
-        coaxialState = coaxialStateA;
-        robot.intakeCoaxial1.setPosition(0);
-        robot.intakeCoaxial2.setPosition(0);
+
+    public void update(Globals.IntakeCoaxialState intakeCoaxialStateInput) {
+        intakeCoaxialState = intakeCoaxialStateInput;
+        switch (intakeCoaxialStateInput) {
+            case REST:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_RESTING);
+                break;
+            case TRANSFER:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
+                break;
+            case INTAKE:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
+                break;
+        }
     }
 
 }

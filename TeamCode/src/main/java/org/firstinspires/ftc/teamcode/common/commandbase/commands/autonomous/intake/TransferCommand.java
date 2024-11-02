@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class TransferCommand extends SequentialCommandGroup {
     public TransferCommand(RobotHardware robot) {
@@ -14,10 +13,9 @@ public class TransferCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer()),
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeTransfer()),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.outtakeRotationTransfer()),
-
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.updateRotation(0.5)),
+                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN)),
+                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER)),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER)),
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.TRANSFER))
                 ),
                 new WaitCommand(0),

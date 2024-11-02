@@ -10,11 +10,11 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Photon
 @TeleOp
 public class Intakes extends CommandOpMode {
-    private RobotHardware robot = new RobotHardware();
+    private RobotHardware robot;
     double speed;
     @Override
     public void initialize() {
-        robot.init(hardwareMap, Globals.DEFAULT_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Intakes extends CommandOpMode {
         boolean dpad_right = gamepad1.dpad_right;
         if (dpad_right) {
             schedule(
-                    new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.CoaxialState.REST))
+                    new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.REST))
             );
         }
 

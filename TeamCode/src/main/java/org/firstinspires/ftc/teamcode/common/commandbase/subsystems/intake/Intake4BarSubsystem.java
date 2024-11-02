@@ -2,41 +2,44 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @Config
 public class Intake4BarSubsystem extends SubsystemBase {
 
-    private final RobotHardware robot;
+    private final Servo intake4BarLeft, intake4BarRight;
     public Globals.FourBarState fourBarState = Globals.FourBarState.RESTING;
 
-    public Intake4BarSubsystem(RobotHardware robot) {
-        this.robot = robot;
-        update(Globals.FourBarState.TRANSFER);
+    public Intake4BarSubsystem(Servo intake4BarLeftInput, Servo intake4BarRightInput) {
+        intake4BarLeft = intake4BarLeftInput;
+        intake4BarRight = intake4BarRightInput;
     }
 
     public void update(Globals.FourBarState fourState) {
         fourBarState = fourState;
         switch (fourState) {
             case INTAKE:
-                robot.intake4Bar1.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
-                robot.intake4Bar2.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
                 break;
             case SCANNING:
-                robot.intake4Bar1.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
-                robot.intake4Bar2.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
                 break;
             case LOW:
-                robot.intake4Bar1.setPosition(Globals.INTAKE_FOURBAR_LOW);
-                robot.intake4Bar2.setPosition(Globals.INTAKE_FOURBAR_LOW);
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_LOW);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_LOW);
+                break;
             case TRANSFER:
-                robot.intake4Bar1.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
-                robot.intake4Bar2.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
+                break;
             case RESTING:
-                robot.intake4Bar1.setPosition(Globals.INTAKE_FOURBAR_RESTING);
-                robot.intake4Bar2.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+                break;
         }
     }
 

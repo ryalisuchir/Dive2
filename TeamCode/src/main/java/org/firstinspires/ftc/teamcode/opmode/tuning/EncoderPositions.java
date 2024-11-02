@@ -12,13 +12,13 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Autonomous
 public class EncoderPositions extends OpMode {
 
-    private RobotHardware robot = new RobotHardware();
+    private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
 
     @Override
     public void init() {
-        robot.init(hardwareMap, Globals.DEFAULT_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
 
         telemetry.addData("Ready: ", "Initialized robot.");
         telemetry.update();
@@ -41,10 +41,11 @@ public class EncoderPositions extends OpMode {
         telemetry.addLine("Servos Encoders:");
         telemetry.addData("intakeRotation: ", robot.intakeRotation.getPosition());
         telemetry.addData("intakeClaw: ", robot.intakeClaw.getPosition());
-        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxial1.getPosition());
-//        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxial2.getPosition());
-        telemetry.addData("intake4Bar2: ", robot.intake4Bar1.getPosition());
-        telemetry.addData("intake4Bar2: ", robot.intake4Bar2.getPosition());
+        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxialLeft.getPosition());
+        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxialRight.getPosition());
+        telemetry.addData("intake4Bar2: ", robot.intake4BarLeft.getPosition());
+        telemetry.addData("intake4Bar2: ", robot.intake4BarRight.getPosition());
+
 //        telemetry.addData("outtakeRotation: ", robot.outtakeRotation.getPosition());
 //        telemetry.addData("leftOuttakeArm: ", robot.leftOuttakeArm.getPosition());
 //        telemetry.addData("rightOuttakeArm: ", robot.rightOuttakeArm.getPosition());

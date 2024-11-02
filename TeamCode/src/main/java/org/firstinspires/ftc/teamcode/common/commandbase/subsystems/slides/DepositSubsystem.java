@@ -6,40 +6,42 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeStat
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @Config
 public class DepositSubsystem extends SubsystemBase {
-    private RobotHardware robot;
+    private final DcMotorEx leftLift, rightLift;
+
     private double slidesTargetPosition = 0;
     Globals.OuttakeState outtakeState;
 
-    public DepositSubsystem(RobotHardware robot) {
-        this.robot = robot;
+    public DepositSubsystem(DcMotorEx depoLeftInput, DcMotorEx depoRightInput) {
+        leftLift = depoLeftInput;
+        rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesUpdate() {
+    public void outtakeSlidesLoop() {
         if (outtakeState == EXTENDING) {
-            if (robot.leftLift.getCurrentPosition() < slidesTargetPosition) {
-                robot.leftLift.setPower(1);
-                robot.rightLift.setPower(1);
-            } else if (robot.extendoMotor.getCurrentPosition() > slidesTargetPosition) {
-                robot.leftLift.setPower(-0.3);
-                robot.rightLift.setPower(-0.3);
+            if (leftLift.getCurrentPosition() < slidesTargetPosition) {
+                leftLift.setPower(1);
+                rightLift.setPower(1);
+            } else if (leftLift.getCurrentPosition() > slidesTargetPosition) {
+                leftLift.setPower(-0.3);
+                rightLift.setPower(-0.3);
             }
         } else if (outtakeState == RETRACTING) {
-            if (robot.extendoMotor.getCurrentPosition() < slidesTargetPosition) {
-                robot.leftLift.setPower(0.3);
-                robot.rightLift.setPower(0.3);
-            } else if (robot.extendoMotor.getCurrentPosition() > slidesTargetPosition) {
-                robot.leftLift.setPower(-1);
-                robot.rightLift.setPower(-1);
+            if (leftLift.getCurrentPosition() < slidesTargetPosition) {
+                leftLift.setPower(0.3);
+                rightLift.setPower(0.3);
+            } else if (leftLift.getCurrentPosition() > slidesTargetPosition) {
+                leftLift.setPower(-1);
+                rightLift.setPower(-1);
             }
         } else if (outtakeState == REST) {
-            robot.leftLift.setPower(0);
-            robot.rightLift.setPower(0);
+            leftLift.setPower(0);
+            rightLift.setPower(0);
         }
     }
 
@@ -55,11 +57,11 @@ public class DepositSubsystem extends SubsystemBase {
 
     public void outtakeSetPosition(double customSlidesPosition) {
         slidesTargetPosition = customSlidesPosition;
-        if (customSlidesPosition > robot.extendoMotor.getCurrentPosition()) {
+        if (customSlidesPosition > leftLift.getCurrentPosition()) {
             outtakeState = EXTENDING;
-        } else if (customSlidesPosition < robot.extendoMotor.getCurrentPosition()) {
+        } else if (customSlidesPosition < leftLift.getCurrentPosition()) {
             outtakeState = RETRACTING;
-        } else if (customSlidesPosition == robot.extendoMotor.getCurrentPosition()) {
+        } else if (customSlidesPosition == leftLift.getCurrentPosition()) {
             outtakeState = REST;
         }
     }

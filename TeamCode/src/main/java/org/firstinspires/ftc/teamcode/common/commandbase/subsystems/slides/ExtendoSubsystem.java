@@ -6,47 +6,47 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoStat
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @Config
 public class ExtendoSubsystem extends SubsystemBase {
-    private RobotHardware robot;
+    private DcMotorEx extendoMotor;
     private double extendoTargetPosition = 0;
     Globals.ExtendoState extendoState;
 
-    public ExtendoSubsystem(RobotHardware robot) {
-        this.robot = robot;
-        robot.extendoMotor.setCurrentAlert(Globals.extendoStaticMax, CurrentUnit.AMPS);
+    public ExtendoSubsystem(DcMotorEx extendoMotorInput) {
+        extendoMotor = extendoMotorInput;
+        extendoMotor.setCurrentAlert(Globals.extendoStaticMax, CurrentUnit.AMPS);
     }
 
     public void currentLoop() {
-        if(robot.extendoMotor.isOverCurrent() && robot.extendoMotor.getCurrentPosition() < extendoTargetPosition) {
+        if(extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() < extendoTargetPosition) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_EXTEND; //Hit another robot, will try again and then park if it doesn't work
             extendoState = REST;
-        } else if(robot.extendoMotor.isOverCurrent() && robot.extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+        } else if(extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() > extendoTargetPosition) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_RETRACT; //Internal problem
             extendoState = REST;
         }
     }
 
-    public void extendoUpdate() {
+    public void extendoSlidesLoop() {
         if (extendoState == EXTENDING) {
-            if (robot.extendoMotor.getCurrentPosition() < extendoTargetPosition) {
-                robot.extendoMotor.setPower(1);
-            } else if (robot.extendoMotor.getCurrentPosition() > extendoTargetPosition) {
-                robot.extendoMotor.setPower(-0.3);
+            if (extendoMotor.getCurrentPosition() < extendoTargetPosition) {
+                extendoMotor.setPower(1);
+            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+                extendoMotor.setPower(-0.3);
             }
         } else if (extendoState == RETRACTING) {
-            if (robot.extendoMotor.getCurrentPosition() < extendoTargetPosition) {
-                robot.extendoMotor.setPower(0.3);
-            } else if (robot.extendoMotor.getCurrentPosition() > extendoTargetPosition) {
-                robot.extendoMotor.setPower(-1);
+            if (extendoMotor.getCurrentPosition() < extendoTargetPosition) {
+                extendoMotor.setPower(0.3);
+            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+                extendoMotor.setPower(-1);
             }
         } else if (extendoState == REST) {
-            robot.extendoMotor.setPower(0);
+            extendoMotor.setPower(0);
         }
     }
 
@@ -62,11 +62,11 @@ public class ExtendoSubsystem extends SubsystemBase {
 
     public void extendoSetPosition(double customSlidesPosition) {
         extendoTargetPosition = customSlidesPosition;
-        if (customSlidesPosition > robot.extendoMotor.getCurrentPosition()) {
+        if (customSlidesPosition > extendoMotor.getCurrentPosition()) {
             extendoState = EXTENDING;
-        } else if (customSlidesPosition < robot.extendoMotor.getCurrentPosition()) {
+        } else if (customSlidesPosition < extendoMotor.getCurrentPosition()) {
             extendoState = RETRACTING;
-        } else if (customSlidesPosition == robot.extendoMotor.getCurrentPosition()) {
+        } else if (customSlidesPosition == extendoMotor.getCurrentPosition()) {
             extendoState = REST;
         }
     }

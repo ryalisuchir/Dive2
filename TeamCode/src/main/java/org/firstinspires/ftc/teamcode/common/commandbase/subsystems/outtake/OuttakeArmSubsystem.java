@@ -2,28 +2,27 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 public class OuttakeArmSubsystem extends SubsystemBase {
+    private final Servo leftOuttakeArm, rightOuttakeArm;
 
-    private RobotHardware robot;
-
-    public OuttakeArmSubsystem(RobotHardware robot) {
-        this.robot = robot;
+    public OuttakeArmSubsystem(Servo leftOuttakeArmInput, Servo rightOuttakeArmInput) {
+        leftOuttakeArm = leftOuttakeArmInput;
+        rightOuttakeArm = rightOuttakeArmInput;
     }
     public void outtakeArmTransfer() {
-        robot.leftOuttakeArm.setPosition(0);
-        robot.rightOuttakeArm.setPosition(0);
+        leftOuttakeArm.setPosition(0);
+        rightOuttakeArm.setPosition(0);
     }
     public void outtakeArmExit() {
-        robot.leftOuttakeArm.setPosition(1);
-        robot.rightOuttakeArm.setPosition(1);
+        leftOuttakeArm.setPosition(1);
+        rightOuttakeArm.setPosition(1);
     }
     public void outtakeArmHighest() {
-        robot.leftOuttakeArm.setPosition(0.75);
-        robot.rightOuttakeArm.setPosition(0.75);
+        leftOuttakeArm.setPosition(0.75);
+        rightOuttakeArm.setPosition(0.75);
     }
 
 }
