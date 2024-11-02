@@ -69,7 +69,8 @@ public class Globals {
 
     public enum OuttakeRotationState {
         EXIT,
-        TRANSFER
+        TRANSFER,
+        SPECIMEN
     }
     Globals.OuttakeRotationState outtakeRotationState = TRANSFER;
 
@@ -86,6 +87,7 @@ public class Globals {
     //TODO: Tune these values:
     public static int LIFT_HIGH_POS = 597;
     public static int LIFT_MID_POS = 365;
+    public static int LIFT_SPECIMEN_POS = 400;
     public static int LIFT_RETRACT_POS = -5;
 
     //Extendo Subsystem Constants
@@ -101,6 +103,7 @@ public class Globals {
     public static double OUTTAKE_CLAW_CLOSED = 1;
 
     public static double OUTTAKE_ROTATION_TRANSFER = 0;
+    public static double OUTTAKE_ROTATION_SPECIMEN = 0.5;
     public static double OUTTAKE_ROTATION_EXIT = 1;
 
     //Intake Subsystem Constants

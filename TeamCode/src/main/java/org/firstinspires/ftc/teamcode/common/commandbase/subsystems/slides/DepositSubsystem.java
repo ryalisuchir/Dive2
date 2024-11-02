@@ -50,6 +50,11 @@ public class DepositSubsystem extends SubsystemBase {
         outtakeState = RETRACTING;
     }
 
+    public void outtakeSpecimenExtend() {
+        slidesTargetPosition = Globals.LIFT_SPECIMEN_POS;
+        outtakeState = EXTENDING;
+    }
+
     public void outtakeMaxExtend() {
         slidesTargetPosition = Globals.EXTENDO_MAX_EXTENSION;
         outtakeState = EXTENDING;

@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class ScanningCommand extends ParallelCommandGroup {
     public ScanningCommand(RobotHardware robot, double intakeRotation, double extendoPosition) {

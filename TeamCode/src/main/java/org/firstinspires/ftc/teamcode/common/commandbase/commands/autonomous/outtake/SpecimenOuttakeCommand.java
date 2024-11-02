@@ -7,12 +7,14 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class HighBucketDunkCommand extends SequentialCommandGroup {
-    public HighBucketDunkCommand(RobotHardware robot) {
+public class SpecimenOuttakeCommand extends SequentialCommandGroup {
+    public SpecimenOuttakeCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
+                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED)),
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmExit()),
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN))
+                        new InstantCommand(() -> robot.depositSubsystem.outtakeSpecimenExtend()),
+                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.SPECIMEN))
                 )
         );
     }

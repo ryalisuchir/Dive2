@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class IntakeCommand3 extends ParallelCommandGroup {
     public IntakeCommand3(RobotHardware robot, double intakeRotation, double extendoPosition) {

@@ -5,9 +5,10 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class IntakeCommand1 extends ParallelCommandGroup {
-    public IntakeCommand1(RobotHardware robot, double intakeRotation, double extendoPosition) {
+    public IntakeCommand1(RobotHardware robot, double extendoPosition) {
         super(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
