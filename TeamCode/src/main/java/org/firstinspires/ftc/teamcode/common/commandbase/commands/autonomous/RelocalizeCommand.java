@@ -13,7 +13,7 @@ import org.opencv.core.Point;
 import java.util.Vector;
 
 public class RelocalizeCommand extends SequentialCommandGroup {
-    private final RobotHardware robot = RobotHardware.getInstance();
+    private final RobotHardware robot = new RobotHardware();
     private double sampleAngle;
     private Point samplePosition;
     private Pose2d currentPosition;

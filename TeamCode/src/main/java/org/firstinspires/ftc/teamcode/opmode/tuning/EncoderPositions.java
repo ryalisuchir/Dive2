@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Autonomous
 public class EncoderPositions extends OpMode {
 
-    private RobotHardware robot = RobotHardware.getInstance();
+    private RobotHardware robot = new RobotHardware();
     private ElapsedTime time_since_start;
     private double loop;
 

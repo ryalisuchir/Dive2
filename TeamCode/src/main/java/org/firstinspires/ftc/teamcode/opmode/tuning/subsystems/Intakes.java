@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Photon
 @TeleOp
 public class Intakes extends CommandOpMode {
-    private RobotHardware robot = RobotHardware.getInstance();
+    private RobotHardware robot = new RobotHardware();
     double speed;
     @Override
     public void initialize() {

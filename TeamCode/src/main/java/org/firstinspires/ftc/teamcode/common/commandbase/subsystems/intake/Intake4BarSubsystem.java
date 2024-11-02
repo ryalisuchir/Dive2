@@ -14,7 +14,7 @@ public class Intake4BarSubsystem extends SubsystemBase {
 
     public Intake4BarSubsystem(RobotHardware robot) {
         this.robot = robot;
-//        update(Globals.FourBarState.TRANSFER);
+        update(Globals.FourBarState.TRANSFER);
     }
 
     public void update(Globals.FourBarState fourState) {

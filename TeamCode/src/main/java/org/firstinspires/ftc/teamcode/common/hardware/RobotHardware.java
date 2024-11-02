@@ -65,9 +65,9 @@ public class RobotHardware {
     private HardwareMap hardwareMap;
     GoBildaPinpointDriverRR pinPointDriver;
 
-    public static RobotHardware getInstance() {
+    public RobotHardware getInstance() {
         if (instance == null) {
-            instance = new RobotHardware();
+            instance = this;
         }
         instance.enabled = true;
         return instance;
