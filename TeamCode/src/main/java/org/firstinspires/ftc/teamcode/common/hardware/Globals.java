@@ -118,14 +118,14 @@ public class Globals {
     public static double INTAKE_ROTATION_AUTO_2 = 0.6;
     public static double INTAKE_ROTATION_AUTO_3 = 0.8;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.15;
-    public static double INTAKE_FOURBAR_SCANNING = 0.35;
-    public static double INTAKE_FOURBAR_LOW = 0.1; //In case we decide to drop intake further to grab
+    public static double INTAKE_FOURBAR_INTAKE = 0.58;
+    public static double INTAKE_FOURBAR_SCANNING = 0.7;
+    public static double INTAKE_FOURBAR_LOW = 0.4; //In case we decide to drop intake further to grab
     public static double INTAKE_FOURBAR_TRANSFER = 1;
-    public static double INTAKE_FOURBAR_RESTING = 0.7;
+    public static double INTAKE_FOURBAR_RESTING = 0.72;
 
     public static double INTAKE_COAXIAL_RESTING = 0;
-    public static double INTAKE_COAXIAL_INTAKE = 0.5;
+    public static double INTAKE_COAXIAL_INTAKE = 0.2;
     public static double INTAKE_COAXIAL_TRANSFER = 1;
 
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
