@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class IntakeCommand1 extends ParallelCommandGroup {
+    
     public IntakeCommand1(RobotHardware robot, double extendoPosition) {
         super(
                 new ParallelCommandGroup(
