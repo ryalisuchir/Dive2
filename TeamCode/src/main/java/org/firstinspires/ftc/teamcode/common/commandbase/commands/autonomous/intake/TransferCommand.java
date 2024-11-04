@@ -12,15 +12,16 @@ public class TransferCommand extends SequentialCommandGroup {
     public TransferCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer()),
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN)),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER)),
+//                        new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
+//                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer()),
+//                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN)),
+//                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER)),
+                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.TRANSFER)),
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER)),
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.TRANSFER))
                 ),
-                new WaitCommand(0),
-                new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer())
+                new WaitCommand(0)
+//                new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer())
         );
     }
 }

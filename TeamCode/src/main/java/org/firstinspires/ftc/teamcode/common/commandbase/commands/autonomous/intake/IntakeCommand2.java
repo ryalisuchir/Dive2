@@ -13,7 +13,7 @@ public class IntakeCommand2 extends ParallelCommandGroup {
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.INTAKE)),
-                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.REST)),
+                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.AUTO_2)),
                         new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition)),
                         new WaitCommand(0)
