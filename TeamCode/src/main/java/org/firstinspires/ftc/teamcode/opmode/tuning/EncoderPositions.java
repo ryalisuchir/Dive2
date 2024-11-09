@@ -30,6 +30,7 @@ public class EncoderPositions extends OpMode {
         //Motors:
         telemetry.addLine("Motor Encoders:");
         telemetry.addData("leftLift: ", robot.leftLift.getCurrentPosition());
+        telemetry.addData("rightLift: ", robot.rightLift.getCurrentPosition());
         telemetry.addData("extendoMotor: ", robot.extendoMotor.getCurrentPosition());
 
         telemetry.update();
