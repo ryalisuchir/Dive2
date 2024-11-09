@@ -10,17 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 @Autonomous
 public class RUN_THIS_FOR_INTAKE extends OpMode {
-    public static double fourBarPositionLeft = 0;
-    public static double fourBarPositionRight = 0;
-
     public static double fourBarPositionGeneral = 0;
-
-
-    public static double coaxialPositionLeft = 0;
-    public static double coaxialPositionRight = 0;
-
     public static double coaxialPositionGeneral = 0;
-
     public static double intakeRotationPosition = 0;
     public static double intakeClawPosition = 0;
 
@@ -29,7 +20,7 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
     @Override
     public void init() {
         intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
-//        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
         intakeCoaxialLeft = hardwareMap.get(Servo.class, "intakeCoaxial1");
         intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
@@ -44,7 +35,7 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
     @Override
     public void loop() {
         intakeRotation.setPosition(intakeRotationPosition);
-//        intakeClaw.setPosition(intakeClawPosition);
+        intakeClaw.setPosition(intakeClawPosition);
         intakeCoaxialLeft.setPosition(coaxialPositionGeneral);
         intakeCoaxialRight.setPosition(coaxialPositionGeneral);
         intake4BarLeft.setPosition(fourBarPositionGeneral);

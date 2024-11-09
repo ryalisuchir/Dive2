@@ -19,16 +19,19 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
     public void coaxialRest() {
         coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);
         coaxialRight.setPosition(Globals.INTAKE_COAXIAL_RESTING);
+        intakeCoaxialState = Globals.IntakeCoaxialState.REST;
     }
 
     public void coaxialTransfer() {
         coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
         coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
+        intakeCoaxialState = Globals.IntakeCoaxialState.TRANSFER;
     }
 
     public void coaxialIntake() {
         coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
         coaxialRight.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
+        intakeCoaxialState = Globals.IntakeCoaxialState.INTAKE;
     }
 
     public void update(Globals.IntakeCoaxialState intakeCoaxialStateInput) {

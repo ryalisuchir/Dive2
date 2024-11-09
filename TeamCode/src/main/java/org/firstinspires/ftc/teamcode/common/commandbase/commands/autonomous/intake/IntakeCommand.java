@@ -8,14 +8,15 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class ScanningCommand extends SequentialCommandGroup {
-    public ScanningCommand(RobotHardware robot, double intakeRotation, double extendoPosition) {
+public class IntakeCommand extends SequentialCommandGroup {
+
+    public IntakeCommand(RobotHardware robot, double intakeRotation, double extendoPosition) {
         super(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
-                        new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.SCANNING)),
+                        new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.INTAKE)),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.REST, 0)),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM_AUTO, intakeRotation)),
                         new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition)),
                         new WaitCommand(0)
                 )

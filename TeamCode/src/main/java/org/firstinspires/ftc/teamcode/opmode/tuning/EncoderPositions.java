@@ -29,27 +29,8 @@ public class EncoderPositions extends OpMode {
     public void loop() {
         //Motors:
         telemetry.addLine("Motor Encoders:");
-        telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
-        telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
-        telemetry.addData("leftRear: ", robot.leftRear.getCurrentPosition());
-        telemetry.addData("rightRear: ", robot.rightRear.getCurrentPosition());
-//        telemetry.addData("leftLift: ", robot.leftLift.getCurrentPosition());
-//        telemetry.addData("rightLift: ", robot.rightLift.getCurrentPosition());
+        telemetry.addData("leftLift: ", robot.leftLift.getCurrentPosition());
         telemetry.addData("extendoMotor: ", robot.extendoMotor.getCurrentPosition());
-
-        //Servos:
-        telemetry.addLine("Servos Encoders:");
-        telemetry.addData("intakeRotation: ", robot.intakeRotation.getPosition());
-        telemetry.addData("intakeClaw: ", robot.intakeClaw.getPosition());
-        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxialLeft.getPosition());
-        telemetry.addData("intakeCoaxial1: ", robot.intakeCoaxialRight.getPosition());
-        telemetry.addData("intake4Bar2: ", robot.intake4BarLeft.getPosition());
-        telemetry.addData("intake4Bar2: ", robot.intake4BarRight.getPosition());
-
-//        telemetry.addData("outtakeRotation: ", robot.outtakeRotation.getPosition());
-//        telemetry.addData("leftOuttakeArm: ", robot.leftOuttakeArm.getPosition());
-//        telemetry.addData("rightOuttakeArm: ", robot.rightOuttakeArm.getPosition());
-//        telemetry.addData("outtakeClaw: ", robot.outtakeClaw.getPosition());
 
         telemetry.update();
     }

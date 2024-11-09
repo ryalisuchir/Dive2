@@ -18,25 +18,20 @@ public class IntakeRotationSubsystem extends SubsystemBase {
 
     public void intakeRotationRest() {
         intakeRotation.setPosition(Globals.INTAKE_ROTATION_REST);
+        intakeRotationState = Globals.IntakeRotationState.REST;
     }
 
     public void intakeRotationTransfer() {
         intakeRotation.setPosition(Globals.INTAKE_ROTATION_TRANSFER);
+        intakeRotationState = Globals.IntakeRotationState.TRANSFER;
     }
 
-    public void intakeRotationAuto1() {
-        intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_1);
+    public void intakeRotationAutoCustom(double customRotationInput) {
+        intakeRotation.setPosition(customRotationInput);
+        intakeRotationState = Globals.IntakeRotationState.CUSTOM_AUTO;
     }
 
-    public void intakeRotationAuto2() {
-        intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_2);
-    }
-
-    public void intakeRotationAuto3() {
-        intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_3);
-    }
-
-    public void update(Globals.IntakeRotationState intakeRotationStateInput) {
+    public void update(Globals.IntakeRotationState intakeRotationStateInput, double rotationPosition) {
         intakeRotationState = intakeRotationStateInput;
         switch (intakeRotationStateInput) {
             case REST:
@@ -45,14 +40,8 @@ public class IntakeRotationSubsystem extends SubsystemBase {
             case TRANSFER:
                 intakeRotation.setPosition(Globals.INTAKE_ROTATION_TRANSFER);
                 break;
-            case AUTO_1:
-                intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_1);
-                break;
-            case AUTO_2:
-                intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_2);
-                break;
-            case AUTO_3:
-                intakeRotation.setPosition(Globals.INTAKE_ROTATION_AUTO_3);
+            case CUSTOM_AUTO:
+                intakeRotation.setPosition(rotationPosition);
                 break;
         }
     }

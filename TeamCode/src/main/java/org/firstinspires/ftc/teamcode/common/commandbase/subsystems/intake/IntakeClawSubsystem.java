@@ -20,14 +20,17 @@ public class IntakeClawSubsystem extends SubsystemBase {
 
     public void intakeClawOpen() {
         intakeClaw.setPosition(Globals.INTAKE_CLAW_OPEN);
+        clawState = Globals.IntakeClawState.OPEN;
     }
 
     public void intakeClawClosed() {
         intakeClaw.setPosition(Globals.INTAKE_CLAW_CLOSED);
+        clawState = Globals.IntakeClawState.CLOSED;
     }
 
     public void intakeClawTransfer() {
         intakeClaw.setPosition(Globals.INTAKE_CLAW_TRANSFER);
+        clawState = Globals.IntakeClawState.OPEN_TRANSFER;
     }
 
     public void update(Globals.IntakeClawState intakeClawState) {

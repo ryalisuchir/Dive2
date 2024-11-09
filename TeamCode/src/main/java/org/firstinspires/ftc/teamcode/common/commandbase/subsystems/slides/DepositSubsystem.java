@@ -24,20 +24,26 @@ public class DepositSubsystem extends SubsystemBase {
 
     public void outtakeSlidesLoop() {
         if (outtakeState == EXTENDING) {
-            if (leftLift.getCurrentPosition() < slidesTargetPosition) {
+            if (leftLift.getCurrentPosition() < slidesTargetPosition && Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) > 5) {
                 leftLift.setPower(1);
                 rightLift.setPower(1);
-            } else if (leftLift.getCurrentPosition() > slidesTargetPosition) {
+            } else if (leftLift.getCurrentPosition() > slidesTargetPosition && Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) > 5) {
                 leftLift.setPower(-0.3);
                 rightLift.setPower(-0.3);
+            } else if (Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) < 5) {
+                leftLift.setPower(0);
+                rightLift.setPower(0);
             }
         } else if (outtakeState == RETRACTING) {
-            if (leftLift.getCurrentPosition() < slidesTargetPosition) {
+            if (leftLift.getCurrentPosition() < slidesTargetPosition && Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) > 5) {
                 leftLift.setPower(0.3);
                 rightLift.setPower(0.3);
-            } else if (leftLift.getCurrentPosition() > slidesTargetPosition) {
+            } else if (leftLift.getCurrentPosition() > slidesTargetPosition && Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) > 5) {
                 leftLift.setPower(-1);
                 rightLift.setPower(-1);
+            } else if (Math.abs(slidesTargetPosition - leftLift.getCurrentPosition()) < 5) {
+                leftLift.setPower(0);
+                rightLift.setPower(0);
             }
         } else if (outtakeState == REST) {
             leftLift.setPower(0);

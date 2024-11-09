@@ -1,20 +1,21 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.outoftheboxrobotics.photoncore.Photon;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand1;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.TransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.TransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.HighBucketOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @Photon
 @TeleOp
-public class Intakes extends CommandOpMode {
+public class IntakesTransfer extends CommandOpMode {
     private RobotHardware robot;
     double speed;
     @Override
@@ -28,11 +29,19 @@ public class Intakes extends CommandOpMode {
 
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop();
+
+        boolean triangle = gamepad1.triangle;
+        if (triangle) {
+            schedule (
+                    new AllSystemInitializeCommand(robot)
+            );
+        }
 
         boolean circle = gamepad1.circle;
         if (circle) {
             schedule(
-                    new IntakeCommand1(robot, 500)
+                    new IntakeCommand(robot, 0.5, 500)
             );
         }
 
@@ -62,6 +71,14 @@ public class Intakes extends CommandOpMode {
                     new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed())
             );
         }
+
+        boolean left = gamepad1.dpad_left;
+        if (left) {
+            schedule (
+                    new HighBucketOuttakeCommand(robot)
+            );
+        }
+
 
     }
 }

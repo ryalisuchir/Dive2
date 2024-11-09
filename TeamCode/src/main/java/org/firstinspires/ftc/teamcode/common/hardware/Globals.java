@@ -16,12 +16,13 @@ public class Globals {
 
     public static double extendoStaticMax = 7; //TODO: tune this by pushing hand against extendo
 
+    //Slide States:
     public enum ExtendoFailState { // This will be used to track current on extendo motors.
         GOOD,
         FAILED_EXTEND,
         FAILED_RETRACT
     }
-    Globals.ExtendoFailState extendoFailState = GOOD;
+    Globals.ExtendoFailState extendoFailState = ExtendoFailState.GOOD;
 
     public enum ExtendoState {
         EXTENDING,
@@ -37,19 +38,18 @@ public class Globals {
     }
     Globals.OuttakeState outtakeState = OuttakeState.REST;
 
+    //Intake States:
     public enum IntakeClawState {
         OPEN,
         CLOSED,
         OPEN_TRANSFER
     }
-    Globals.IntakeClawState intakeClawState = CLOSED;
+    Globals.IntakeClawState intakeClawState = IntakeClawState.CLOSED;
 
     public enum IntakeRotationState {
         REST,
         TRANSFER,
-        AUTO_1,
-        AUTO_2,
-        AUTO_3
+        CUSTOM_AUTO
     }
     Globals.IntakeRotationState intakeRotationState = IntakeRotationState.TRANSFER;
 
@@ -60,20 +60,6 @@ public class Globals {
     }
     Globals.IntakeCoaxialState intakeCoaxialState = IntakeCoaxialState.REST;
 
-    public enum OuttakeClawState {
-        OPEN,
-        CLOSED,
-        OPEN_TRANSFER
-    }
-    Globals.OuttakeClawState outtakeClawState = OPEN;
-
-    public enum OuttakeRotationState {
-        EXIT,
-        TRANSFER,
-        SPECIMEN
-    }
-    Globals.OuttakeRotationState outtakeRotationState = TRANSFER;
-
     public enum FourBarState {
         INTAKE,
         SCANNING, //optimal height for auto scanning
@@ -81,7 +67,33 @@ public class Globals {
         TRANSFER,
         RESTING
     }
-    Globals.FourBarState fourBarState = RESTING;
+    Globals.FourBarState fourBarState = FourBarState.RESTING;
+
+    //Outtake States:
+    public enum OuttakeClawState {
+        OPEN,
+        CLOSED,
+        OPEN_TRANSFER
+    }
+    Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
+
+    public enum OuttakeRotationState {
+        EXIT,
+        TRANSFER,
+        SPECIMEN
+    }
+    Globals.OuttakeRotationState outtakeRotationState = OuttakeRotationState.TRANSFER;
+
+    public enum OuttakeArmState {
+        TRANSFER,
+        RAISING,
+        BUCKET,
+        DUNK,
+        SPECIMEN
+    }
+    Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
+
+
 
     // Lift Subsystem Constants
     //TODO: Tune these values:
@@ -91,10 +103,11 @@ public class Globals {
     public static int LIFT_RETRACT_POS = -5;
 
     //Extendo Subsystem Constants
-    //TODO: Tune these values:
     public static int EXTENDO_MAX_EXTENSION = 1266;
     public static int EXTENDO_MAX_RETRACTION = 0;
     public static int EXTENDO_SAMPLE_1 = 250;
+    public static int EXTENDO_SAMPLE_2 = 250;
+    public static int EXTENDO_SAMPLE_3 = 250;
 
     //Outtake Subsystem Constants
     //TODO: Tune these values
@@ -106,9 +119,15 @@ public class Globals {
     public static double OUTTAKE_ROTATION_SPECIMEN = 0.5;
     public static double OUTTAKE_ROTATION_EXIT = 1;
 
+    public static double OUTTAKE_ARM_TRANSFER = 0;
+    public static double OUTTAKE_ARM_RAISING = 0.5;
+    public static double OUTTAKE_ARM_BUCKET = 0.7;
+    public static double OUTTAKE_ARM_DUNK = 0.9;
+    public static double OUTTAKE_ARM_SPECIMEN = 0.8;
+
     //Intake Subsystem Constants
     //TODO: Tune these values:
-    public static double INTAKE_CLAW_OPEN = 0;
+    public static double INTAKE_CLAW_OPEN = 0.2;
     public static double INTAKE_CLAW_TRANSFER = 0.3;
     public static double INTAKE_CLAW_CLOSED = 1;
 
