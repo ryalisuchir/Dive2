@@ -17,6 +17,31 @@ public class Intake4BarSubsystem extends SubsystemBase {
         intake4BarRight = intake4BarRightInput;
     }
 
+    public void intake4BarIntake() {
+        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
+        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
+    }
+
+    public void intake4BarScanning() {
+        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
+        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
+    }
+
+    public void intake4BarLow() {
+        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_LOW);
+        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_LOW);
+    }
+
+    public void intake4BarTransfer() {
+        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
+        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
+    }
+
+    public void intake4BarResting() {
+        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+    }
+
     public void update(Globals.FourBarState fourState) {
         fourBarState = fourState;
         switch (fourState) {

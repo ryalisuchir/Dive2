@@ -18,6 +18,18 @@ public class IntakeClawSubsystem extends SubsystemBase {
         intakeClaw = intakeClawInput;
     }
 
+    public void intakeClawOpen() {
+        intakeClaw.setPosition(Globals.INTAKE_CLAW_OPEN);
+    }
+
+    public void intakeClawClosed() {
+        intakeClaw.setPosition(Globals.INTAKE_CLAW_CLOSED);
+    }
+
+    public void intakeClawTransfer() {
+        intakeClaw.setPosition(Globals.INTAKE_CLAW_TRANSFER);
+    }
+
     public void update(Globals.IntakeClawState intakeClawState) {
         clawState = intakeClawState;
         switch (intakeClawState) {

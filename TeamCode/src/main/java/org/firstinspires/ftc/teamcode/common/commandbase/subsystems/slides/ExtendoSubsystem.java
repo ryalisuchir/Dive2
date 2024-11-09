@@ -34,19 +34,23 @@ public class ExtendoSubsystem extends SubsystemBase {
 
     public void extendoSlidesLoop() {
         if (extendoState == EXTENDING) {
-            if (extendoMotor.getCurrentPosition() < extendoTargetPosition) {
-                extendoMotor.setPower(1);
-            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+            if ((extendoMotor.getCurrentPosition() < extendoTargetPosition) && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+                extendoMotor.setPower(0.5);
+            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
                 extendoMotor.setPower(-0.3);
-            }
-        } else if (extendoState == RETRACTING) {
-            if (extendoMotor.getCurrentPosition() < extendoTargetPosition) {
-                extendoMotor.setPower(0.3);
-            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition) {
-                extendoMotor.setPower(-1);
-            }
-        } else if (extendoState == REST) {
-            extendoMotor.setPower(0);
+            } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
+                extendoMotor.setPower(0);
+            } else if (extendoState == RETRACTING) {
+                if (extendoMotor.getCurrentPosition() < extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+                    extendoMotor.setPower(0.3);
+                } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+                    extendoMotor.setPower(-0.5);
+                } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
+                    extendoMotor.setPower(0);
+                }
+            } else if (extendoState == REST) {
+                    extendoMotor.setPower(0);
+                }
         }
     }
 

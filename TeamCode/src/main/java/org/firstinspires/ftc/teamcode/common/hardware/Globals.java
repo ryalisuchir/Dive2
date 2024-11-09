@@ -92,8 +92,8 @@ public class Globals {
 
     //Extendo Subsystem Constants
     //TODO: Tune these values:
-    public static int EXTENDO_MAX_EXTENSION = 700;
-    public static int EXTENDO_MAX_RETRACTION = -5;
+    public static int EXTENDO_MAX_EXTENSION = 1266;
+    public static int EXTENDO_MAX_RETRACTION = 0;
     public static int EXTENDO_SAMPLE_1 = 250;
 
     //Outtake Subsystem Constants
@@ -118,13 +118,13 @@ public class Globals {
     public static double INTAKE_ROTATION_AUTO_2 = 0.6;
     public static double INTAKE_ROTATION_AUTO_3 = 0.8;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.58;
-    public static double INTAKE_FOURBAR_SCANNING = 0.7;
-    public static double INTAKE_FOURBAR_LOW = 0.4; //In case we decide to drop intake further to grab
-    public static double INTAKE_FOURBAR_TRANSFER = 1;
-    public static double INTAKE_FOURBAR_RESTING = 0.72;
+    public static double INTAKE_FOURBAR_INTAKE = 0.57;
+    public static double INTAKE_FOURBAR_SCANNING = 0.65;
+    public static double INTAKE_FOURBAR_LOW = 0.54; //In case we decide to drop intake further to grab
+    public static double INTAKE_FOURBAR_TRANSFER = 0.72;
+    public static double INTAKE_FOURBAR_RESTING = 0.83;
 
-    public static double INTAKE_COAXIAL_RESTING = 0;
+    public static double INTAKE_COAXIAL_RESTING = 0.5;
     public static double INTAKE_COAXIAL_INTAKE = 0.2;
     public static double INTAKE_COAXIAL_TRANSFER = 1;
 

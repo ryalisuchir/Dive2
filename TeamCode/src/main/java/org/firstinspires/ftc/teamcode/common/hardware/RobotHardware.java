@@ -39,7 +39,7 @@ public class RobotHardware {
     public OuttakeArmSubsystem outtakeArmSubsystem;
     public OuttakeClawSubsystem outtakeClawSubsystem;
     public OuttakeRotationSubsystem outtakeRotationSubsystem;
-    public DepositSubsystem depositSubsystem;
+//    public DepositSubsystem depositSubsystem;
     public ExtendoSubsystem extendoSubsystem;
     public DriveSubsystem driveSubsystem;
 
@@ -53,8 +53,8 @@ public class RobotHardware {
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
         rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
-        rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
+//        leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
+//        rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
         extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
 
         //Reversing motors:
@@ -63,9 +63,12 @@ public class RobotHardware {
         leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         leftRear.setDirection(DcMotorEx.Direction.REVERSE);
 
+        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extendoMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
         //Setting all motors to stop:
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         extendoMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -73,9 +76,9 @@ public class RobotHardware {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Resetting encoders (RR will take care of drivetrain motors):
-        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Setting all servos:
         intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
@@ -84,23 +87,27 @@ public class RobotHardware {
         intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
-        outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
-        outtakeArmLeft = hardwareMap.get(Servo.class, "leftOuttakeArm");
-        outtakeArmRight = hardwareMap.get(Servo.class, "rightOuttakeArm");
-        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+//        outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
+//        outtakeArmLeft = hardwareMap.get(Servo.class, "leftOuttakeArm");
+//        outtakeArmRight = hardwareMap.get(Servo.class, "rightOuttakeArm");
+//        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+
+        intake4BarRight.setDirection(Servo.Direction.REVERSE);
+        intakeCoaxialRight.setDirection(Servo.Direction.REVERSE);
 
         intake4BarSubsystem = new Intake4BarSubsystem(intake4BarLeft, intake4BarRight);
         intakeClawSubsystem = new IntakeClawSubsystem(intakeClaw);
         intakeCoaxialSubsystem = new IntakeCoaxialSubsystem(intakeCoaxialLeft, intakeCoaxialRight);
         intakeRotationSubsystem = new IntakeRotationSubsystem(intakeRotation);
-        outtakeArmSubsystem = new OuttakeArmSubsystem(outtakeArmLeft, outtakeArmRight);
-        outtakeClawSubsystem = new OuttakeClawSubsystem(outtakeClaw);
-        outtakeRotationSubsystem = new OuttakeRotationSubsystem(outtakeRotation);
-        depositSubsystem = new DepositSubsystem(leftLift, rightLift);
+//        outtakeArmSubsystem = new OuttakeArmSubsystem(outtakeArmLeft, outtakeArmRight);
+//        outtakeClawSubsystem = new OuttakeClawSubsystem(outtakeClaw);
+//        outtakeRotationSubsystem = new OuttakeRotationSubsystem(outtakeRotation);
+//        depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
         driveSubsystem = new DriveSubsystem(new PinpointDrive(hardwareMap, initialPose), false);
 
-        CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem, outtakeArmSubsystem, outtakeClawSubsystem, outtakeRotationSubsystem, depositSubsystem, extendoSubsystem, driveSubsystem);
+//        CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem, outtakeArmSubsystem, outtakeClawSubsystem, outtakeRotationSubsystem, depositSubsystem, extendoSubsystem, driveSubsystem);
+        CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem,driveSubsystem, extendoSubsystem);
         //        if (Globals.AUTO) {
 //            sampleDetection = new AngleDetection();
 //            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());

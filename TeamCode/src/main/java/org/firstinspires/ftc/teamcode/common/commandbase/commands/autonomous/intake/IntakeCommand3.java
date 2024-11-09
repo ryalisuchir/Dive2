@@ -11,10 +11,10 @@ public class IntakeCommand3 extends ParallelCommandGroup {
     public IntakeCommand3(RobotHardware robot, double intakeRotation, double extendoPosition) {
         super(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
-                        new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.INTAKE)),
-                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.AUTO_3)),
+                        new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
+                        new InstantCommand(() -> robot.intake4BarSubsystem.intake4BarIntake()),
+                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.coaxialIntake()),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.intakeRotationAuto3()),
                         new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition)),
                         new WaitCommand(0)
                 )

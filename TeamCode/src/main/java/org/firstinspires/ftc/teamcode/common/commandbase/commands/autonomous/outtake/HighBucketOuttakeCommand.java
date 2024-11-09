@@ -13,7 +13,7 @@ public class HighBucketOuttakeCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED)),
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmHighest()),
-                        new InstantCommand(() -> robot.depositSubsystem.outtakeMaxExtend()),
+//                        new InstantCommand(() -> robot.depositSubsystem.outtakeMaxExtend()),
                         new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.EXIT))
                 )
         );

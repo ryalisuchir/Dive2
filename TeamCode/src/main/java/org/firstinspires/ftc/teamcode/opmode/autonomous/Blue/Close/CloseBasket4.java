@@ -8,17 +8,22 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
+import com.outoftheboxrobotics.photoncore.Photon;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand1;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
 
+@Autonomous
+@Photon
 public class CloseBasket4 extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -36,11 +41,13 @@ public class CloseBasket4 extends OpMode {
         robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.REST);
         robot.intake4BarSubsystem.update(Globals.FourBarState.RESTING);
         robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.REST);
-        robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER);
-        robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED);
-        robot.outtakeArmSubsystem.outtakeArmTransfer();
+//        robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER);
+//        robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED);
+//        robot.outtakeArmSubsystem.outtakeArmTransfer();
 
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
+
+
     }
 
     @Override
@@ -64,19 +71,11 @@ public class CloseBasket4 extends OpMode {
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
-                                new ActionCommand(movement1, Collections.emptySet()),
-                                new SpecimenOuttakeCommand(robot)
-                        ),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
-                                new ParallelCommandGroup(
-                                        new WaitCommand(300),
-                                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN))
-                                )
+                                new ActionCommand(movement1, Collections.emptySet())
                         ),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2, Collections.emptySet()),
-                                new IntakeCommand1(robot, Globals.EXTENDO_MAX_EXTENSION)
+                                new IntakeCommand1(robot, 750)
                         )
                 )
         );
@@ -86,7 +85,7 @@ public class CloseBasket4 extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop();
+//        robot.depositSubsystem.outtakeSlidesLoop();
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
 
