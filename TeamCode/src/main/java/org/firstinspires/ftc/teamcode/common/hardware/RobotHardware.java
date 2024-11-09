@@ -79,6 +79,7 @@ public class RobotHardware {
         leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Setting all servos:
         intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
