@@ -11,9 +11,8 @@ public class SpecimenOuttakeCommand extends SequentialCommandGroup {
     public SpecimenOuttakeCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED)),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmExit()),
-//                        new InstantCommand(() -> robot.depositSubsystem.outtakeSpecimenExtend()),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.SPECIMEN)),
+                        new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_SPECIMEN_POS)),
                         new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.SPECIMEN))
                 )
         );
