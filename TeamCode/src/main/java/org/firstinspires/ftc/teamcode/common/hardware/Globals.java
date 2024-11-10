@@ -96,10 +96,9 @@ public class Globals {
 
 
     // Lift Subsystem Constants
-    //TODO: Tune these values:
-    public static int LIFT_HIGH_POS = 597;
-    public static int LIFT_MID_POS = 365;
-    public static int LIFT_SPECIMEN_POS = 400;
+    public static int LIFT_HIGH_POS = 4248;
+    public static int LIFT_MID_POS = 2284;
+    public static int LIFT_SPECIMEN_POS = 1038;
     public static int LIFT_RETRACT_POS = -5;
 
     //Extendo Subsystem Constants
@@ -110,23 +109,21 @@ public class Globals {
     public static int EXTENDO_SAMPLE_3 = 250;
 
     //Outtake Subsystem Constants
-    //TODO: Tune these values
-    public static double OUTTAKE_CLAW_OPEN = 0;
-    public static double OUTTAKE_CLAW_TRANSFER = 0.3;
-    public static double OUTTAKE_CLAW_CLOSED = 1;
+    public static double OUTTAKE_CLAW_OPEN = 0.2; //done
+    public static double OUTTAKE_CLAW_TRANSFER = 0.25; //done
+    public static double OUTTAKE_CLAW_CLOSED = 0.04; //done
 
-    public static double OUTTAKE_ROTATION_TRANSFER = 0;
+    public static double OUTTAKE_ROTATION_TRANSFER = 0.88;
     public static double OUTTAKE_ROTATION_SPECIMEN = 0.5;
-    public static double OUTTAKE_ROTATION_EXIT = 1;
+    public static double OUTTAKE_ROTATION_EXIT = 0.88; //done
 
-    public static double OUTTAKE_ARM_TRANSFER = 0;
-    public static double OUTTAKE_ARM_RAISING = 0.5;
-    public static double OUTTAKE_ARM_BUCKET = 0.7;
-    public static double OUTTAKE_ARM_DUNK = 0.9;
-    public static double OUTTAKE_ARM_SPECIMEN = 0.8;
+    public static double OUTTAKE_ARM_TRANSFER = 0.15; //done
+    public static double OUTTAKE_ARM_RAISING = 0.53; //done
+    public static double OUTTAKE_ARM_BUCKET = 0.77; //done
+    public static double OUTTAKE_ARM_DUNK = 0.77; //done
+    public static double OUTTAKE_ARM_SPECIMEN = 0.53; //done
 
     //Intake Subsystem Constants
-    //TODO: Tune these values:
     public static double INTAKE_CLAW_OPEN = 0.2;
     public static double INTAKE_CLAW_TRANSFER = 0.3;
     public static double INTAKE_CLAW_CLOSED = 1;
