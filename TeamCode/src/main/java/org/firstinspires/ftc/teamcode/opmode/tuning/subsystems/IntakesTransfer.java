@@ -48,7 +48,7 @@ public class IntakesTransfer extends CommandOpMode {
         boolean square = gamepad1.square;
         if (square) {
             schedule(
-                    new ScanningCommand(robot, 0.5, 0)
+                    new ScanningCommand(robot, 0.5, 500)
             );
         }
 
