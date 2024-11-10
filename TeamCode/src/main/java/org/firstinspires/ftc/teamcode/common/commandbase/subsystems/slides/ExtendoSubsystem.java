@@ -35,7 +35,7 @@ public class ExtendoSubsystem extends SubsystemBase {
     public void extendoSlidesLoop() {
         if (extendoState == EXTENDING) {
             if ((extendoMotor.getCurrentPosition() < extendoTargetPosition) && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                extendoMotor.setPower(1);
+                extendoMotor.setPower(0.8);
             } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
                 extendoMotor.setPower(-0.3);
             } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
@@ -44,7 +44,7 @@ public class ExtendoSubsystem extends SubsystemBase {
                 if (extendoMotor.getCurrentPosition() < extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
                     extendoMotor.setPower(0.3);
                 } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                    extendoMotor.setPower(-1);
+                    extendoMotor.setPower(-0.8);
                 } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
                     extendoMotor.setPower(0);
                 }
