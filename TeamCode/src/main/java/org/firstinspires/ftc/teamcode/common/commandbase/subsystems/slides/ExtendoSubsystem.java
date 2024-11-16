@@ -33,7 +33,7 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
 
     public void extendoSlidesLoop() { //thank you j5155 😭
-        double p = 0.002;
+        double p = 0.02;
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
         extendoMotor.setPower(error * p);

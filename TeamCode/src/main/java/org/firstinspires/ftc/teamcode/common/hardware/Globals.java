@@ -110,19 +110,19 @@ public class Globals {
     public static int EXTENDO_SAMPLE_3 = 250;
 
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.25; //done
-    public static double OUTTAKE_CLAW_TRANSFER = 0.4; //done
-    public static double OUTTAKE_CLAW_CLOSED = 0.05; //done
+    public static double OUTTAKE_CLAW_OPEN = 0.25;
+    public static double OUTTAKE_CLAW_TRANSFER = 0.4;
+    public static double OUTTAKE_CLAW_CLOSED = 0.05;
 
     public static double OUTTAKE_ROTATION_TRANSFER = 0.60;
     public static double OUTTAKE_ROTATION_SPECIMEN = 0.3;
-    public static double OUTTAKE_ROTATION_EXIT = 0.06; //done
+    public static double OUTTAKE_ROTATION_EXIT = 0.06;
 
-    public static double OUTTAKE_ARM_TRANSFER = 0.15; //done
-    public static double OUTTAKE_ARM_RAISING = 0.49; //done
-    public static double OUTTAKE_ARM_BUCKET = 0.73; //done
-    public static double OUTTAKE_ARM_DUNK = 0.73; //done
-    public static double OUTTAKE_ARM_SPECIMEN = 0.73; //done
+    public static double OUTTAKE_ARM_TRANSFER = 0.15;
+    public static double OUTTAKE_ARM_RAISING = 0.49;
+    public static double OUTTAKE_ARM_BUCKET = 0.73;
+    public static double OUTTAKE_ARM_DUNK = 0.73;
+    public static double OUTTAKE_ARM_SPECIMEN = 0.73;
 
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;

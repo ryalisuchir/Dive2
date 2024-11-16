@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class CloseBasket1 extends OpMode {
+public class CloseBasket4 extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
@@ -43,7 +43,7 @@ public class CloseBasket1 extends OpMode {
     public void init_loop() {
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Close");
-        telemetry.addData("Description: ", "1 Basket, Park");
+        telemetry.addData("Description: ", "4 Basket, Park");
         CommandScheduler.getInstance().run();
     }
 
