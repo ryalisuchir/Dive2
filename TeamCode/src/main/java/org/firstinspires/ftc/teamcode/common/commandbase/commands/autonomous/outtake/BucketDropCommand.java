@@ -10,10 +10,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 public class BucketDropCommand extends SequentialCommandGroup {
     public BucketDropCommand(RobotHardware robot) {
         super(
-                new ParallelCommandGroup(
+                new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmDunk()),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen()),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmDunk())
-                ),
                 new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmRaising())
         );
     }

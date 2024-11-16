@@ -11,7 +11,7 @@ public class HighBucketOuttakeCommand extends SequentialCommandGroup {
     public HighBucketOuttakeCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.BUCKET)),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
                         new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_HIGH_POS)),
                         new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.EXIT))
                 )

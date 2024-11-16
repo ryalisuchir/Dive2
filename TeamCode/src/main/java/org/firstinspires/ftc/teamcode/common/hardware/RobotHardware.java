@@ -41,6 +41,8 @@ public class RobotHardware {
     public ExtendoSubsystem extendoSubsystem;
     public DriveSubsystem driveSubsystem;
 
+    public PinpointDrive pinpointDrive;
+
     private double voltage = 0.0;
 //    public OpenCvWebcam sampleCamera;
 //    AngleDetection sampleDetection;
@@ -111,7 +113,10 @@ public class RobotHardware {
         outtakeRotationSubsystem = new OuttakeRotationSubsystem(outtakeRotation);
         depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
-        driveSubsystem = new DriveSubsystem(new PinpointDrive(hardwareMap, initialPose), false);
+
+        pinpointDrive = new PinpointDrive(hardwareMap, initialPose);
+
+        driveSubsystem = new DriveSubsystem(pinpointDrive, false);
 
         //Registering all subsystems:
         CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem, outtakeArmSubsystem, outtakeClawSubsystem, outtakeRotationSubsystem, depositSubsystem, extendoSubsystem, driveSubsystem);
