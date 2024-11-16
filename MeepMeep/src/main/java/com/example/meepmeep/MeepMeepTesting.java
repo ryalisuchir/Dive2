@@ -21,11 +21,14 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueLight())
-                .setConstraints(60, 50, Math.toRadians(180), Math.toRadians(180), 12)
+                .setConstraints(60, 50, Math.toRadians(180), Math.toRadians(180), 11)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-10, 61.7, -1.57079633))
-                .strafeTo(new Vector2d(-9, 38))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(30, 64, Math.toRadians(-90.00)))
+                .splineTo(new Vector2d(45.19, 52.50), Math.toRadians(0.00))
+                .splineTo(new Vector2d(58.07, 55.98), Math.toRadians(56.31))
+                        .setReversed(true)
+                .splineToSplineHeading(new Pose2d(23.07, 11.23, Math.toRadians(180)), Math.toRadians(225))
                 .build());
 
         Image fieldBackground = null;
