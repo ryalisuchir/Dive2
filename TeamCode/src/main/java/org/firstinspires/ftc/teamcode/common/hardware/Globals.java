@@ -65,7 +65,8 @@ public class Globals {
         SCANNING, //optimal height for auto scanning
         LOW,
         TRANSFER,
-        RESTING
+        RESTING,
+        BETWEEN
     }
     Globals.FourBarState fourBarState = FourBarState.RESTING;
 
@@ -109,24 +110,24 @@ public class Globals {
     public static int EXTENDO_SAMPLE_3 = 250;
 
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.2; //done
-    public static double OUTTAKE_CLAW_TRANSFER = 0.25; //done
-    public static double OUTTAKE_CLAW_CLOSED = 0.04; //done
+    public static double OUTTAKE_CLAW_OPEN = 0.25; //done
+    public static double OUTTAKE_CLAW_TRANSFER = 0.4; //done
+    public static double OUTTAKE_CLAW_CLOSED = 0.05; //done
 
-    public static double OUTTAKE_ROTATION_TRANSFER = 0.88;
-    public static double OUTTAKE_ROTATION_SPECIMEN = 0.5;
-    public static double OUTTAKE_ROTATION_EXIT = 0.88; //done
+    public static double OUTTAKE_ROTATION_TRANSFER = 0.60;
+    public static double OUTTAKE_ROTATION_SPECIMEN = 0.3;
+    public static double OUTTAKE_ROTATION_EXIT = 0.06; //done
 
     public static double OUTTAKE_ARM_TRANSFER = 0.15; //done
-    public static double OUTTAKE_ARM_RAISING = 0.53; //done
-    public static double OUTTAKE_ARM_BUCKET = 0.77; //done
-    public static double OUTTAKE_ARM_DUNK = 0.77; //done
-    public static double OUTTAKE_ARM_SPECIMEN = 0.53; //done
+    public static double OUTTAKE_ARM_RAISING = 0.49; //done
+    public static double OUTTAKE_ARM_BUCKET = 0.73; //done
+    public static double OUTTAKE_ARM_DUNK = 0.73; //done
+    public static double OUTTAKE_ARM_SPECIMEN = 0.73; //done
 
     //Intake Subsystem Constants
-    public static double INTAKE_CLAW_OPEN = 0.2;
-    public static double INTAKE_CLAW_TRANSFER = 0.3;
-    public static double INTAKE_CLAW_CLOSED = 1;
+    public static double INTAKE_CLAW_OPEN = 0.5;
+    public static double INTAKE_CLAW_TRANSFER = 0.6;
+    public static double INTAKE_CLAW_CLOSED = 0;
 
     public static double INTAKE_ROTATION_REST = 0;
     public static double INTAKE_ROTATION_TRANSFER = 0.5;
@@ -137,7 +138,8 @@ public class Globals {
     public static double INTAKE_FOURBAR_INTAKE = 0.57;
     public static double INTAKE_FOURBAR_SCANNING = 0.65;
     public static double INTAKE_FOURBAR_LOW = 0.54; //In case we decide to drop intake further to grab
-    public static double INTAKE_FOURBAR_TRANSFER = 0.72;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.735;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.71;
     public static double INTAKE_FOURBAR_RESTING = 0.83;
 
     public static double INTAKE_COAXIAL_RESTING = 0.5;
