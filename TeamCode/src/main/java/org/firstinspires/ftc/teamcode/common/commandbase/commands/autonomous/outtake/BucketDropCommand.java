@@ -11,10 +11,10 @@ public class BucketDropCommand extends SequentialCommandGroup {
     public BucketDropCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN)),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.DUNK))
+                        new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen()),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmDunk())
                 ),
-                new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING))
+                new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmRaising())
         );
     }
 }
