@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.outoftheboxrobotics.photoncore.hardware.PhotonLynxVoltageSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 @Config
 public class DriveRobotHardware {
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
-    public PhotonLynxVoltageSensor batteryVoltageSensor;
 
     public DriveSubsystem driveSubsystem;
 
@@ -59,7 +57,6 @@ public class DriveRobotHardware {
         driveSubsystem = new DriveSubsystem(new PinpointDrive(hardwareMap, initialPose), false);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
-//        batteryVoltageSensor = hardwareMap.getAll(PhotonLynxVoltageSensor.class).iterator().next();
         CommandScheduler.getInstance().registerSubsystem(driveSubsystem);
     }
 
