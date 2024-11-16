@@ -1,0 +1,28 @@
+Control Hub:
+Motors:
+0: extendoMotor
+1: rightLift
+2: leftLift
+Servos:
+0: leftOuttakeArm
+1: rightOuttakeArm
+2: outtakeClaw
+3: outtakeRotation
+i2C Bus:
+0: imu
+
+Expansion Hub:
+Motors:
+0: rightFront
+1: leftFront
+2: rightRear
+3: leftRear
+Servos:
+0: intake4Bar2
+1: intakeCoaxial1
+2: intake4Bar1
+3: intakeRotation
+4: intakeClaw
+5: intakeCoaxial2
+i2C Bus:
+0: pinpoint
