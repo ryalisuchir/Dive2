@@ -6,17 +6,18 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.ClawTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.TransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.HighBucketOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-public class IntakesTransfer extends CommandOpMode {
+public class OuttakesTransfer extends CommandOpMode {
     private RobotHardware robot;
     double speed;
     @Override
@@ -35,52 +36,36 @@ public class IntakesTransfer extends CommandOpMode {
         boolean triangle = gamepad1.triangle;
         if (triangle) {
             schedule (
-                    new AllSystemInitializeCommand(robot)
+                    new OuttakeTransferReadyCommand(robot)
             );
         }
 
         boolean circle = gamepad1.circle;
         if (circle) {
             schedule(
-                    new IntakeCommand(robot, 0.5, 500)
+                    new BucketDropCommand(robot)
             );
         }
 
         boolean square = gamepad1.square;
         if (square) {
             schedule(
-                    new ScanningCommand(robot, 0.5, 500)
-            );
-        }
-
-        boolean x = gamepad1.cross;
-        if (x) {
-            schedule(
-                    new TransferCommand(robot)
+                    new SpecimenOuttakeCommand(robot)
             );
         }
 
         boolean up = gamepad1.dpad_up;
         if (up) {
             schedule (
-//                    new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen())
-                    new ClawTransferCommand(robot)
+                    new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen())
             );
         }
         boolean down = gamepad1.dpad_down;
         if (down) {
             schedule (
-                    new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed())
+                    new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed())
             );
         }
-
-        boolean left = gamepad1.dpad_left;
-        if (left) {
-            schedule (
-                    new OuttakeTransferReadyCommand(robot)
-            );
-        }
-
 
     }
 }

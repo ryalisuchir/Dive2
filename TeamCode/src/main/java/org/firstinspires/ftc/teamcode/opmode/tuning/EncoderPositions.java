@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning;
 
 
-import com.outoftheboxrobotics.photoncore.Photon;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-@Photon
 @Autonomous
 public class EncoderPositions extends OpMode {
 

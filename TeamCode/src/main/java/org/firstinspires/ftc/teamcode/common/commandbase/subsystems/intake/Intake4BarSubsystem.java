@@ -70,6 +70,10 @@ public class Intake4BarSubsystem extends SubsystemBase {
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 break;
+            case BETWEEN:
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
+                break;
         }
     }
 

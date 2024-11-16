@@ -1,52 +1,48 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.CLOSED;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.OPEN;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.OPEN_TRANSFER;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class OuttakeClawSubsystem extends SubsystemBase {
 
     private final Servo outtakeClaw;
-    public Globals.OuttakeClawState clawState = CLOSED;
+    public Globals.OuttakeClawState clawState = Globals.OuttakeClawState.OPEN;
 
     public OuttakeClawSubsystem(Servo outtakeClawInput) {
         outtakeClaw = outtakeClawInput;
     }
 
-        public void outtakeGrab() {
-        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_CLOSED);
-        Globals.OuttakeClawState outtakeClawState = CLOSED;
-    }
-    public void outtakeTransfer() {
-        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
-        Globals.OuttakeClawState outtakeClawState = OPEN_TRANSFER;
-    }
-    public void outtakeRelease() {
+    public void outtakeClawOpen() {
         outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_OPEN);
-        Globals.OuttakeClawState outtakeClawState = OPEN;
+        clawState = Globals.OuttakeClawState.OPEN;
     }
 
-    public void update (Globals.OuttakeClawState outtakeClawState) {
-        clawState = outtakeClawState; //Sets global position to the new outtake
+    public void outtakeClawClosed() {
+        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_CLOSED);
+        clawState = Globals.OuttakeClawState.CLOSED;
+    }
 
+    public void outtakeClawTransfer() {
+        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
+        clawState = Globals.OuttakeClawState.OPEN_TRANSFER;
+    }
+
+    public void update(Globals.OuttakeClawState outtakeClawState) {
+        clawState = outtakeClawState;
         switch (outtakeClawState) {
             case OPEN:
-                outtakeClaw.setPosition(Globals.INTAKE_CLAW_OPEN);
+                outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_OPEN);
                 break;
             case CLOSED:
-                outtakeClaw.setPosition(Globals.INTAKE_CLAW_CLOSED);
+                outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_CLOSED);
                 break;
             case OPEN_TRANSFER:
-                outtakeClaw.setPosition(Globals.INTAKE_CLAW_TRANSFER);
+                outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
                 break;
         }
     }
-
-
 }

@@ -32,26 +32,30 @@ public class ExtendoSubsystem extends SubsystemBase {
         }
     }
 
-    public void extendoSlidesLoop() {
-        if (extendoState == EXTENDING) {
-            if ((extendoMotor.getCurrentPosition() < extendoTargetPosition) && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                extendoMotor.setPower(0.8);
-            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                extendoMotor.setPower(-0.3);
-            } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
-                extendoMotor.setPower(0);
-            } else if (extendoState == RETRACTING) {
-                if (extendoMotor.getCurrentPosition() < extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                    extendoMotor.setPower(0.3);
-                } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-                    extendoMotor.setPower(-0.8);
-                } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
-                    extendoMotor.setPower(0);
-                }
-            } else if (extendoState == REST) {
-                    extendoMotor.setPower(0);
-                }
-        }
+    public void extendoSlidesLoop() { //thank you j5155 😭
+        double p = 0.002;
+        double target = extendoTargetPosition;
+        double error = target - extendoMotor.getCurrentPosition();
+        extendoMotor.setPower(error * p);
+//        if (extendoState == EXTENDING) {
+//            if ((extendoMotor.getCurrentPosition() < extendoTargetPosition) && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+//                extendoMotor.setPower(0.8);
+//            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+//                extendoMotor.setPower(-0.3);
+//            } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
+//                extendoMotor.setPower(0);
+//            } else if (extendoState == RETRACTING) {
+//                if (extendoMotor.getCurrentPosition() < extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+//                    extendoMotor.setPower(0.3);
+//                } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
+//                    extendoMotor.setPower(-0.8);
+//                } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
+//                    extendoMotor.setPower(0);
+//                }
+//            } else if (extendoState == REST) {
+//                    extendoMotor.setPower(0);
+//                }
+//        }
     }
 
     public void extendoRetract() {

@@ -1,5 +1,3 @@
-
-/*
 package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 
 
@@ -9,20 +7,19 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.outoftheboxrobotics.photoncore.Photon;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.ActionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
 
 @Autonomous
-@Photon
-public class CloseBasket4 extends OpMode {
+public class CloseBasket1 extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
@@ -35,14 +32,7 @@ public class CloseBasket4 extends OpMode {
         telemetry.addData("Ready: ", "Initialized subsystems.");
         telemetry.update();
 
-        robot.intakeClawSubsystem.update(Globals.IntakeClawState.CLOSED);
-        robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.REST);
-        robot.intake4BarSubsystem.update(Globals.FourBarState.RESTING);
-        robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.REST);
-//        robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER);
-//        robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.CLOSED);
-//        robot.outtakeArmSubsystem.outtakeArmTransfer();
-
+        CommandScheduler.getInstance().schedule(new AllSystemInitializeCommand(robot));
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
 
 
@@ -50,6 +40,9 @@ public class CloseBasket4 extends OpMode {
 
     @Override
     public void init_loop() {
+        telemetry.addData("Ready: ", "All subsystems have been initialized!");
+        telemetry.addData("Side: ", "Close");
+        telemetry.addData("Description: ", "1 Basket, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -58,12 +51,13 @@ public class CloseBasket4 extends OpMode {
         time_since_start = new ElapsedTime();
 
         Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToConstantHeading(new Vector2d(6.36, 32.65), Math.toRadians(270.00))
+                .splineToSplineHeading(new Pose2d(59.81, 54.76, Math.toRadians(47.00)), Math.toRadians(47.00))
                 .build();
 
-        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(6.36, 32.65, Math.toRadians(270.00)))
+        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(59.81, 54.76, Math.toRadians(47.00)))
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
+                .splineTo(new Vector2d(40.31, 28.99), Math.toRadians(270.00))
+                .splineTo(new Vector2d(22.03, 4.61), Math.toRadians(180.00))
                 .build();
 
         CommandScheduler.getInstance().schedule(
@@ -72,8 +66,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement1, Collections.emptySet())
                         ),
                         new ParallelCommandGroup(
-                                new ActionCommand(movement2, Collections.emptySet()),
-                                new IntakeCommand1(robot, 750)
+                                new ActionCommand(movement2, Collections.emptySet())
                         )
                 )
         );
@@ -103,4 +96,3 @@ public class CloseBasket4 extends OpMode {
     }
 
 }
-*/
