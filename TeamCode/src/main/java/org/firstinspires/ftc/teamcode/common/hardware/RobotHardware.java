@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.common.hardware;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.outoftheboxrobotics.photoncore.hardware.PhotonLynxVoltageSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -30,7 +29,6 @@ public class RobotHardware {
     //2 is right
     public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public Servo outtakeRotation, outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
-    public PhotonLynxVoltageSensor batteryVoltageSensor;
 
     public Intake4BarSubsystem intake4BarSubsystem;
     public IntakeClawSubsystem intakeClawSubsystem;
@@ -92,6 +90,7 @@ public class RobotHardware {
         intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
+
         outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
         outtakeArmLeft = hardwareMap.get(Servo.class, "leftOuttakeArm");
         outtakeArmRight = hardwareMap.get(Servo.class, "rightOuttakeArm");
