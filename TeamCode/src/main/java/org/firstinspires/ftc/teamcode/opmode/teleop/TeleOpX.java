@@ -89,7 +89,7 @@ public class TeleOpX extends CommandOpMode {
         }
 
         if (ahnafController.left_bumper && !ahnafPreviousGamepad.left_bumper) {
-            if (Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) < POSITION_THRESHOLD) {
+            if (Math.abs(robot.intakeRotation.getPosition()) < POSITION_THRESHOLD) {
                 double newPosition = Math.max(ZERO_POSITION, robot.intakeRotation.getPosition() - POSITION_INCREMENT);
                 robot.intakeRotation.setPosition(newPosition);
             } else {
@@ -98,7 +98,7 @@ public class TeleOpX extends CommandOpMode {
         }
 
         if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
-            if (Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) >= POSITION_THRESHOLD) {
+            if (!(Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) < POSITION_THRESHOLD)) {
                 double newPosition = Math.min(RESET_POSITION, robot.intakeRotation.getPosition() + POSITION_INCREMENT);
                 robot.intakeRotation.setPosition(newPosition);
             } else {
