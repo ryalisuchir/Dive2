@@ -23,7 +23,7 @@ public class DepositSubsystem extends SubsystemBase {
     }
 
     public void outtakeSlidesLoop() {
-        double p = 0.025;
+        double p = 0.015;
         double target = slidesTargetPosition;
         double error = target - leftLift.getCurrentPosition();
         leftLift.setPower(error * p);

@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.All
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemRestCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -52,13 +53,13 @@ public class CloseBasket1 extends OpMode {
         time_since_start = new ElapsedTime();
 
         Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToSplineHeading(new Pose2d(59.81, 54.76, Math.toRadians(47.00)), Math.toRadians(47.00))
+                .splineToSplineHeading(new Pose2d(63, 60, Math.toRadians(47.00)), Math.toRadians(47.00))
                 .build();
 
-        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(59.81, 54.76, Math.toRadians(47.00)))
+        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60.68, 58.59, Math.toRadians(47.00)))
                 .setReversed(true)
-                .splineTo(new Vector2d(42.57, 28.64), Math.toRadians(270.00))
-                .splineTo(new Vector2d(26.21, -0.09), Math.toRadians(180.00))
+                .splineTo(new Vector2d(42, 26), Math.toRadians(-90))
+                .splineTo(new Vector2d(26, 9), Math.toRadians(180.00 - 1e-6))
                 .build();
 
         CommandScheduler.getInstance().schedule(
@@ -66,13 +67,15 @@ public class CloseBasket1 extends OpMode {
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1, Collections.emptySet()),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(1500),
+                                        new WaitCommand(1000),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 )
                         ),
+                        new WaitCommand(2000),
                         new BucketDropCommand(robot),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
-                                new AllSystemRestCommand(robot),
+                                new OuttakeTransferReadyCommand(robot),
                                 new ActionCommand(movement2, Collections.emptySet())
                         )
                 )
