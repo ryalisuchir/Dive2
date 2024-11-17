@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 
@@ -22,6 +24,17 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void setPoseEstimate(Pose2d initialPose) {
         drive.pose = initialPose;
+    }
+
+    public void setDrivePowers(double x, double y, double angle) {
+        drive.setDrivePowers((new PoseVelocity2d(
+                        new Vector2d(
+                                x,
+                                y
+                        ),
+                        angle
+                ))
+        );
     }
 
     public TrajectoryActionBuilder trajectoryActionBuilder(Pose2d startPose) {
