@@ -27,15 +27,19 @@ public class TeleOpX extends CommandOpMode {
     boolean previousRightBumper, currentRightBumper; //For Rising-Edge Detector
 
     Gamepad ahnafController, swethaController;
-
     Gamepad ahnafPreviousGamepad = new Gamepad();
+
+    final double RESET_POSITION = 1.0;
+    final double ZERO_POSITION = 0.0;
+    final double POSITION_INCREMENT = 0.25;
+    final double POSITION_THRESHOLD = 0.01;
 
     double speed;
     @Override
     public void initialize() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
-        Gamepad ahnafController = gamepad1;
-        Gamepad swethaController = gamepad2;
+        ahnafController = gamepad1;
+        swethaController = gamepad2;
     }
 
     @Override
@@ -84,35 +88,24 @@ public class TeleOpX extends CommandOpMode {
             );
         }
 
-
-//        if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 1) {
-//            robot.intakeRotation.setPosition(0.75);
-//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.75) {
-//            robot.intakeRotation.setPosition(0.5);
-//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.5) {
-//            robot.intakeRotation.setPosition(0.25);
-//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.25) {
-//            robot.intakeRotation.setPosition(0);
-//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0) {
-//            robot.intakeRotation.setPosition(1);
-//        }
         if (ahnafController.left_bumper && !ahnafPreviousGamepad.left_bumper) {
-            if((Math.abs(robot.intakeRotation.getPosition() - 1) < 0.01)){
-                robot.intakeRotation.setPosition(robot.intakeRotation.getPosition() - 0.25);
-            }
-            else {
-                robot.intakeRotation.setPosition(1);
+            if (Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) < POSITION_THRESHOLD) {
+                double newPosition = Math.max(ZERO_POSITION, robot.intakeRotation.getPosition() - POSITION_INCREMENT);
+                robot.intakeRotation.setPosition(newPosition);
+            } else {
+                robot.intakeRotation.setPosition(RESET_POSITION);
             }
         }
 
         if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
-            if(!(Math.abs(robot.intakeRotation.getPosition() - 1) < 0.01)){
-                robot.intakeRotation.setPosition(robot.intakeRotation.getPosition() + 0.25);
-            }
-            else {
-                robot.intakeRotation.setPosition(0);
+            if (Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) >= POSITION_THRESHOLD) {
+                double newPosition = Math.min(RESET_POSITION, robot.intakeRotation.getPosition() + POSITION_INCREMENT);
+                robot.intakeRotation.setPosition(newPosition);
+            } else {
+                robot.intakeRotation.setPosition(ZERO_POSITION);
             }
         }
+
 
         //Swetha's Controls:
 
@@ -190,7 +183,7 @@ public class TeleOpX extends CommandOpMode {
             );
         }
 
-        if (swethaController.left_trigger > 0 || swethaController.right_trigger > 0) {
+        if (swethaController.left_trigger > 0.5 || swethaController.right_trigger > 0.5) {
             schedule(
                     new OuttakeTransferReadyCommand(robot)
             );
