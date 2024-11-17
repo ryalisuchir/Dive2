@@ -40,12 +40,9 @@ public class RobotHardware {
     public DepositSubsystem depositSubsystem;
     public ExtendoSubsystem extendoSubsystem;
     public DriveSubsystem driveSubsystem;
-
     public PinpointDrive pinpointDrive;
 
     private double voltage = 0.0;
-//    public OpenCvWebcam sampleCamera;
-//    AngleDetection sampleDetection;
 
     public RobotHardware(HardwareMap hardwareMap, Pose2d initialPose) {
         //Configuration of all motors:
@@ -120,50 +117,8 @@ public class RobotHardware {
 
         //Registering all subsystems:
         CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem, outtakeArmSubsystem, outtakeClawSubsystem, outtakeRotationSubsystem, depositSubsystem, extendoSubsystem, driveSubsystem);
-
-        /*
-                if (Globals.AUTO) {
-            sampleDetection = new AngleDetection();
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-            sampleCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
-            sampleCamera.setPipeline(sampleDetection = new AngleDetection());
-            sampleCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    sampleCamera.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
-                }
-
-                @Override
-                public void onError(int errorCode) {
-                }
-            });
-
-            FtcDashboard.getInstance().startCameraStream(sampleCamera, 60);
-        }
-         */
     }
 
-    /*
-    public double getSampleAngle() {
-        if (!Double.isNaN(sampleDetection.getAngleOfGreenSample())) {
-            return sampleDetection.getAngleOfGreenSample();
-        } else {
-            return -1;
-        }
-    }
-
-    public Point getSamplePosition() {
-        if (sampleDetection.getGreenSampleCoordinates() != null) {
-            return sampleDetection.getGreenSampleCoordinates();
-        } else {
-            return new Point(0,0);
-        }
-    }
-
-    public void stopCameraStream() {
-        sampleCamera.closeCameraDeviceAsync(() -> System.out.println("Stopped camera."));
-    }
-*/
     public double getVoltage() {
         return voltage;
     }
