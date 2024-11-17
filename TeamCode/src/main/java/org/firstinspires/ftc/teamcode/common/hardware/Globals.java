@@ -100,15 +100,12 @@ public class Globals {
     public static int LIFT_HIGH_POS = 4180;
     public static int LIFT_MID_POS = 2284;
     public static int LIFT_SPECIMEN_POS = 1038;
-    public static int LIFT_RETRACT_POS = -5;
+    public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 5;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 1266;
     public static int EXTENDO_MAX_RETRACTION = 0;
-    public static int EXTENDO_SAMPLE_1 = 250;
-    public static int EXTENDO_SAMPLE_2 = 250;
-    public static int EXTENDO_SAMPLE_3 = 250;
     public static double EXTENDO_MAX_TOLERANCE = 5;
 
     //Outtake Subsystem Constants
@@ -117,8 +114,8 @@ public class Globals {
     public static double OUTTAKE_CLAW_CLOSED = 0.05;
 
     public static double OUTTAKE_ROTATION_TRANSFER = 0.60;
-    public static double OUTTAKE_ROTATION_SPECIMEN = 0.3;
-    public static double OUTTAKE_ROTATION_EXIT = 0.06;
+    public static double OUTTAKE_ROTATION_SPECIMEN = 0.57;
+    public static double OUTTAKE_ROTATION_EXIT = 0.30;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.15;
     public static double OUTTAKE_ARM_RAISING = 0.49;
@@ -139,16 +136,23 @@ public class Globals {
 
     public static double INTAKE_FOURBAR_INTAKE = 0.57;
     public static double INTAKE_FOURBAR_SCANNING = 0.65;
-    public static double INTAKE_FOURBAR_LOW = 0.54; //In case we decide to drop intake further to grab
-    public static double INTAKE_FOURBAR_TRANSFER = 0.735;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.71;
-    public static double INTAKE_FOURBAR_RESTING = 0.83;
+    public static double INTAKE_FOURBAR_LOW = 0.54;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.75;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.69;
+    public static double INTAKE_FOURBAR_RESTING = 0.75;
 
-    public static double INTAKE_COAXIAL_RESTING = 0.5;
+    public static double INTAKE_COAXIAL_RESTING = 1.0;
     public static double INTAKE_COAXIAL_INTAKE = 0.2;
     public static double INTAKE_COAXIAL_TRANSFER = 1;
 
+    //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
-    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(30, 63, Math.toRadians(270.00));
+    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17.67, 65.73, Math.toRadians(-90.00));
+
+    //Tele-Op Positions:
+    public static double INTAKE_ROTATION_MAXIMUM = 1.0;
+    public static double INTAKE_ROTATION_ZERO = 0.0;
+    public static double INTAKE_ROTATION_INCREMENT = 0.25;
+    public static double INTAKE_ROTATION_THRESHOLD = 0.01;
 
 }
