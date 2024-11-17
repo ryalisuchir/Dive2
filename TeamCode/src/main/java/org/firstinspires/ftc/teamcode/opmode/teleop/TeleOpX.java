@@ -4,9 +4,14 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
@@ -22,24 +27,20 @@ public class TeleOpX extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;
-
-    boolean previousLeftBumper, currentLeftBumper; //For Rising-Edge Detector
-    boolean previousRightBumper, currentRightBumper; //For Rising-Edge Detector
+    private boolean driverControlUnlocked;
 
     Gamepad ahnafController, swethaController;
     Gamepad ahnafPreviousGamepad = new Gamepad();
 
-    final double RESET_POSITION = 1.0;
-    final double ZERO_POSITION = 0.0;
-    final double POSITION_INCREMENT = 0.25;
-    final double POSITION_THRESHOLD = 0.01;
+    double robotPitch;
+    double antiTipPower;
 
-    double speed;
     @Override
     public void initialize() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
         ahnafController = gamepad1;
         swethaController = gamepad2;
+        driverControlUnlocked = true;
     }
 
     @Override
@@ -56,13 +57,16 @@ public class TeleOpX extends CommandOpMode {
         robot.extendoSubsystem.extendoSlidesLoop();
 
         //Ahnaf's Controls:
-        robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
-                new Vector2d(
-                        -0.5 * Math.tan(1.12 * ahnafController.left_stick_y),
-                        -0.5 * Math.tan(1.12 * ahnafController.left_stick_x)
-                ),
-                -0.5 * Math.tan(1.12 * ahnafController.right_stick_x)
-        ));
+
+        if (driverControlUnlocked) {
+            robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(
+                            0.5 * Math.tan(1.12 * ahnafController.left_stick_y),
+                            0.5 * Math.tan(1.12 * ahnafController.left_stick_x)
+                    ),
+                    -0.5 * Math.tan(1.12 * ahnafController.right_stick_x)
+            ));
+        }
 
         if (ahnafController.cross) {
             schedule(
@@ -78,7 +82,7 @@ public class TeleOpX extends CommandOpMode {
 
         if (ahnafController.square) {
             schedule(
-                    new ScanningCommand(robot, 0.5, robot.extendoMotor.getCurrentPosition())
+                    new ScanningCommand(robot, 0.5, (double) Globals.EXTENDO_MAX_EXTENSION / 2)
             );
         }
 
@@ -89,20 +93,20 @@ public class TeleOpX extends CommandOpMode {
         }
 
         if (ahnafController.left_bumper && !ahnafPreviousGamepad.left_bumper) {
-            if (Math.abs(robot.intakeRotation.getPosition()) < POSITION_THRESHOLD) {
-                double newPosition = Math.max(ZERO_POSITION, robot.intakeRotation.getPosition() - POSITION_INCREMENT);
+            if (Math.abs(robot.intakeRotation.getPosition()) < Globals.INTAKE_ROTATION_THRESHOLD) {
+                double newPosition = Math.max(Globals.INTAKE_ROTATION_ZERO, robot.intakeRotation.getPosition() - Globals.INTAKE_ROTATION_INCREMENT);
                 robot.intakeRotation.setPosition(newPosition);
             } else {
-                robot.intakeRotation.setPosition(RESET_POSITION);
+                robot.intakeRotation.setPosition(Globals.INTAKE_ROTATION_MAXIMUM);
             }
         }
 
         if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
-            if (!(Math.abs(robot.intakeRotation.getPosition() - RESET_POSITION) < POSITION_THRESHOLD)) {
-                double newPosition = Math.min(RESET_POSITION, robot.intakeRotation.getPosition() + POSITION_INCREMENT);
+            if (!(Math.abs(robot.intakeRotation.getPosition() - Globals.INTAKE_ROTATION_ZERO) < Globals.INTAKE_ROTATION_THRESHOLD)) {
+                double newPosition = Math.min(Globals.INTAKE_ROTATION_ZERO, robot.intakeRotation.getPosition() + Globals.INTAKE_ROTATION_INCREMENT);
                 robot.intakeRotation.setPosition(newPosition);
             } else {
-                robot.intakeRotation.setPosition(ZERO_POSITION);
+                robot.intakeRotation.setPosition(Globals.INTAKE_ROTATION_ZERO);
             }
         }
 
@@ -116,7 +120,7 @@ public class TeleOpX extends CommandOpMode {
             robot.extendoSubsystem.extendoManualControlLoop(swethaController.left_stick_x);
         }
 
-        if (swethaController.right_stick_y > 0) {
+        if (swethaController.left_stick_x > 0) {
             extendoManualControl = true;
         } else if (swethaController.square || swethaController.circle || swethaController.dpad_right || swethaController.dpad_left) {
             extendoManualControl = false;
@@ -150,7 +154,7 @@ public class TeleOpX extends CommandOpMode {
         if (!depositManualControl) {
             robot.depositSubsystem.outtakeSlidesLoop();
         } else {
-            robot.depositSubsystem.depositManualControlLoop(swethaController.right_stick_y);
+            robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);
         }
 
         if (swethaController.right_stick_y > 0) {
@@ -197,6 +201,43 @@ public class TeleOpX extends CommandOpMode {
             schedule (
                     new AllSystemInitializeCommand(robot)
             );
+        }
+
+        //Anti-Tip:
+        robotPitch = robot.pinpointDrive.lazyImu.get().getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
+
+        if (robotPitch > 2) {
+            ahnafController.rumble(500);
+            swethaController.rumble(500);
+        }
+
+        if (
+                robotPitch > 5 ||
+                robotPitch < -5
+        ) {
+
+            if (robotPitch > 5) {
+                antiTipPower = -1;
+            }
+            if (robotPitch < -5) {
+                antiTipPower = 1;
+            }
+            ahnafController.rumble(500);
+            swethaController.rumble(500);
+            driverControlUnlocked = false;
+            schedule(
+                    new SequentialCommandGroup(
+                            new ParallelCommandGroup(
+                                    new AllSystemInitializeCommand(robot),
+                                    new InstantCommand(() -> robot.driveSubsystem.setDrivePowers(0, antiTipPower, 0))
+                            ),
+                            new WaitCommand(500),
+                            new InstantCommand(() -> robot.driveSubsystem.setDrivePowers(0, 0, 0))
+                    )
+            );
+            driverControlUnlocked = true;
+            ahnafController.rumble(1000);
+            swethaController.rumble(1000);
         }
 
     }
