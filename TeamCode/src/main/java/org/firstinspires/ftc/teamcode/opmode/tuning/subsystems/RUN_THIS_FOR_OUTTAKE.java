@@ -33,8 +33,8 @@ public class RUN_THIS_FOR_OUTTAKE extends OpMode {
     @Override
     public void loop() {
         outtakeRotation.setPosition(outtakeRotationPosition);
-        leftOuttakeArm.setPosition(armPositionGeneral);
-        rightOuttakeArm.setPosition(armPositionGeneral);
+//        leftOuttakeArm.setPosition(armPositionGeneral);
+//        rightOuttakeArm.setPosition(armPositionGeneral);
         outtakeClaw.setPosition(outtakeClawPosition);
     }
 }
