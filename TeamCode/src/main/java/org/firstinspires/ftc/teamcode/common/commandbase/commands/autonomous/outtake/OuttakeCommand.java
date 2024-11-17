@@ -11,9 +11,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class OuttakeCommand extends SequentialCommandGroup {
     public OuttakeCommand(RobotHardware robot, double liftPositionInput) {
-        super(
-          getCommands(robot, liftPositionInput)
-        );
+        super(getCommands(robot, liftPositionInput));
     }
 
     private static Command[] getCommands(RobotHardware robot, double liftPositionInput) {
@@ -28,24 +26,24 @@ public class OuttakeCommand extends SequentialCommandGroup {
         } else if (liftPositionInput == Globals.LIFT_MID_POS) {
             return new Command[]{
                     new ParallelCommandGroup(
-                    new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
-                    new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_MID_POS)),
-                    new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.EXIT))
+                            new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
+                            new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_MID_POS)),
+                            new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.EXIT))
                     )
             };
         } else if (liftPositionInput == Globals.LIFT_SPECIMEN_POS) {
             return new Command[]{
                     new SequentialCommandGroup(
-                    new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
-                    new WaitCommand(500),
-                    new ParallelCommandGroup(
-                            new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_SPECIMEN_POS)),
-                            new SequentialCommandGroup(
-                                    new WaitCommand(750),
-                                    new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.SPECIMEN)),
-                                    new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.SPECIMEN))
+                            new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
+                            new WaitCommand(500),
+                            new ParallelCommandGroup(
+                                    new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_SPECIMEN_POS)),
+                                    new SequentialCommandGroup(
+                                            new WaitCommand(750),
+                                            new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.SPECIMEN)),
+                                            new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.SPECIMEN))
+                                    )
                             )
-                    )
                     )
             };
         } else if (liftPositionInput == Globals.LIFT_RETRACT_POS) {
@@ -55,7 +53,8 @@ public class OuttakeCommand extends SequentialCommandGroup {
                     new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.SPECIMEN))
             };
         } else {
-            return null;
+            // Return an empty array to avoid null issues
+            return new Command[0];
         }
     }
 }
