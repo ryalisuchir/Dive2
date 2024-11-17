@@ -10,7 +10,7 @@ public class CloseAndTransferCommand extends SequentialCommandGroup {
     public CloseAndTransferCommand(RobotHardware robot) {
         super(
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
-                new WaitCommand(750),
+                new WaitCommand(350),
                 new TransferCommand(robot),
                 new WaitCommand(750),
                 new ClawTransferCommand(robot)
