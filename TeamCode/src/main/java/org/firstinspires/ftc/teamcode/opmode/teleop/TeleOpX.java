@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
+package org.firstinspires.ftc.teamcode.opmode.teleop;
 
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -18,21 +18,32 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-public class SubsystemTest extends CommandOpMode {
+public class TeleOpX extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;
+
+    boolean previousLeftBumper, currentLeftBumper; //For Rising-Edge Detector
+    boolean previousRightBumper, currentRightBumper; //For Rising-Edge Detector
+
+    Gamepad ahnafController, swethaController;
+
+    Gamepad ahnafPreviousGamepad = new Gamepad();
 
     double speed;
     @Override
     public void initialize() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
+        Gamepad ahnafController = gamepad1;
+        Gamepad swethaController = gamepad2;
     }
 
     @Override
     public void run() {
-        Gamepad ahnafController = gamepad1;
-        Gamepad swethaController = gamepad1;
+
+        //Rising-Edge Detector:
+        ahnafPreviousGamepad.copy(ahnafController);
+        ahnafController.copy(ahnafPreviousGamepad);
 
         //Loop:
         CommandScheduler.getInstance().run();
@@ -71,6 +82,36 @@ public class SubsystemTest extends CommandOpMode {
             schedule(
                     new BucketDropCommand(robot)
             );
+        }
+
+
+//        if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 1) {
+//            robot.intakeRotation.setPosition(0.75);
+//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.75) {
+//            robot.intakeRotation.setPosition(0.5);
+//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.5) {
+//            robot.intakeRotation.setPosition(0.25);
+//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0.25) {
+//            robot.intakeRotation.setPosition(0);
+//        } else if (ahnafController.left_bumper && robot.intakeRotation.getPosition() == 0) {
+//            robot.intakeRotation.setPosition(1);
+//        }
+        if (ahnafController.left_bumper && !ahnafPreviousGamepad.left_bumper) {
+            if((Math.abs(robot.intakeRotation.getPosition() - 1) < 0.01)){
+                robot.intakeRotation.setPosition(robot.intakeRotation.getPosition() - 0.25);
+            }
+            else {
+                robot.intakeRotation.setPosition(1);
+            }
+        }
+
+        if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
+            if(!(Math.abs(robot.intakeRotation.getPosition() - 1) < 0.01)){
+                robot.intakeRotation.setPosition(robot.intakeRotation.getPosition() + 0.25);
+            }
+            else {
+                robot.intakeRotation.setPosition(0);
+            }
         }
 
         //Swetha's Controls:
