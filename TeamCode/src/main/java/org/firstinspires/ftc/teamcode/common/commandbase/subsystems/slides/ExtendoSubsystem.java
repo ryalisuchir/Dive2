@@ -32,30 +32,21 @@ public class ExtendoSubsystem extends SubsystemBase {
         }
     }
 
-    public void extendoSlidesLoop() { //thank you j5155 😭
+    public void extendoSlidesLoop() {
         double p = 0.02;
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
         extendoMotor.setPower(error * p);
-//        if (extendoState == EXTENDING) {
-//            if ((extendoMotor.getCurrentPosition() < extendoTargetPosition) && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-//                extendoMotor.setPower(0.8);
-//            } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-//                extendoMotor.setPower(-0.3);
-//            } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
-//                extendoMotor.setPower(0);
-//            } else if (extendoState == RETRACTING) {
-//                if (extendoMotor.getCurrentPosition() < extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-//                    extendoMotor.setPower(0.3);
-//                } else if (extendoMotor.getCurrentPosition() > extendoTargetPosition && (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) > 5)) {
-//                    extendoMotor.setPower(-0.8);
-//                } else if (Math.abs(extendoTargetPosition - extendoMotor.getCurrentPosition()) < 5) {
-//                    extendoMotor.setPower(0);
-//                }
-//            } else if (extendoState == REST) {
-//                    extendoMotor.setPower(0);
-//                }
-//        }
+    }
+    public void extendoManualControlLoop(double joystickInput) {
+        if (
+                extendoMotor.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.EXTENDO_MAX_TOLERANCE ||
+                extendoMotor.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.EXTENDO_MAX_TOLERANCE
+        ) {
+            extendoMotor.setPower(0);
+        } else {
+            extendoMotor.setPower(joystickInput);
+        }
     }
 
     public void extendoRetract() {

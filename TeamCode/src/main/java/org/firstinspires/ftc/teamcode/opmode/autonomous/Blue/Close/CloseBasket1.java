@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.Act
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemRestCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.HighBucketOuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -67,7 +67,7 @@ public class CloseBasket1 extends OpMode {
                                 new ActionCommand(movement1, Collections.emptySet()),
                                 new SequentialCommandGroup(
                                         new WaitCommand(1500),
-                                        new HighBucketOuttakeCommand(robot)
+                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 )
                         ),
                         new BucketDropCommand(robot),
