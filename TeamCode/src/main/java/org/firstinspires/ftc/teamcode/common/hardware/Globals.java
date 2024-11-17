@@ -101,6 +101,7 @@ public class Globals {
     public static int LIFT_MID_POS = 2284;
     public static int LIFT_SPECIMEN_POS = 1038;
     public static int LIFT_RETRACT_POS = -5;
+    public static double LIFT_MAX_TOLERANCE = 5;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 1266;
@@ -108,6 +109,7 @@ public class Globals {
     public static int EXTENDO_SAMPLE_1 = 250;
     public static int EXTENDO_SAMPLE_2 = 250;
     public static int EXTENDO_SAMPLE_3 = 250;
+    public static double EXTENDO_MAX_TOLERANCE = 5;
 
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.25;
