@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImpl;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
@@ -27,8 +29,8 @@ public class RobotHardware {
     public DcMotorEx extendoMotor; //Intake extension motor
     //1 is left
     //2 is right
-    public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
-    public Servo outtakeRotation, outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
+    public ServoImplEx intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
+    public ServoImplEx outtakeRotation, outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
 
     public Intake4BarSubsystem intake4BarSubsystem;
     public IntakeClawSubsystem intakeClawSubsystem;
@@ -83,22 +85,22 @@ public class RobotHardware {
         extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Setting all servos:
-        intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
-        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
-        intakeCoaxialLeft = hardwareMap.get(Servo.class, "intakeCoaxial1");
-        intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
-        intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
-        intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
+        intakeRotation = hardwareMap.get(ServoImplEx.class, "intakeRotation");
+        intakeClaw = hardwareMap.get(ServoImplEx.class, "intakeClaw");
+        intakeCoaxialLeft = hardwareMap.get(ServoImplEx.class, "intakeCoaxial1");
+        intakeCoaxialRight = hardwareMap.get(ServoImplEx.class, "intakeCoaxial2");
+        intake4BarLeft = hardwareMap.get(ServoImplEx.class, "intake4Bar1");
+        intake4BarRight = hardwareMap.get(ServoImplEx.class, "intake4Bar2");
 
-        outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
-        outtakeArmLeft = hardwareMap.get(Servo.class, "leftOuttakeArm");
-        outtakeArmRight = hardwareMap.get(Servo.class, "rightOuttakeArm");
-        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+        outtakeRotation = hardwareMap.get(ServoImplEx.class, "outtakeRotation");
+        outtakeArmLeft = hardwareMap.get(ServoImplEx.class, "leftOuttakeArm");
+        outtakeArmRight = hardwareMap.get(ServoImplEx.class, "rightOuttakeArm");
+        outtakeClaw = hardwareMap.get(ServoImplEx.class, "outtakeClaw");
 
         //Setting all the doubled-up right-side servos to be reversed to prevent gear slippage:
-        outtakeArmRight.setDirection(Servo.Direction.REVERSE);
-        intake4BarRight.setDirection(Servo.Direction.REVERSE);
-        intakeCoaxialRight.setDirection(Servo.Direction.REVERSE);
+        outtakeArmRight.setDirection(ServoImplEx.Direction.REVERSE);
+        intake4BarRight.setDirection(ServoImplEx.Direction.REVERSE);
+        intakeCoaxialRight.setDirection(ServoImplEx.Direction.REVERSE);
 
         //Initializing all subsystems:
         intake4BarSubsystem = new Intake4BarSubsystem(intake4BarLeft, intake4BarRight);

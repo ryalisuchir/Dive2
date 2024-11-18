@@ -3,15 +3,17 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
+
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class OuttakeRotationSubsystem extends SubsystemBase {
 
-    private final Servo outtakeRotation;
+    private final ServoImplEx outtakeRotation;
     public Globals.OuttakeRotationState outtakeRotationState = Globals.OuttakeRotationState.TRANSFER;
 
-    public OuttakeRotationSubsystem(Servo outtakeRotationInput) {
+    public OuttakeRotationSubsystem(ServoImplEx outtakeRotationInput) {
         outtakeRotation = outtakeRotationInput;
     }
 

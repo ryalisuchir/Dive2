@@ -3,16 +3,17 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class Intake4BarSubsystem extends SubsystemBase {
 
-    private final Servo intake4BarLeft, intake4BarRight;
+    private final ServoImplEx intake4BarLeft, intake4BarRight;
     public Globals.FourBarState fourBarState = Globals.FourBarState.RESTING;
 
-    public Intake4BarSubsystem(Servo intake4BarLeftInput, Servo intake4BarRightInput) {
+    public Intake4BarSubsystem(ServoImplEx intake4BarLeftInput, ServoImplEx intake4BarRightInput) {
         intake4BarLeft = intake4BarLeftInput;
         intake4BarRight = intake4BarRightInput;
     }

@@ -5,16 +5,17 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.IntakeClawS
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class IntakeClawSubsystem extends SubsystemBase {
 
-    private final Servo intakeClaw;
+    private final ServoImplEx intakeClaw;
     public Globals.IntakeClawState clawState = OPEN;
 
-    public IntakeClawSubsystem(Servo intakeClawInput) {
+    public IntakeClawSubsystem(ServoImplEx intakeClawInput) {
         intakeClaw = intakeClawInput;
     }
 

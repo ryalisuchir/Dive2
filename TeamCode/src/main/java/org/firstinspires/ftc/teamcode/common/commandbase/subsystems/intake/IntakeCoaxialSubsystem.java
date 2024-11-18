@@ -3,15 +3,17 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
+
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class IntakeCoaxialSubsystem extends SubsystemBase {
 
-    private final Servo coaxialLeft, coaxialRight;
+    private final ServoImplEx coaxialLeft, coaxialRight;
     public Globals.IntakeCoaxialState intakeCoaxialState = Globals.IntakeCoaxialState.REST;
 
-    public IntakeCoaxialSubsystem(Servo coaxialLeftInput, Servo coaxialRightInput) {
+    public IntakeCoaxialSubsystem(ServoImplEx coaxialLeftInput, ServoImplEx coaxialRightInput) {
         coaxialLeft = coaxialLeftInput;
         coaxialRight = coaxialRightInput;
     }

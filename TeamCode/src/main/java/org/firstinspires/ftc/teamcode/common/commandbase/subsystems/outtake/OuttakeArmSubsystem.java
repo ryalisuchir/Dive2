@@ -5,15 +5,16 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClaw
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class OuttakeArmSubsystem extends SubsystemBase {
-    private final Servo leftOuttakeArm, rightOuttakeArm;
+    private final ServoImplEx leftOuttakeArm, rightOuttakeArm;
     public Globals.OuttakeArmState armState = Globals.OuttakeArmState.TRANSFER;
 
-    public OuttakeArmSubsystem(Servo leftOuttakeArmInput, Servo rightOuttakeArmInput) {
+    public OuttakeArmSubsystem(ServoImplEx leftOuttakeArmInput, ServoImplEx rightOuttakeArmInput) {
         leftOuttakeArm = leftOuttakeArmInput;
         rightOuttakeArm = rightOuttakeArmInput;
     }
