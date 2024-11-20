@@ -8,6 +8,8 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -30,6 +32,7 @@ public class TeleOpX extends CommandOpMode {
     private boolean driverControlUnlocked;
 
     Gamepad ahnafController, swethaController;
+    GamepadEx ahnafLigmaController;
     Gamepad ahnafPreviousGamepad = new Gamepad();
 
     double robotPitch;
@@ -40,21 +43,19 @@ public class TeleOpX extends CommandOpMode {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
         ahnafController = gamepad1;
         swethaController = gamepad2;
+
+        ahnafLigmaController = new GamepadEx(gamepad1);
+
         driverControlUnlocked = true;
     }
 
     @Override
     public void run() {
 
-        //Rising-Edge Detector:
-        ahnafPreviousGamepad.copy(ahnafController);
-        ahnafController.copy(ahnafPreviousGamepad);
-
         //Loop:
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop();
 
         //Ahnaf's Controls:
 
@@ -92,14 +93,13 @@ public class TeleOpX extends CommandOpMode {
             );
         }
 
-        if (ahnafController.left_bumper && !ahnafPreviousGamepad.left_bumper) {
-            if (Math.abs(robot.intakeRotation.getPosition()) < Globals.INTAKE_ROTATION_THRESHOLD) {
-                double newPosition = Math.max(Globals.INTAKE_ROTATION_ZERO, robot.intakeRotation.getPosition() - Globals.INTAKE_ROTATION_INCREMENT);
-                robot.intakeRotation.setPosition(newPosition);
-            } else {
-                robot.intakeRotation.setPosition(Globals.INTAKE_ROTATION_MAXIMUM);
-            }
-        }
+
+
+//        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+//            if {
+//
+//        }
+//        );
 
         if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
             if (!(Math.abs(robot.intakeRotation.getPosition() - Globals.INTAKE_ROTATION_ZERO) < Globals.INTAKE_ROTATION_THRESHOLD)) {
