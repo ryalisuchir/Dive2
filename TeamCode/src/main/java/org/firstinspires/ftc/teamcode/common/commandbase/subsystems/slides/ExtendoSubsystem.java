@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoStat
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -37,6 +38,11 @@ public class ExtendoSubsystem extends SubsystemBase {
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
         extendoMotor.setPower(error * p);
+
+        if (extendoMotor.getCurrentPosition() < 0)  {
+            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            extendoTargetPosition = 0;
+        }
     }
     public void extendoManualControlLoop(double joystickInput) {
         if (
@@ -46,6 +52,10 @@ public class ExtendoSubsystem extends SubsystemBase {
             extendoMotor.setPower(0);
         } else {
             extendoMotor.setPower(joystickInput);
+        }
+        if (extendoMotor.getCurrentPosition() < 0)  {
+            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            extendoTargetPosition = 0;
         }
     }
 

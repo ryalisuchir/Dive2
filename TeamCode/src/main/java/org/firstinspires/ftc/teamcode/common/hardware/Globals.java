@@ -150,9 +150,7 @@ public class Globals {
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17.67, 65.73, Math.toRadians(-90.00));
 
     //Tele-Op Positions:
-    public static double INTAKE_ROTATION_MAXIMUM = 1.0;
     public static double INTAKE_ROTATION_ZERO = 0.0;
     public static double INTAKE_ROTATION_INCREMENT = 0.25;
-    public static double INTAKE_ROTATION_THRESHOLD = 0.01;
 
 }

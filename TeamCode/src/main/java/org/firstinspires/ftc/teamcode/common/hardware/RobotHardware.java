@@ -4,10 +4,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoImpl;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive.DriveSubsystem;
@@ -118,7 +115,22 @@ public class RobotHardware {
         driveSubsystem = new DriveSubsystem(pinpointDrive, false);
 
         //Registering all subsystems:
-        CommandScheduler.getInstance().registerSubsystem(intake4BarSubsystem, intakeClawSubsystem, intakeCoaxialSubsystem, intakeRotationSubsystem, outtakeArmSubsystem, outtakeClawSubsystem, outtakeRotationSubsystem, depositSubsystem, extendoSubsystem, driveSubsystem);
+        CommandScheduler.getInstance().registerSubsystem(
+                //Intakes:
+                intake4BarSubsystem,
+                intakeClawSubsystem,
+                intakeCoaxialSubsystem,
+                intakeRotationSubsystem,
+                //Outtakes:
+                outtakeArmSubsystem,
+                outtakeClawSubsystem,
+                outtakeRotationSubsystem,
+                //Slides:
+                depositSubsystem,
+                extendoSubsystem,
+                //Drivetrain:
+                driveSubsystem
+        );
     }
 
     public double getVoltage() {
