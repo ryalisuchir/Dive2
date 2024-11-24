@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
@@ -95,24 +96,24 @@ public class TeleOpX extends CommandOpMode {
 
 
 
-//        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-//            if {
-//
-//        }
-//        );
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> {
+            double currentPosition = robot.intakeRotation.getPosition();
+            double newPosition = Globals.INTAKE_ROTATION_ZERO +
+                    ((currentPosition - Globals.INTAKE_ROTATION_ZERO + Globals.INTAKE_ROTATION_INCREMENT) %
+                            (5 * Globals.INTAKE_ROTATION_INCREMENT));
+            robot.intakeRotation.setPosition(newPosition);
+        });
 
-        if (ahnafController.right_bumper && !ahnafPreviousGamepad.right_bumper) {
-            if (!(Math.abs(robot.intakeRotation.getPosition() - Globals.INTAKE_ROTATION_ZERO) < Globals.INTAKE_ROTATION_THRESHOLD)) {
-                double newPosition = Math.min(Globals.INTAKE_ROTATION_ZERO, robot.intakeRotation.getPosition() + Globals.INTAKE_ROTATION_INCREMENT);
-                robot.intakeRotation.setPosition(newPosition);
-            } else {
-                robot.intakeRotation.setPosition(Globals.INTAKE_ROTATION_ZERO);
-            }
-        }
-
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+            double currentPosition = robot.intakeRotation.getPosition();
+            double newPosition = Globals.INTAKE_ROTATION_ZERO +
+                    ((currentPosition - Globals.INTAKE_ROTATION_ZERO - Globals.INTAKE_ROTATION_INCREMENT +
+                            5 * Globals.INTAKE_ROTATION_INCREMENT) %
+                            (5 * Globals.INTAKE_ROTATION_INCREMENT));
+            robot.intakeRotation.setPosition(newPosition);
+        });
 
         //Swetha's Controls:
-
         //Extendo Slides Stuff:
         if (!extendoManualControl) {
             robot.extendoSubsystem.extendoSlidesLoop();
