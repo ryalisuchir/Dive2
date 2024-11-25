@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.Outt
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 public class RobotHardware {
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors

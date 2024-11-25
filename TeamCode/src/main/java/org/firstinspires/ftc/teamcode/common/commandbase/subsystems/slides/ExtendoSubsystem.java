@@ -34,7 +34,7 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
 
     public void extendoSlidesLoop() {
-        double p = 0.02;
+        double p = 0.009;
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
         extendoMotor.setPower(error * p);
@@ -46,8 +46,8 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
     public void extendoManualControlLoop(double joystickInput) {
         if (
-                extendoMotor.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.EXTENDO_MAX_TOLERANCE ||
-                extendoMotor.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.EXTENDO_MAX_TOLERANCE
+                extendoMotor.getCurrentPosition() > Globals.EXTENDO_MAX_EXTENSION - Globals.EXTENDO_MAX_TOLERANCE ||
+                extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_RETRACTION + Globals.EXTENDO_MAX_TOLERANCE
         ) {
             extendoMotor.setPower(0);
         } else {

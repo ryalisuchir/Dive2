@@ -23,17 +23,17 @@ public class DepositSubsystem extends SubsystemBase {
     }
 
     public void outtakeSlidesLoop() {
-        double p = 0.015;
+        double p = 0.009;
         double target = slidesTargetPosition;
-        double error = target - leftLift.getCurrentPosition();
+        double error = target - rightLift.getCurrentPosition();
         leftLift.setPower(error * p);
         rightLift.setPower(error * p);
     }
 
     public void depositManualControlLoop(double joystickInput) {
         if (
-            leftLift.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.LIFT_MAX_TOLERANCE ||
-            leftLift.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.LIFT_MAX_TOLERANCE
+                rightLift.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.LIFT_MAX_TOLERANCE ||
+                rightLift.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.LIFT_MAX_TOLERANCE
         ) {
             rightLift.setPower(0);
             leftLift.setPower(0);
@@ -60,11 +60,11 @@ public class DepositSubsystem extends SubsystemBase {
 
     public void outtakeSetPosition(double customSlidesPosition) {
         slidesTargetPosition = customSlidesPosition;
-        if (customSlidesPosition > leftLift.getCurrentPosition()) {
+        if (customSlidesPosition > rightLift.getCurrentPosition()) {
             outtakeState = EXTENDING;
-        } else if (customSlidesPosition < leftLift.getCurrentPosition()) {
+        } else if (customSlidesPosition < rightLift.getCurrentPosition()) {
             outtakeState = RETRACTING;
-        } else if (customSlidesPosition == leftLift.getCurrentPosition()) {
+        } else if (customSlidesPosition == rightLift.getCurrentPosition()) {
             outtakeState = REST;
         }
     }

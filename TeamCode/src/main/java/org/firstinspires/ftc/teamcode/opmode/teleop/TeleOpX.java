@@ -48,6 +48,8 @@ public class TeleOpX extends CommandOpMode {
         ahnafLigmaController = new GamepadEx(gamepad1);
 
         driverControlUnlocked = true;
+        depositManualControl = true;
+        extendoManualControl = true;
     }
 
     @Override
@@ -115,15 +117,20 @@ public class TeleOpX extends CommandOpMode {
 
         //Swetha's Controls:
         //Extendo Slides Stuff:
+
         if (!extendoManualControl) {
             robot.extendoSubsystem.extendoSlidesLoop();
-        } else {
+        }
+
+        if (extendoManualControl){
             robot.extendoSubsystem.extendoManualControlLoop(swethaController.left_stick_x);
         }
 
         if (swethaController.left_stick_x > 0) {
             extendoManualControl = true;
-        } else if (swethaController.square || swethaController.circle || swethaController.dpad_right || swethaController.dpad_left) {
+        }
+
+        if (swethaController.square || swethaController.circle || swethaController.dpad_right || swethaController.dpad_left) {
             extendoManualControl = false;
         }
 
@@ -154,13 +161,15 @@ public class TeleOpX extends CommandOpMode {
         //Deposit Slides Stuff:
         if (!depositManualControl) {
             robot.depositSubsystem.outtakeSlidesLoop();
-        } else {
+        }
+        if (depositManualControl) {
             robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);
         }
 
         if (swethaController.right_stick_y > 0) {
             depositManualControl = true;
-        } else if (swethaController.triangle || swethaController.cross || swethaController.dpad_up || swethaController.dpad_down) {
+        }
+        if (swethaController.triangle || swethaController.cross || swethaController.dpad_up || swethaController.dpad_down) {
             depositManualControl = false;
         }
 

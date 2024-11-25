@@ -12,8 +12,9 @@ public class BucketDropCommand extends SequentialCommandGroup {
     public BucketDropCommand(RobotHardware robot) {
         super(
                 new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmDunk()),
-                        new WaitCommand(600),
+                        new WaitCommand(70),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen()),
+                new WaitCommand(600),
                 new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmRaising())
         );
     }
