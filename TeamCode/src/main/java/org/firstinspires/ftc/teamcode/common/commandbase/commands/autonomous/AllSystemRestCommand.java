@@ -15,12 +15,12 @@ public class AllSystemRestCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.RESTING)),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.REST)),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM_AUTO, 0.5)),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, 0.5)),
                         new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(0)),
                         new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN_TRANSFER)),
                         new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER)),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmTransfer())
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.TRANSFER))
                 )
         );
     }

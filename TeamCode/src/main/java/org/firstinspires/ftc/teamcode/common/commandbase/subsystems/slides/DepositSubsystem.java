@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeStat
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -22,12 +23,16 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesLoop() {
-        double p = 0.009;
+    public void outtakeSlidesLoop(double customPower) {
         double target = slidesTargetPosition;
         double error = target - rightLift.getCurrentPosition();
-        leftLift.setPower(error * p);
-        rightLift.setPower(error * p);
+        leftLift.setPower(error * customPower);
+        rightLift.setPower(error * customPower);
+
+        if (rightLift.getCurrentPosition() < 0)  {
+            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slidesTargetPosition = 0;
+        }
     }
 
     public void depositManualControlLoop(double joystickInput) {
@@ -40,6 +45,11 @@ public class DepositSubsystem extends SubsystemBase {
         } else {
             rightLift.setPower(joystickInput);
             leftLift.setPower(joystickInput);
+        }
+
+        if (rightLift.getCurrentPosition() < 0)  {
+            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slidesTargetPosition = 0;
         }
     }
 

@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;

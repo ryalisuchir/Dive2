@@ -18,22 +18,10 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
         coaxialRight = coaxialRightInput;
     }
 
-    public void coaxialRest() {
-        coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);
-        coaxialRight.setPosition(Globals.INTAKE_COAXIAL_RESTING);
-        intakeCoaxialState = Globals.IntakeCoaxialState.REST;
-    }
-
-    public void coaxialTransfer() {
-        coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
-        coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
-        intakeCoaxialState = Globals.IntakeCoaxialState.TRANSFER;
-    }
-
-    public void coaxialIntake() {
-        coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
-        coaxialRight.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
-        intakeCoaxialState = Globals.IntakeCoaxialState.INTAKE;
+    public void intakeCoaxialCustom(double coaxialInput) {
+        coaxialLeft.setPosition(coaxialInput);
+        coaxialRight.setPosition(coaxialInput);
+        intakeCoaxialState = Globals.IntakeCoaxialState.CUSTOM;
     }
 
     public void update(Globals.IntakeCoaxialState intakeCoaxialStateInput) {
@@ -46,6 +34,10 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
             case TRANSFER:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
                 coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
+                break;
+            case SPECIMEN:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_SPECIMEN);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_SPECIMEN);
                 break;
             case INTAKE:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);

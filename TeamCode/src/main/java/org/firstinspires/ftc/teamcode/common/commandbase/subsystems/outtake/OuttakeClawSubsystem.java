@@ -27,9 +27,9 @@ public class OuttakeClawSubsystem extends SubsystemBase {
         clawState = Globals.OuttakeClawState.CLOSED;
     }
 
-    public void outtakeClawTransfer() {
-        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
-        clawState = Globals.OuttakeClawState.OPEN_TRANSFER;
+    public void outtakeClawCustom(double clawInput) {
+        outtakeClaw.setPosition(clawInput);
+        clawState = Globals.OuttakeClawState.CUSTOM;
     }
 
     public void update(Globals.OuttakeClawState outtakeClawState) {

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -13,12 +12,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemRestCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -106,9 +104,9 @@ public class CloseBasket4 extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop();
+        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);

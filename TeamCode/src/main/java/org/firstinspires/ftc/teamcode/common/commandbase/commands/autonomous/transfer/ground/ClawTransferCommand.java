@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -18,7 +18,7 @@ public class ClawTransferCommand extends SequentialCommandGroup {
                 new WaitCommand(75),
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmRaising()),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
                         new ScanningCommand(robot, 0.5, 0)
                 )
         );

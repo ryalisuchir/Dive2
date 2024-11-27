@@ -34,38 +34,45 @@ public class Globals {
 
     //Intake States:
     public enum IntakeClawState {
+        CUSTOM,
         OPEN,
         CLOSED,
+        SPECIMEN,
         OPEN_TRANSFER
     }
     Globals.IntakeClawState intakeClawState = IntakeClawState.CLOSED;
 
     public enum IntakeRotationState {
+        CUSTOM,
         REST,
-        TRANSFER,
-        CUSTOM_AUTO
+        TRANSFER
     }
     Globals.IntakeRotationState intakeRotationState = IntakeRotationState.TRANSFER;
 
     public enum IntakeCoaxialState {
+        CUSTOM,
         REST,
         TRANSFER,
+        SPECIMEN,
         INTAKE
     }
     Globals.IntakeCoaxialState intakeCoaxialState = IntakeCoaxialState.REST;
 
     public enum FourBarState {
+        CUSTOM,
         INTAKE,
         SCANNING, //optimal height for auto scanning
         LOW,
         TRANSFER,
         RESTING,
-        BETWEEN
+        BETWEEN,
+        SPECIMEN
     }
     Globals.FourBarState fourBarState = FourBarState.RESTING;
 
     //Outtake States:
     public enum OuttakeClawState {
+        CUSTOM,
         OPEN,
         CLOSED,
         OPEN_TRANSFER
@@ -73,6 +80,7 @@ public class Globals {
     Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
 
     public enum OuttakeRotationState {
+        CUSTOM,
         EXIT,
         TRANSFER,
         SPECIMEN
@@ -80,6 +88,7 @@ public class Globals {
     Globals.OuttakeRotationState outtakeRotationState = OuttakeRotationState.TRANSFER;
 
     public enum OuttakeArmState {
+        CUSTOM,
         TRANSFER,
         RAISING,
         BUCKET,
@@ -89,18 +98,24 @@ public class Globals {
     Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
 
 
-
     // Lift Subsystem Constants
     public static int LIFT_HIGH_POS = 2650;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 1212;
+    public static int LIFT_SPECIMEN_DROP = 200;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 5;
+
+    public static double LIFT_P_FAST = 0.015;
+    public static double LIFT_P_SLOW = 0.007; //TODO: tune this for coach to be happy lol
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 1766;
     public static int EXTENDO_MAX_RETRACTION = 0;
     public static double EXTENDO_MAX_TOLERANCE = 5;
+
+    public static double EXTENDO_P_FAST = 0.015;
+    public static double EXTENDO_P_SLOW = 0.007; //TODO: tune this for coach to be happy lol
 
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.25;
@@ -120,10 +135,12 @@ public class Globals {
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
     public static double INTAKE_CLAW_TRANSFER = 0.6;
+    public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0;
 
     public static double INTAKE_ROTATION_REST = 0;
     public static double INTAKE_ROTATION_TRANSFER = 0.5;
+    public static double INTAKE_ROTATION_SPECIMEN = 0.5;
     public static double INTAKE_ROTATION_AUTO_1 = 0.5;
     public static double INTAKE_ROTATION_AUTO_2 = 0.6;
     public static double INTAKE_ROTATION_AUTO_3 = 0.8;
@@ -133,10 +150,12 @@ public class Globals {
     public static double INTAKE_FOURBAR_LOW = 0.555;
     public static double INTAKE_FOURBAR_TRANSFER = 0.675;
     public static double INTAKE_FOURBAR_BETWEEN = 0.63;
+    public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
 
     public static double INTAKE_COAXIAL_RESTING = 0.915;
     public static double INTAKE_COAXIAL_INTAKE = 0.15;
+    public static double INTAKE_COAXIAL_SPECIMEN = 0.15;
     public static double INTAKE_COAXIAL_TRANSFER = 0.915;
 
     //Auto Positions:
@@ -144,8 +163,8 @@ public class Globals {
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17.67, 65.73, Math.toRadians(-90.00));
 
     //Tele-Op Positions:
-    public static double INTAKE_ROTATION_ZERO = 0.0;
-    public static double INTAKE_ROTATION_MAX = 1.0;
+    public static double INTAKE_ROTATION_ZERO = 0.2;
+    public static double INTAKE_ROTATION_MAX = 0.8;
     public static double INTAKE_ROTATION_INCREMENT = 0.25;
 
 }

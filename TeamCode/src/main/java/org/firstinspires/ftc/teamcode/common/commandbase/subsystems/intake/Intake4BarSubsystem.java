@@ -18,34 +18,10 @@ public class Intake4BarSubsystem extends SubsystemBase {
         intake4BarRight = intake4BarRightInput;
     }
 
-    public void intake4BarIntake() {
-        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
-        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_INTAKE);
-        fourBarState = Globals.FourBarState.INTAKE;
-    }
-
-    public void intake4BarScanning() {
-        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
-        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
-        fourBarState = Globals.FourBarState.SCANNING;
-    }
-
-    public void intake4BarLow() {
-        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_LOW);
-        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_LOW);
-        fourBarState = Globals.FourBarState.LOW;
-    }
-
-    public void intake4BarTransfer() {
-        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
-        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
-        fourBarState = Globals.FourBarState.TRANSFER;
-    }
-
-    public void intake4BarResting() {
-        intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
-        intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
-        fourBarState = Globals.FourBarState.RESTING;
+    public void intake4BarCustom(double fourBarInput) {
+        intake4BarLeft.setPosition(fourBarInput);
+        intake4BarRight.setPosition(fourBarInput);
+        fourBarState = Globals.FourBarState.CUSTOM;
     }
 
     public void update(Globals.FourBarState fourState) {
@@ -70,6 +46,10 @@ public class Intake4BarSubsystem extends SubsystemBase {
             case RESTING:
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
+                break;
+            case SPECIMEN:
+                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SPECIMEN);
+                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SPECIMEN);
                 break;
             case BETWEEN:
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);

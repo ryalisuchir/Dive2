@@ -16,9 +16,12 @@ public class IntakeCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.INTAKE)),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM_AUTO, intakeRotation)),
-                        new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition)),
-                        new WaitCommand(0)
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, intakeRotation)),
+                        //Prevents intake stuff from getting stuck:
+                        new SequentialCommandGroup(
+                                new WaitCommand(100),
+                                new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition))
+                        )
                 )
         );
     }

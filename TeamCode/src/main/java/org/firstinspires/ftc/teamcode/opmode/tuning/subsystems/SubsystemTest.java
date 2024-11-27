@@ -4,7 +4,9 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.SpecimenIntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.transfer.wall.SpecimenTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -26,7 +28,7 @@ public class SubsystemTest extends CommandOpMode {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop();
+        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
         if (gamepad1.cross) {
             schedule(
@@ -37,6 +39,18 @@ public class SubsystemTest extends CommandOpMode {
         if (gamepad1.circle) {
             schedule(
                     new IntakeCommand(robot, 0.5, Globals.EXTENDO_MAX_EXTENSION)
+            );
+        }
+
+        if (gamepad1.square) {
+            schedule (
+                    new SpecimenIntakeCommand(robot, 0.5, 0)
+            );
+        }
+
+        if (gamepad1.triangle) {
+            schedule (
+                    new SpecimenTransferCommand(robot)
             );
         }
 

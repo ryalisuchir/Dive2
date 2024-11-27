@@ -14,19 +14,18 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-public class TeleOpX extends CommandOpMode {
+public class OldTeleOpX extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;
@@ -119,7 +118,7 @@ public class TeleOpX extends CommandOpMode {
         //Extendo Slides Stuff:
 
         if (!extendoManualControl) {
-            robot.extendoSubsystem.extendoSlidesLoop();
+            robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
         }
 
         if (extendoManualControl){
@@ -160,7 +159,7 @@ public class TeleOpX extends CommandOpMode {
 
         //Deposit Slides Stuff:
         if (!depositManualControl) {
-            robot.depositSubsystem.outtakeSlidesLoop();
+            robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
         }
         if (depositManualControl) {
             robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);

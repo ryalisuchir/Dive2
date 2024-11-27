@@ -19,30 +19,10 @@ public class OuttakeArmSubsystem extends SubsystemBase {
         rightOuttakeArm = rightOuttakeArmInput;
     }
 
-    public void outtakeArmTransfer() {
-        leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_TRANSFER);
-        rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_TRANSFER);
-        armState = Globals.OuttakeArmState.TRANSFER;
-    }
-    public void outtakeArmBucket() {
-        leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_BUCKET);
-        rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_BUCKET);
-        armState = Globals.OuttakeArmState.BUCKET;
-    }
-    public void outtakeArmDunk() {
-        leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_DUNK);
-        rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_DUNK);
-        armState = Globals.OuttakeArmState.DUNK;
-    }
-    public void outtakeArmRaising() {
-        leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_RAISING);
-        rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_RAISING);
-        armState = Globals.OuttakeArmState.RAISING;
-    }
-    public void outtakeArmSpecimen() {
-        leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN);
-        rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN);
-        armState = Globals.OuttakeArmState.SPECIMEN;
+    public void outtakeArmCustom(double outtakeInput) {
+        leftOuttakeArm.setPosition(outtakeInput);
+        rightOuttakeArm.setPosition(outtakeInput);
+        armState = Globals.OuttakeArmState.CUSTOM;
     }
 
     public void update (Globals.OuttakeArmState outtakeArmStateInput) {

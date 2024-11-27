@@ -17,19 +17,10 @@ public class OuttakeRotationSubsystem extends SubsystemBase {
         outtakeRotation = outtakeRotationInput;
     }
 
-    public void outtakeRotationExit() {
-        outtakeRotation.setPosition(Globals.OUTTAKE_ROTATION_EXIT);
-        outtakeRotationState = Globals.OuttakeRotationState.EXIT;
+    public void outtakeRotationCustom(double rotationInput) {
+        outtakeRotation.setPosition(rotationInput);
+        outtakeRotationState = Globals.OuttakeRotationState.CUSTOM;
     }
-    public void outtakeRotationSpecimen() {
-        outtakeRotation.setPosition(Globals.OUTTAKE_ROTATION_SPECIMEN);
-        outtakeRotationState = Globals.OuttakeRotationState.SPECIMEN;
-    }
-    public void outtakeRotationTransfer() {
-        outtakeRotation.setPosition(Globals.OUTTAKE_ROTATION_TRANSFER);
-        outtakeRotationState = Globals.OuttakeRotationState.TRANSFER;
-    }
-
     public void update (Globals.OuttakeRotationState outtakeRotationStateInput) {
         outtakeRotationState = outtakeRotationStateInput; //Sets global position to the new outtake
 
