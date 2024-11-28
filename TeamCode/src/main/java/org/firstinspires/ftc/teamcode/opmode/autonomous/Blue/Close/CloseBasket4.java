@@ -83,7 +83,7 @@ public class CloseBasket4 extends OpMode {
 
         Action movement7 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60, 27, Math.toRadians(0)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 52, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(52, 50, Math.toRadians(45)), Math.toRadians(45))
                 .build();
 
         Action movement8 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
