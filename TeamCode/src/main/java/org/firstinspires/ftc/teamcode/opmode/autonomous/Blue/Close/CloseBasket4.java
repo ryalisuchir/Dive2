@@ -106,8 +106,7 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
-                                new WaitCommand(1500)
+                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
                         ),
                         new WaitCommand(150),
                         //First Intake:
@@ -128,8 +127,7 @@ public class CloseBasket4 extends OpMode {
                     new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
-                                new WaitCommand(1500)
+                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
                         ),
                         new WaitCommand(150),
                         //Second Intake:
@@ -150,8 +148,7 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.12, 400),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
-                                new WaitCommand(1800)
+                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
                         ),
                         new WaitCommand(150),
                         //Fourth Intake:
@@ -169,11 +166,7 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new ParallelCommandGroup(
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
-                                new WaitCommand(1500)
-                        ),
-                        new WaitCommand(150),
+                        new InstantCommand(() -> new BucketDropCommand(robot).schedule(false)),
                         //Park
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
