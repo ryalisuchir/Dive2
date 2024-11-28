@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class OuttakeArmSubsystem extends SubsystemBase {
-    private final ServoImplEx leftOuttakeArm, rightOuttakeArm;
+    public final ServoImplEx leftOuttakeArm, rightOuttakeArm;
     public Globals.OuttakeArmState armState = Globals.OuttakeArmState.TRANSFER;
 
     public OuttakeArmSubsystem(ServoImplEx leftOuttakeArmInput, ServoImplEx rightOuttakeArmInput) {

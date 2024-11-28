@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class OuttakeClawSubsystem extends SubsystemBase {
 
-    private final ServoImplEx outtakeClaw;
+    public final ServoImplEx outtakeClaw;
     public Globals.OuttakeClawState clawState = Globals.OuttakeClawState.OPEN;
 
     public OuttakeClawSubsystem(ServoImplEx outtakeClawInput) {

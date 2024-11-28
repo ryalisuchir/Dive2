@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -17,7 +16,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.slides.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -80,7 +78,7 @@ public class CloseBasket4 extends OpMode {
 
         Action movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(53.5, 33, Math.toRadians(180)), Math.toRadians(40))
+                .splineToLinearHeading(new Pose2d(53.5, 31.5, Math.toRadians(180)), Math.toRadians(40))
                 .build();
 
         Action movement7 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60, 27, Math.toRadians(0)))
@@ -106,7 +104,8 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
+                                new BucketDropCommand(robot),
+                                new WaitCommand(900)
                         ),
                         new WaitCommand(150),
                         //First Intake:
@@ -127,7 +126,8 @@ public class CloseBasket4 extends OpMode {
                     new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
+                                new BucketDropCommand(robot),
+                                new WaitCommand(1200)
                         ),
                         new WaitCommand(150),
                         //Second Intake:
@@ -148,7 +148,8 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.12, 400),
-                                new InstantCommand(() -> new BucketDropCommand(robot).schedule(false))
+                                new BucketDropCommand(robot),
+                                new WaitCommand(900)
                         ),
                         new WaitCommand(150),
                         //Fourth Intake:
@@ -166,7 +167,10 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new InstantCommand(() -> new BucketDropCommand(robot).schedule(false)),
+                        new ParallelCommandGroup(
+                                new BucketDropCommand(robot),
+                                new WaitCommand(900)
+                        ),
                         //Park
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
