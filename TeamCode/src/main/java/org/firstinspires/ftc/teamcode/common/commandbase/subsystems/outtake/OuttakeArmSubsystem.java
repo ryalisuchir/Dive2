@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OUTTAKE_ARM_SPECIMEN_LOWER;
 import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.CLOSED;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -51,6 +52,10 @@ public class OuttakeArmSubsystem extends SubsystemBase {
             case SPECIMEN_INTAKE:
                 leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_INTAKE);
                 rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_INTAKE);
+                break;
+            case SPECIMEN_OUTTAKE:
+                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_LOWER);
+                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_LOWER);
                 break;
         }
     }

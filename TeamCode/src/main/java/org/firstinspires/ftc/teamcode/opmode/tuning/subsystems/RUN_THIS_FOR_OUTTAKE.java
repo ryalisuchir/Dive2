@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 @Autonomous
+@Disabled
 public class RUN_THIS_FOR_OUTTAKE extends OpMode {
 
     public static double armPositionGeneral = 0;

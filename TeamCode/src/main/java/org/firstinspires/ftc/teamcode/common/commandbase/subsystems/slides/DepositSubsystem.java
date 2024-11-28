@@ -24,11 +24,30 @@ public class DepositSubsystem extends SubsystemBase {
     }
 
     public void outtakeSlidesLoop(double powerInput) {
-        double target = slidesTargetPosition;
-        double error = target - rightLift.getCurrentPosition();
+//        double target = slidesTargetPosition;
+//        double error = target - rightLift.getCurrentPosition();
+//
+//        leftLift.setPower(error * powerInput);
+//        rightLift.setPower(error * powerInput);
 
-        leftLift.setPower(error * powerInput);
-        rightLift.setPower(error * powerInput);
+        // Define PID coefficients
+        double kP = 0.009; // Proportional gain
+        double kI = 0.005; // Integral gain
+        double kD = 0; // Derivative gain
+
+        double target = slidesTargetPosition;
+        double error = 0;
+        double prevError = 0; // Previous error for derivative calculation
+        double integral = 0; // Integral sum
+        double derivative = 0; // Derivative term
+        error = target - rightLift.getCurrentPosition(); // Calculate error
+        integral += error;
+        derivative = error - prevError;
+        double output = (kP * error) + (kI * integral) + (kD * derivative);
+        leftLift.setPower(output);
+        rightLift.setPower(output);
+        prevError = error;
+
 
         if (rightLift.getCurrentPosition() < 0)  {
             rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

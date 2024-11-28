@@ -69,7 +69,7 @@ public class CloseBasket4 extends OpMode {
 
         Action movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(53, 47, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(57, 47, Math.toRadians(90)), Math.toRadians(90))
                 .build();
 
         Action movement5 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 47, Math.toRadians(90)))
@@ -103,11 +103,13 @@ public class CloseBasket4 extends OpMode {
                                 )
                         ),
                         new WaitCommand(150),
-                        new BucketDropCommand(robot),
+                        new ParallelCommandGroup(
+                                new IntakeCommand(robot, 0.5, 1000),
+                                new BucketDropCommand(robot)
+                        ),
                         new WaitCommand(150),
                         //First Intake:
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, 0.5, 1000),
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
@@ -122,10 +124,13 @@ public class CloseBasket4 extends OpMode {
                         //Second Drop:
                     new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                     new WaitCommand(150),
-                    new BucketDropCommand(robot),
-                        //Second Intake:
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
+                                new BucketDropCommand(robot)
+                        ),
+                        new WaitCommand(150),
+                        //Second Intake:
+                        new ParallelCommandGroup(
                                 new ActionCommand(movement4, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
@@ -140,10 +145,13 @@ public class CloseBasket4 extends OpMode {
                         //Third Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                         new WaitCommand(150),
-                        new BucketDropCommand(robot),
-                        //Third Intake:
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, 0.5, 300),
+                                new IntakeCommand(robot, 0.12, 400),
+                                new BucketDropCommand(robot)
+                        ),
+                        new WaitCommand(150),
+                        //Fourth Intake:
+                        new ParallelCommandGroup(
                                 new ActionCommand(movement6, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
@@ -157,16 +165,13 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new WaitCommand(150),
                         new BucketDropCommand(robot),
                         new WaitCommand(150),
+                        //Park
                         new ParallelCommandGroup(
-                                new ActionCommand(movement8, Collections.emptySet()),
-                                new OuttakeTransferReadyCommand(robot)
-                        ),
-                        new WaitCommand(150),
-                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_MID_POS)
-
+                                new OuttakeTransferReadyCommand(robot),
+                                new ActionCommand(movement8, Collections.emptySet())
+                        )
                 )
         );
 
@@ -183,6 +188,9 @@ public class CloseBasket4 extends OpMode {
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
+
+        telemetry.addData("Deposit Slides Position: ", robot.rightLift.getCurrentPosition());
+        telemetry.addData("Extendo Slides Position: ", robot.extendoMotor.getCurrentPosition());
 
         loop = time;
         telemetry.update();

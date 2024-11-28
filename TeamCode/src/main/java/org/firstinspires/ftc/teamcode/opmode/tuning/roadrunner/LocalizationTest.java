@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.common.roadrunner.Drawing;
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 
 
+@Disabled
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

@@ -16,9 +16,8 @@ public class CloseAndTransferCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
                 new WaitCommand(350),
                 new TransferCommand(robot),
-                new WaitCommand(750),
-                new ClawTransferCommand(robot),
-                        new WaitCommand(1300)
+                new WaitCommand(350),
+                new ClawTransferCommand(robot)
                 )
         );
     }

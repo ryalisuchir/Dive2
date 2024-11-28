@@ -24,22 +24,10 @@ public class MeepMeepTesting {
                 .setConstraints(60, 50, Math.toRadians(180), Math.toRadians(180), 11)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(17, 64, Math.toRadians(90)))
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00))
-                .splineToLinearHeading(new Pose2d(48, 47, Math.toRadians(90)), Math.toRadians(90))
-                .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(53, 47, Math.toRadians(90)), Math.toRadians(90))
-                .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(54, 27, Math.toRadians(180)), Math.toRadians(40))
-                .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(20, 8, Math.toRadians(180)), Math.toRadians(180))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(17, 64, Math.toRadians(-90)))
+                .splineToLinearHeading(new Pose2d(7.23, 31.78, Math.toRadians(270.00)), Math.toRadians(270))
+                        .setReversed(true)
+                .splineToLinearHeading(new Pose2d(48.15, 37.00, Math.toRadians(88.36)), Math.toRadians(-90.00))
                 .build());
 
         Image fieldBackground = null;

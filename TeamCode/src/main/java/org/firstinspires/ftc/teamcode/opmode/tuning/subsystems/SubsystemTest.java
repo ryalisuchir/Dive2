@@ -4,12 +4,17 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferCommand;
@@ -81,7 +86,17 @@ public class SubsystemTest extends CommandOpMode {
 
         if (gamepad1.dpad_down) {
             schedule(
-                    new SpecimenClipCommand(robot)
+                    new SequentialCommandGroup(
+                            new SpecimenClipCommand(robot),
+                            new WaitCommand(300),
+                            new OuttakeTransferReadyCommand(robot)
+                    )
+            );
+        }
+
+        if (gamepad1.left_bumper || gamepad1.right_bumper) {
+            schedule (
+                    new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
             );
         }
 

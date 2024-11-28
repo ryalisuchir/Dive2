@@ -12,8 +12,11 @@ public class SpecimenClipCommand extends SequentialCommandGroup {
     public SpecimenClipCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
-                new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_SPECIMEN_POS - Globals.LIFT_SPECIMEN_DROP)),
-                new WaitCommand(150),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.SPECIMEN_OUTTAKE)),
+                                new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(Globals.LIFT_SPECIMEN_POS - Globals.LIFT_SPECIMEN_DROP))
+                        ),
+                new WaitCommand(800),
                 new InstantCommand(() -> robot.outtakeClawSubsystem.update(Globals.OuttakeClawState.OPEN))
                 )
                 );

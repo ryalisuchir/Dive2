@@ -11,7 +11,7 @@ public class SpecimenGrabAndTransferCommand extends SequentialCommandGroup {
     public SpecimenGrabAndTransferCommand(RobotHardware robot) {
         super(
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
-                new WaitCommand(100),
+                new WaitCommand(350),
                 new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING))
         );
     }

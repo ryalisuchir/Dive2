@@ -94,7 +94,8 @@ public class Globals {
         BUCKET,
         DUNK,
         SPECIMEN,
-        SPECIMEN_INTAKE
+        SPECIMEN_INTAKE,
+        SPECIMEN_OUTTAKE
     }
     Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
 
@@ -102,8 +103,8 @@ public class Globals {
     // Lift Subsystem Constants
     public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
-    public static int LIFT_SPECIMEN_POS = 1212;
-    public static int LIFT_SPECIMEN_DROP = 200;
+    public static int LIFT_SPECIMEN_POS = 980;
+    public static int LIFT_SPECIMEN_DROP = 160;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 5;
 
@@ -131,6 +132,7 @@ public class Globals {
     public static double OUTTAKE_ARM_DUNK = 0.62;
     public static double OUTTAKE_ARM_INTAKE = 0.75;
     public static double OUTTAKE_ARM_SPECIMEN = 0.66;
+    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.76;
 
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
