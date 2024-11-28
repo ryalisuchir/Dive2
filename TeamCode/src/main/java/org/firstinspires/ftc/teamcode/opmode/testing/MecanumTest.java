@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import java.util.Collections;
 
 @Autonomous
-@Disabled
 public class MecanumTest extends OpMode {
 
     private DriveRobotHardware robot = DriveRobotHardware.getInstance();
@@ -38,29 +37,10 @@ public class MecanumTest extends OpMode {
     @Override
     public void start() {
         time_since_start = new ElapsedTime();
-        robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
-        Action movement1Left = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToConstantHeading(new Vector2d(6.36, 32.65), Math.toRadians(270.00))
+        robot.driveSubsystem.setPoseEstimate(new Pose2d(17, 64, Math.toRadians(90)));
+        Action movement1Left = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(17, 64, Math.toRadians(90)))
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(53, 43.10, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(56, 51.28, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(60.16, 42.05, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(61.20, 50.58, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(58, 42.05, Math.toRadians(140)), Math.toRadians(140))
-                .waitSeconds(2)
-                .splineToLinearHeading(new Pose2d(60.68, 52.15, Math.toRadians(60)), Math.toRadians(60))
-                .waitSeconds(2)
-                .setReversed(true)
-                .splineToLinearHeading(
-                        new Pose2d(23.77, 0.96, Math.toRadians(180.00)), Math.toRadians(180.00),
-                        new AngularVelConstraint(80)
-                )
+                .splineToLinearHeading(new Pose2d(58.77, 59.11, Math.toRadians(45.00)), Math.toRadians(90.00))
                 .build();
 
         CommandScheduler.getInstance().schedule(

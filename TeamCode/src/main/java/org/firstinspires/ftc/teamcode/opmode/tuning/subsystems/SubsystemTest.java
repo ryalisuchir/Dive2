@@ -3,10 +3,13 @@ package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.SpecimenIntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.transfer.wall.SpecimenTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.transfer.wall.TSpecimenTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -44,13 +47,25 @@ public class SubsystemTest extends CommandOpMode {
 
         if (gamepad1.square) {
             schedule (
-                    new SpecimenIntakeCommand(robot, 0.5, 0)
+                    new SpecimenIntakeCommand(robot)
             );
         }
 
         if (gamepad1.triangle) {
             schedule (
-                    new SpecimenTransferCommand(robot)
+                    new TSpecimenTransferCommand(robot)
+            );
+        }
+
+        if (gamepad1.dpad_up) {
+            schedule (
+                    new AllSystemInitializeCommand(robot)
+            );
+        }
+
+        if (gamepad1.dpad_down) {
+            schedule(
+                    new BucketDropCommand(robot)
             );
         }
 

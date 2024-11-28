@@ -15,7 +15,7 @@ public class ClawTransferCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.TRANSFER)),
                 new WaitCommand(100),
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
-                new WaitCommand(75),
+                new WaitCommand(250),
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),

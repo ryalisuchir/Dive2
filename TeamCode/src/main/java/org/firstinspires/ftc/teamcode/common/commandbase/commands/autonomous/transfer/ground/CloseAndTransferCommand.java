@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 public class CloseAndTransferCommand extends SequentialCommandGroup {
     public CloseAndTransferCommand(RobotHardware robot) {
         super(
-                new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.LOW)),
+                new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.INTAKE)),
                 new WaitCommand(150),
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
                 new WaitCommand(350),

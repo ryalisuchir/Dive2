@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -31,13 +32,13 @@ public class CloseBasket4 extends OpMode {
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        robot = new RobotHardware(hardwareMap, Globals.BLUE_CLOSE_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.BLUE_CLOSE_START_POSE_NEW);
 
         telemetry.addData("Ready: ", "Initialized subsystems.");
         telemetry.update();
 
         CommandScheduler.getInstance().schedule(new AllSystemInitializeCommand(robot));
-        robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
+        robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE_NEW);
     }
 
     @Override
@@ -52,18 +53,18 @@ public class CloseBasket4 extends OpMode {
     public void start() {
         time_since_start = new ElapsedTime();
 
-        Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToSplineHeading(new Pose2d(60.86, 60.86, Math.toRadians(45.00)), Math.toRadians(45.00))
-                .build();
-
-        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60.86, 60.86, Math.toRadians(45.00)))
+        Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE_NEW)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(52, 46, Math.toRadians(70)), Math.toRadians(70))
+                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00))
                 .build();
 
-        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(52, 46, Math.toRadians(70.00)))
+        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(52, 54.5, Math.toRadians(45)))
+                .splineToLinearHeading(new Pose2d(45, 50, Math.toRadians(90)), Math.toRadians(90))
+                .build();
+
+        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(46, 47, Math.toRadians(90)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(61.03, 57.55, Math.toRadians(70.00)), Math.toRadians(70.00))
+                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45)), Math.toRadians(45))
                 .build();
 
         CommandScheduler.getInstance().schedule(
@@ -71,31 +72,30 @@ public class CloseBasket4 extends OpMode {
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1, Collections.emptySet()),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(1500),
+                                        new WaitCommand(1200),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 )
                         ),
-                        new WaitCommand(300),
+                        new WaitCommand(500),
                         new BucketDropCommand(robot),
+                        new WaitCommand(1000),
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_AUTO_1, 500),
-                                new ActionCommand(movement2, Collections.emptySet())
+                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_AUTO_1, Globals.EXTENDO_MAX_EXTENSION),
+                                new ActionCommand(movement2, Collections.emptySet()),
+                                new OuttakeTransferReadyCommand(robot)
                         ),
+                        new WaitCommand(350),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(1000),
-                                         new ActionCommand(movement3, Collections.emptySet())
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(3000),
-                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                ),
-                                new WaitCommand(500),
-                                new BucketDropCommand(robot),
-                                new WaitCommand(350),
-                                new OuttakeTransferReadyCommand(robot)
-                        )
+                                        new WaitCommand(800)
+                                )
+                        ),
+                        new ActionCommand(movement3, Collections.emptySet())
+//                        new WaitCommand(350),
+//                        new BucketDropCommand(robot),
+//                        new WaitCommand(350),
+//                       new OuttakeTransferReadyCommand(robot)
                 )
         );
 

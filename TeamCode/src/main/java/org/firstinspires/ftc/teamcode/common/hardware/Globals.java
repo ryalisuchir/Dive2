@@ -93,13 +93,14 @@ public class Globals {
         RAISING,
         BUCKET,
         DUNK,
-        SPECIMEN
+        SPECIMEN,
+        SPECIMEN_INTAKE
     }
     Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
 
 
     // Lift Subsystem Constants
-    public static int LIFT_HIGH_POS = 2650;
+    public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 1212;
     public static int LIFT_SPECIMEN_DROP = 200;
@@ -118,7 +119,7 @@ public class Globals {
     public static double EXTENDO_P_SLOW = 0.007; //TODO: tune this for coach to be happy lol
 
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.25;
+    public static double OUTTAKE_CLAW_OPEN = 0.4;
     public static double OUTTAKE_CLAW_TRANSFER = 0.4;
     public static double OUTTAKE_CLAW_CLOSED = 0.05;
 
@@ -127,9 +128,10 @@ public class Globals {
     public static double OUTTAKE_ROTATION_EXIT = 0.60;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.04;
-    public static double OUTTAKE_ARM_RAISING = 0.425;
-    public static double OUTTAKE_ARM_BUCKET = 0.66;
-    public static double OUTTAKE_ARM_DUNK = 0.66;
+    public static double OUTTAKE_ARM_RAISING = 0.446;
+    public static double OUTTAKE_ARM_BUCKET = 0.63;
+    public static double OUTTAKE_ARM_DUNK = 0.62;
+    public static double OUTTAKE_ARM_INTAKE = 0.75;
     public static double OUTTAKE_ARM_SPECIMEN = 0.66;
 
     //Intake Subsystem Constants
@@ -145,26 +147,26 @@ public class Globals {
     public static double INTAKE_ROTATION_AUTO_2 = 0.6;
     public static double INTAKE_ROTATION_AUTO_3 = 0.8;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.57;
+    public static double INTAKE_FOURBAR_INTAKE = 0.575;
     public static double INTAKE_FOURBAR_SCANNING = 0.6;
-    public static double INTAKE_FOURBAR_LOW = 0.555;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.675;
+    public static double INTAKE_FOURBAR_LOW = 0.56;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.72;
     public static double INTAKE_FOURBAR_BETWEEN = 0.63;
     public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
 
     public static double INTAKE_COAXIAL_RESTING = 0.915;
     public static double INTAKE_COAXIAL_INTAKE = 0.15;
-    public static double INTAKE_COAXIAL_SPECIMEN = 0.15;
+    public static double INTAKE_COAXIAL_SPECIMEN = 0.435;
     public static double INTAKE_COAXIAL_TRANSFER = 0.915;
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
-    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17.67, 65.73, Math.toRadians(-90.00));
+    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270.00));
+    public static Pose2d BLUE_CLOSE_START_POSE_NEW = new Pose2d(17, 64, Math.toRadians(90));
 
     //Tele-Op Positions:
     public static double INTAKE_ROTATION_ZERO = 0.2;
     public static double INTAKE_ROTATION_MAX = 0.8;
     public static double INTAKE_ROTATION_INCREMENT = 0.25;
-
 }

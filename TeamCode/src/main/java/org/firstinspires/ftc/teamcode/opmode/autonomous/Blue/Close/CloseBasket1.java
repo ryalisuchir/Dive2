@@ -53,10 +53,10 @@ public class CloseBasket1 extends OpMode {
         time_since_start = new ElapsedTime();
 
         Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToSplineHeading(new Pose2d(63, 60, Math.toRadians(47.00)), Math.toRadians(47.00))
+                .splineToSplineHeading(new Pose2d(64, 53, Math.toRadians(47.00)), Math.toRadians(47.00))
                 .build();
 
-        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60.68, 58.59, Math.toRadians(47.00)))
+        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(63, 60, Math.toRadians(47.00)))
                 .setReversed(true)
                 .splineTo(new Vector2d(42, 26), Math.toRadians(-90))
                 .splineTo(new Vector2d(26, 9), Math.toRadians(180.00 - 1e-6))
@@ -64,22 +64,29 @@ public class CloseBasket1 extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement1, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1000),
-                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                )
-                        ),
-                        new WaitCommand(2000),
-                        new BucketDropCommand(robot),
-                        new WaitCommand(250),
-                        new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement2, Collections.emptySet())
-                        )
+                        new ActionCommand(movement1, Collections.emptySet())
                 )
-        );
+                );
+
+
+//
+//                new SequentialCommandGroup(
+//                        new ParallelCommandGroup(
+//                                new ActionCommand(movement1, Collections.emptySet()),
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(1000),
+//                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+//                                )
+//                        ),
+//                        new WaitCommand(2000),
+//                        new BucketDropCommand(robot),
+//                        new WaitCommand(250),
+//                        new ParallelCommandGroup(
+//                                new OuttakeTransferReadyCommand(robot),
+//                                new ActionCommand(movement2, Collections.emptySet())
+//                        )
+//                )
+//        );
 
     }
     @Override
