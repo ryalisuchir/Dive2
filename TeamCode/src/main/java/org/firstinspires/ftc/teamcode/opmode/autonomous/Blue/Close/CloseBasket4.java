@@ -22,8 +22,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
-
 @Autonomous
+
 public class CloseBasket4 extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -71,50 +71,27 @@ public class CloseBasket4 extends OpMode {
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1, Collections.emptySet()),
-                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                new SequentialCommandGroup(
+                                        new WaitCommand(1200),
+                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                )
                         ),
-                        new WaitCommand(350),
+                        new WaitCommand(150),
                         new BucketDropCommand(robot),
-                        new WaitCommand(350),
+                        new WaitCommand(150),
                         new ParallelCommandGroup(
+                                new IntakeCommand(robot, 0.5, 1000),
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(150),
-                        new IntakeCommand(robot, 0.5, 900),
-                        new WaitCommand(150),
+                        new WaitCommand(350),
                         new CloseAndTransferCommand(robot),
-                        new WaitCommand(150),
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement3, Collections.emptySet()),
-                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                        )
+                        new WaitCommand(350),
+                        new ActionCommand(movement3, Collections.emptySet()),
+                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
+                    new WaitCommand(100),
+                    new BucketDropCommand(robot)
                 )
-
-
-//                new SequentialCommandGroup(
-//                        new ParallelCommandGroup(
-//                                new ActionCommand(movement1, Collections.emptySet()),
-//                                new SequentialCommandGroup(
-//                                        new WaitCommand(1200),
-//                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-//                                )
-//                        ),
-//                        new WaitCommand(500),
-//                        new BucketDropCommand(robot),
-//                        new WaitCommand(500),
-//                        new ParallelCommandGroup(
-//                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_AUTO_1, 1000),
-//                                new ActionCommand(movement2, Collections.emptySet()),
-//                                new OuttakeTransferReadyCommand(robot)
-//                        ),
-//                        new WaitCommand(350),
-//                        new CloseAndTransferCommand(robot),
-////                        new ActionCommand(movement3, Collections.emptySet()),
-//                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-//                    new WaitCommand(100),
-//                    new BucketDropCommand(robot)
-//                )
         );
 
     }
@@ -122,9 +99,9 @@ public class CloseBasket4 extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
+        robot.depositSubsystem.outtakeSlidesLoop();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
+        robot.extendoSubsystem.extendoSlidesLoop();
 
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);

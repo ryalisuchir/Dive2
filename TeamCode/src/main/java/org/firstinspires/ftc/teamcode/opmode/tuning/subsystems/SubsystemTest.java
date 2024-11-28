@@ -31,7 +31,7 @@ public class SubsystemTest extends CommandOpMode {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
+        robot.extendoSubsystem.extendoSlidesLoop();
 
         if (gamepad1.cross) {
             schedule(

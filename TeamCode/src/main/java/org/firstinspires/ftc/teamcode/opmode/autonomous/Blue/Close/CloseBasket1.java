@@ -64,7 +64,7 @@ public class CloseBasket1 extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        new ActionCommand(movement1, Collections.emptySet())
+                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                 )
                 );
 
@@ -94,9 +94,9 @@ public class CloseBasket1 extends OpMode {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
 
-        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
+        robot.depositSubsystem.outtakeSlidesLoop();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
+        robot.extendoSubsystem.extendoSlidesLoop();
 
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);

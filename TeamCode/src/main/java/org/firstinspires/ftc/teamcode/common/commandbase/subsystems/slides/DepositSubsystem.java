@@ -23,16 +23,18 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesLoop(double customPower) {
+    public void outtakeSlidesLoop() {
         double target = slidesTargetPosition;
         double error = target - rightLift.getCurrentPosition();
-        leftLift.setPower(error * customPower);
-        rightLift.setPower(error * customPower);
+
+        leftLift.setPower(error * 0.009);
+        rightLift.setPower(error * 0.009);
 
         if (rightLift.getCurrentPosition() < 0)  {
             rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slidesTargetPosition = 0;
         }
+
     }
 
     public void depositManualControlLoop(double joystickInput) {

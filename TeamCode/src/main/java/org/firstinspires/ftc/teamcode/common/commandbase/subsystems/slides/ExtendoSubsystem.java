@@ -33,10 +33,10 @@ public class ExtendoSubsystem extends SubsystemBase {
         }
     }
 
-    public void extendoSlidesLoop(double customPower) {
+    public void extendoSlidesLoop() {
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
-        extendoMotor.setPower(error * customPower);
+        extendoMotor.setPower(error * 0.015);
 
         if (extendoMotor.getCurrentPosition() < 0)  {
             extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

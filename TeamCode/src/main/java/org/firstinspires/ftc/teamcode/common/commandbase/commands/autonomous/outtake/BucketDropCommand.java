@@ -8,13 +8,24 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class BucketDropCommand extends SequentialCommandGroup {
+
+    RobotHardware robot1;
     public BucketDropCommand(RobotHardware robot) {
         super(
-                new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.DUNK)),
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.DUNK)),
                         new WaitCommand(100),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen()),
-                new WaitCommand(600),
-                new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING))
+                        new WaitCommand(600),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
+                        new WaitCommand(10000)
+                )
         );
+        this.robot1 = robot;
+    }
+
+    @Override
+    public boolean isFinished() {
+        return robot1.outtakeClaw.getPosition() == Globals.OUTTAKE_CLAW_OPEN;
     }
 }

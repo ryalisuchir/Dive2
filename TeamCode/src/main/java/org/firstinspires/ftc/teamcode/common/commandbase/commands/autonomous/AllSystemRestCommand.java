@@ -24,4 +24,8 @@ public class AllSystemRestCommand extends SequentialCommandGroup {
                 )
         );
     }
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }
