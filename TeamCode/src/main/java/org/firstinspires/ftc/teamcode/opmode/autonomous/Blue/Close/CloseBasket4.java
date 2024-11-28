@@ -58,11 +58,11 @@ public class CloseBasket4 extends OpMode {
                 .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00))
                 .build();
 
-        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(52, 54.5, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(45, 50, Math.toRadians(90)), Math.toRadians(90))
+        Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 54, Math.toRadians(45)))
+                .splineToLinearHeading(new Pose2d(45, 47, Math.toRadians(90)), Math.toRadians(90))
                 .build();
 
-        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(46, 47, Math.toRadians(90)))
+        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(45, 47, Math.toRadians(90)))
                 .setReversed(false)
                 .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45)), Math.toRadians(45))
                 .build();
@@ -71,32 +71,50 @@ public class CloseBasket4 extends OpMode {
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1200),
-                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                )
+                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                         ),
-                        new WaitCommand(500),
+                        new WaitCommand(350),
                         new BucketDropCommand(robot),
-                        new WaitCommand(1000),
+                        new WaitCommand(350),
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_AUTO_1, Globals.EXTENDO_MAX_EXTENSION),
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(350),
+                        new WaitCommand(150),
+                        new IntakeCommand(robot, 0.5, 900),
+                        new WaitCommand(150),
+                        new CloseAndTransferCommand(robot),
+                        new WaitCommand(150),
                         new ParallelCommandGroup(
-                                new CloseAndTransferCommand(robot),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(800)
-                                )
-                        ),
-                        new ActionCommand(movement3, Collections.emptySet())
-//                        new WaitCommand(350),
-//                        new BucketDropCommand(robot),
-//                        new WaitCommand(350),
-//                       new OuttakeTransferReadyCommand(robot)
+                                new ActionCommand(movement3, Collections.emptySet()),
+                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                        )
                 )
+
+
+//                new SequentialCommandGroup(
+//                        new ParallelCommandGroup(
+//                                new ActionCommand(movement1, Collections.emptySet()),
+//                                new SequentialCommandGroup(
+//                                        new WaitCommand(1200),
+//                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+//                                )
+//                        ),
+//                        new WaitCommand(500),
+//                        new BucketDropCommand(robot),
+//                        new WaitCommand(500),
+//                        new ParallelCommandGroup(
+//                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_AUTO_1, 1000),
+//                                new ActionCommand(movement2, Collections.emptySet()),
+//                                new OuttakeTransferReadyCommand(robot)
+//                        ),
+//                        new WaitCommand(350),
+//                        new CloseAndTransferCommand(robot),
+////                        new ActionCommand(movement3, Collections.emptySet()),
+//                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
+//                    new WaitCommand(100),
+//                    new BucketDropCommand(robot)
+//                )
         );
 
     }
