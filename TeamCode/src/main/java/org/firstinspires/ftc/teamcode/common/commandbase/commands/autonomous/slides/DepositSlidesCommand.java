@@ -23,14 +23,7 @@ public class DepositSlidesCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(depositSubsystem.rightLift.getCurrentPosition() - depositHeight) < 20);
+        return (Math.abs(depositSubsystem.rightLift.getCurrentPosition() - depositHeight) < 25);
     }
 
-    @Override
-    public void end(boolean wasInterrupted) {
-        if (depositHeight == Globals.LIFT_RETRACT_POS) {
-            depositSubsystem.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            depositSubsystem.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
-    }
 }

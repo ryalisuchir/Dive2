@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -105,7 +106,7 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new BucketDropCommand(robot)
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
                         ),
                         new WaitCommand(150),
                         //First Intake:
@@ -126,7 +127,7 @@ public class CloseBasket4 extends OpMode {
                     new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new BucketDropCommand(robot)
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
                         ),
                         new WaitCommand(150),
                         //Second Intake:
@@ -147,7 +148,7 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.12, 400),
-                                new BucketDropCommand(robot)
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
                         ),
                         new WaitCommand(150),
                         //Fourth Intake:
@@ -165,14 +166,14 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new BucketDropCommand(robot),
+                        new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
                         new WaitCommand(150),
                         //Park
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
                                 new ActionCommand(movement8, Collections.emptySet())
                         )
-                )
+                                )
         );
 
     }

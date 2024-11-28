@@ -38,11 +38,11 @@ public class ExtendoSubsystem extends SubsystemBase {
         double error = target - extendoMotor.getCurrentPosition();
         extendoMotor.setPower(error * powerInput);
 
-        if (extendoMotor.getCurrentPosition() < 0)  {
-            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            extendoTargetPosition = 0;
-        }
+//        if (extendoMotor.getCurrentPosition() < 0)  {
+//            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//            extendoTargetPosition = 0;
+//        }
     }
     public void extendoManualControlLoop(double joystickInput) {
         if (
