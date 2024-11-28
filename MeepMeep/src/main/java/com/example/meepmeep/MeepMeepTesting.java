@@ -26,7 +26,20 @@ public class MeepMeepTesting {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(17, 64, Math.toRadians(90)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(58.77, 59.11, Math.toRadians(45.00)), Math.toRadians(90.00))
+                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00))
+                .splineToLinearHeading(new Pose2d(48, 47, Math.toRadians(90)), Math.toRadians(90))
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(53, 47, Math.toRadians(90)), Math.toRadians(90))
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(54, 27, Math.toRadians(180)), Math.toRadians(40))
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(20, 8, Math.toRadians(180)), Math.toRadians(180))
                 .build());
 
         Image fieldBackground = null;

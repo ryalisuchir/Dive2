@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class DepositSubsystem extends SubsystemBase {
-    private final DcMotorEx leftLift, rightLift;
+    public final DcMotorEx leftLift, rightLift;
 
     private double slidesTargetPosition = 0;
     Globals.OuttakeState outtakeState;
@@ -23,15 +23,16 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesLoop() {
+    public void outtakeSlidesLoop(double powerInput) {
         double target = slidesTargetPosition;
         double error = target - rightLift.getCurrentPosition();
 
-        leftLift.setPower(error * 0.009);
-        rightLift.setPower(error * 0.009);
+        leftLift.setPower(error * powerInput);
+        rightLift.setPower(error * powerInput);
 
         if (rightLift.getCurrentPosition() < 0)  {
             rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             slidesTargetPosition = 0;
         }
 

@@ -16,16 +16,10 @@ public class BucketDropCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.DUNK)),
                         new WaitCommand(100),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen()),
-                        new WaitCommand(600),
-                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
-                        new WaitCommand(10000)
+                        new WaitCommand(350),
+                        new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING))
                 )
         );
-        this.robot1 = robot;
     }
 
-    @Override
-    public boolean isFinished() {
-        return robot1.outtakeClaw.getPosition() == Globals.OUTTAKE_CLAW_OPEN;
-    }
 }

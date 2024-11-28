@@ -107,16 +107,14 @@ public class Globals {
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 5;
 
-    public static double LIFT_P_FAST = 0.015;
-    public static double LIFT_P_SLOW = 0.008; //TODO: tune this for coach to be happy lol
+    public static double LIFT_P_SLOW = 0.009;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 1766;
     public static int EXTENDO_MAX_RETRACTION = 0;
     public static double EXTENDO_MAX_TOLERANCE = 5;
 
-    public static double EXTENDO_P_FAST = 0.015;
-    public static double EXTENDO_P_SLOW = 0.007; //TODO: tune this for coach to be happy lol
+    public static double EXTENDO_P_SLOW = 0.009;
 
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.4;

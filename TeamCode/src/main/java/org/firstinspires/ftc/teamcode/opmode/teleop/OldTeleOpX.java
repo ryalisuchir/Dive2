@@ -118,7 +118,7 @@ public class OldTeleOpX extends CommandOpMode {
         //Extendo Slides Stuff:
 
         if (!extendoManualControl) {
-            robot.extendoSubsystem.extendoSlidesLoop();
+            robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
         }
 
         if (extendoManualControl){
@@ -159,7 +159,7 @@ public class OldTeleOpX extends CommandOpMode {
 
         //Deposit Slides Stuff:
         if (!depositManualControl) {
-            robot.depositSubsystem.outtakeSlidesLoop();
+            robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
         }
         if (depositManualControl) {
             robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);

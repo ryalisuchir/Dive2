@@ -18,13 +18,10 @@ public class CloseAndTransferCommand extends SequentialCommandGroup {
                 new TransferCommand(robot),
                 new WaitCommand(750),
                 new ClawTransferCommand(robot),
-                        new WaitCommand(10000)
+                        new WaitCommand(1300)
                 )
         );
     }
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
+
 }
 

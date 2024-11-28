@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class ExtendoSubsystem extends SubsystemBase {
-    private DcMotorEx extendoMotor;
+    public DcMotorEx extendoMotor;
     private double extendoTargetPosition = 0;
     Globals.ExtendoState extendoState;
 
@@ -33,13 +33,14 @@ public class ExtendoSubsystem extends SubsystemBase {
         }
     }
 
-    public void extendoSlidesLoop() {
+    public void extendoSlidesLoop(double powerInput) {
         double target = extendoTargetPosition;
         double error = target - extendoMotor.getCurrentPosition();
-        extendoMotor.setPower(error * 0.015);
+        extendoMotor.setPower(error * powerInput);
 
         if (extendoMotor.getCurrentPosition() < 0)  {
             extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             extendoTargetPosition = 0;
         }
     }

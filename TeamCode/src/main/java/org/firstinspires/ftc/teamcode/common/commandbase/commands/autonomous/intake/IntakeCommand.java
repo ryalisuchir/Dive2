@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.slides.ExtendoSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -20,7 +21,7 @@ public class IntakeCommand extends SequentialCommandGroup {
                         //Prevents intake stuff from getting stuck:
                         new SequentialCommandGroup(
                                 new WaitCommand(100),
-                                new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition))
+                                new ExtendoSlidesCommand(robot.extendoSubsystem, extendoPosition)
                         )
                 )
         );

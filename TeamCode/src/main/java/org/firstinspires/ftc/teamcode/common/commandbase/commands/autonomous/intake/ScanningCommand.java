@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.slides.ExtendoSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -16,7 +17,11 @@ public class ScanningCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.SCANNING)),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, intakeRotation)),
-                        new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPosition))
+                        //Prevents intake stuff from getting stuck:
+                        new SequentialCommandGroup(
+                                new WaitCommand(100),
+                                new ExtendoSlidesCommand(robot.extendoSubsystem, extendoPosition)
+                        )
                 )
         );
     }

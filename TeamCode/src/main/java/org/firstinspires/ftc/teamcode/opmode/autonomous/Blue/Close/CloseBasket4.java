@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -17,6 +16,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.slides.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -59,16 +59,42 @@ public class CloseBasket4 extends OpMode {
                 .build();
 
         Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 54, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(45, 47, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(48, 47, Math.toRadians(90)), Math.toRadians(90))
                 .build();
 
-        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(45, 47, Math.toRadians(90)))
+        Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(48, 47, Math.toRadians(90)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .build();
+
+        Action movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(53, 47, Math.toRadians(90)), Math.toRadians(90))
+                .build();
+
+        Action movement5 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 47, Math.toRadians(90)))
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .build();
+
+        Action movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(54, 27, Math.toRadians(180)), Math.toRadians(40))
+                .build();
+
+        Action movement7 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60, 27, Math.toRadians(0)))
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .build();
+
+        Action movement8 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(20, 8, Math.toRadians(180)), Math.toRadians(180))
                 .build();
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
+                        //First Drop:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -79,18 +105,68 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new BucketDropCommand(robot),
                         new WaitCommand(150),
+                        //First Intake:
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(350),
-                        new CloseAndTransferCommand(robot),
-                        new WaitCommand(350),
-                        new ActionCommand(movement3, Collections.emptySet()),
+                        new WaitCommand(150),
+                        new ParallelCommandGroup(
+                                new CloseAndTransferCommand(robot),
+                                new SequentialCommandGroup(
+                                 new WaitCommand(900),
+                                new ActionCommand(movement3, Collections.emptySet())
+                                 )
+                        ),
+                        //Second Drop:
                     new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                    new WaitCommand(100),
-                    new BucketDropCommand(robot)
+                    new WaitCommand(150),
+                    new BucketDropCommand(robot),
+                        //Second Intake:
+                        new ParallelCommandGroup(
+                                new IntakeCommand(robot, 0.5, 1000),
+                                new ActionCommand(movement4, Collections.emptySet()),
+                                new OuttakeTransferReadyCommand(robot)
+                        ),
+                        new WaitCommand(150),
+                        new ParallelCommandGroup(
+                                new CloseAndTransferCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(900),
+                                        new ActionCommand(movement5, Collections.emptySet())
+                                )
+                        ),
+                        //Third Drop:
+                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
+                        new WaitCommand(150),
+                        new BucketDropCommand(robot),
+                        //Third Intake:
+                        new ParallelCommandGroup(
+                                new IntakeCommand(robot, 0.5, 300),
+                                new ActionCommand(movement6, Collections.emptySet()),
+                                new OuttakeTransferReadyCommand(robot)
+                        ),
+                        new WaitCommand(150),
+                        new ParallelCommandGroup(
+                                new CloseAndTransferCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(900),
+                                        new ActionCommand(movement7, Collections.emptySet())
+                                )
+                        ),
+                        //Fourth Drop:
+                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
+                        new WaitCommand(150),
+                        new BucketDropCommand(robot),
+                        new WaitCommand(150),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement8, Collections.emptySet()),
+                                new OuttakeTransferReadyCommand(robot)
+                        ),
+                        new WaitCommand(150),
+                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_MID_POS)
+
                 )
         );
 
@@ -99,10 +175,11 @@ public class CloseBasket4 extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop();
+        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
+        telemetry.addLine("Currently running: 1+3 (4 High Basket)");
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);

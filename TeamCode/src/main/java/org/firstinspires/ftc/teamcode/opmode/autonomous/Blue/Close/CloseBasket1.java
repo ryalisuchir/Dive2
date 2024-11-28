@@ -94,9 +94,9 @@ public class CloseBasket1 extends OpMode {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
 
-        robot.depositSubsystem.outtakeSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop();
+        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);

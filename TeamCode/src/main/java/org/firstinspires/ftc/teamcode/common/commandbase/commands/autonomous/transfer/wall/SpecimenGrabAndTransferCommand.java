@@ -7,8 +7,8 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class SpecimenTransferCommand extends SequentialCommandGroup {
-    public SpecimenTransferCommand(RobotHardware robot) {
+public class SpecimenGrabAndTransferCommand extends SequentialCommandGroup {
+    public SpecimenGrabAndTransferCommand(RobotHardware robot) {
         super(
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
                 new WaitCommand(100),
