@@ -60,7 +60,7 @@ public class CloseBasket4 extends OpMode {
                 .build();
 
         Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 54, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(48, 47, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(48, 47.2, Math.toRadians(90)), Math.toRadians(90))
                 .build();
 
         Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(48, 47, Math.toRadians(90)))
@@ -70,22 +70,22 @@ public class CloseBasket4 extends OpMode {
 
         Action movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(57, 47, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(59.5, 47, Math.toRadians(90)), Math.toRadians(90))
                 .build();
 
-        Action movement5 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 47, Math.toRadians(90)))
+        Action movement5 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(58, 47, Math.toRadians(90)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(54, 55, Math.toRadians(45)), Math.toRadians(45))
                 .build();
 
         Action movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(54, 27, Math.toRadians(180)), Math.toRadians(40))
+                .splineToLinearHeading(new Pose2d(53.5, 33, Math.toRadians(180)), Math.toRadians(40))
                 .build();
 
         Action movement7 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60, 27, Math.toRadians(0)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(54, 52, Math.toRadians(45)), Math.toRadians(45))
                 .build();
 
         Action movement8 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
@@ -106,7 +106,8 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
+                                new WaitCommand(1500)
                         ),
                         new WaitCommand(150),
                         //First Intake:
@@ -114,7 +115,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(150),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -123,11 +124,12 @@ public class CloseBasket4 extends OpMode {
                                  )
                         ),
                         //Second Drop:
-                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
+                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                     new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.5, 1000),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
+                                new WaitCommand(1500)
                         ),
                         new WaitCommand(150),
                         //Second Intake:
@@ -135,7 +137,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement4, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(150),
+                        new WaitCommand(400),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -148,7 +150,8 @@ public class CloseBasket4 extends OpMode {
                         new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.12, 400),
-                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot)))
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
+                                new WaitCommand(1800)
                         ),
                         new WaitCommand(150),
                         //Fourth Intake:
@@ -166,7 +169,10 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
+                        new ParallelCommandGroup(
+                                new InstantCommand(() -> CommandScheduler.getInstance().schedule(false, new BucketDropCommand(robot))),
+                                new WaitCommand(1500)
+                        ),
                         new WaitCommand(150),
                         //Park
                         new ParallelCommandGroup(

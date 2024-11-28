@@ -23,7 +23,7 @@ public class DepositSlidesCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(depositSubsystem.rightLift.getCurrentPosition() - depositHeight) < 25);
+        return (Math.abs(depositSubsystem.rightLift.getCurrentPosition() - depositHeight) < 45);
     }
 
 }
