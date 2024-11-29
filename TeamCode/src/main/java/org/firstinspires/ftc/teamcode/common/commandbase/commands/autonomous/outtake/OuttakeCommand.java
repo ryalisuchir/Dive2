@@ -18,12 +18,17 @@ public class OuttakeCommand extends SequentialCommandGroup {
     public static SequentialCommandGroup getCommands(RobotHardware robot, double liftPositionInput) {
         SequentialCommandGroup commandGroup = new SequentialCommandGroup();
 
+
         if (liftPositionInput == Globals.LIFT_HIGH_POS) {
             commandGroup.addCommands(
                     new ParallelCommandGroup(
                             new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_HIGH_POS)
                     )
+            );
+        } else if (liftPositionInput == Globals.LIFT_PARK_POS) {
+            commandGroup.addCommands(
+                    new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_PARK_POS)
             );
         } else if (liftPositionInput == Globals.LIFT_MID_POS) {
             commandGroup.addCommands(

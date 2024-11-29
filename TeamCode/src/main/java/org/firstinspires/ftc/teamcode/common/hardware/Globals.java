@@ -101,18 +101,19 @@ public class Globals {
 
 
     // Lift Subsystem Constants
+    public static int LIFT_PARK_POS = 700;
     public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 980;
     public static int LIFT_SPECIMEN_DROP = 160;
-    public static int LIFT_RETRACT_POS = 10;
+    public static int LIFT_RETRACT_POS = -5;
     public static double LIFT_MAX_TOLERANCE = 5;
 
-    public static double LIFT_P_SLOW = 0.009;
+    public static double LIFT_P_SLOW = 0.0045;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 1766;
-    public static int EXTENDO_MAX_RETRACTION = 0;
+    public static int EXTENDO_MAX_RETRACTION = -5;
     public static double EXTENDO_MAX_TOLERANCE = 5;
 
     public static double EXTENDO_P_SLOW = 0.006;
@@ -140,17 +141,13 @@ public class Globals {
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0;
 
-    public static double INTAKE_ROTATION_REST = 0;
+    public static double INTAKE_ROTATION_REST = 0.5;
     public static double INTAKE_ROTATION_TRANSFER = 0.5;
-    public static double INTAKE_ROTATION_SPECIMEN = 0.5;
-    public static double INTAKE_ROTATION_AUTO_1 = 0.5;
-    public static double INTAKE_ROTATION_AUTO_2 = 0.6;
-    public static double INTAKE_ROTATION_AUTO_3 = 0.8;
 
     public static double INTAKE_FOURBAR_INTAKE = 0.565;
     public static double INTAKE_FOURBAR_SCANNING = 0.6;
     public static double INTAKE_FOURBAR_LOW = 0.56;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.72;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.76;
     public static double INTAKE_FOURBAR_BETWEEN = 0.63;
     public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
