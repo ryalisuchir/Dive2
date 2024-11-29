@@ -24,12 +24,24 @@ public class DepositSubsystem extends SubsystemBase {
     }
 
     public void outtakeSlidesLoop(double powerInput) {
+//        double target = slidesTargetPosition;
+//        double error = target - rightLift.getCurrentPosition();
+//
+//        leftLift.setPower(error * powerInput);
+//        rightLift.setPower(error * powerInput);
+
+
         double target = slidesTargetPosition;
-        double error = target - rightLift.getCurrentPosition();
+        double error = 0;
+        double prevError = 0;
+        double derivative = 0;
 
-        leftLift.setPower(error * powerInput);
-        rightLift.setPower(error * powerInput);
-
+        error = target - rightLift.getCurrentPosition();
+        derivative = error - prevError;
+        double output = (powerInput * error) + (0.006 * derivative);
+        leftLift.setPower(output);
+        rightLift.setPower(output);
+        prevError = error;
 
 //
 //        if (rightLift.getCurrentPosition() < 0)  {

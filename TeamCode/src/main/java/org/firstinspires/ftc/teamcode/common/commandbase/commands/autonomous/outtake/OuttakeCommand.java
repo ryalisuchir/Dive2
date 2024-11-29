@@ -35,7 +35,7 @@ public class OuttakeCommand extends SequentialCommandGroup {
         } else if (liftPositionInput == Globals.LIFT_SPECIMEN_POS) {
             commandGroup.addCommands(
                     new ParallelCommandGroup(
-                            new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
+                            new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN),
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS)
                     )
             );

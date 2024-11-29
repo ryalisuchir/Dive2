@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class Intake4BarSubsystem extends SubsystemBase {
 
-    private final ServoImplEx intake4BarLeft, intake4BarRight;
+    public final ServoImplEx intake4BarLeft, intake4BarRight;
     public Globals.FourBarState fourBarState = Globals.FourBarState.RESTING;
 
     public Intake4BarSubsystem(ServoImplEx intake4BarLeftInput, ServoImplEx intake4BarRightInput) {

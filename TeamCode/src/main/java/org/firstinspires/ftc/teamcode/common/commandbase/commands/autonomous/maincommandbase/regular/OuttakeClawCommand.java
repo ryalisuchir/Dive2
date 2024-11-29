@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.maincommandbase.regular;
 
+import android.util.Log;
+
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -22,6 +24,7 @@ public class OuttakeClawCommand extends CommandBase {
 
     @Override
     public void initialize(){
+        Log.i( "Outtake Claw Command2: ", outtakeClawState.toString());
         switch (outtakeClawState) {
             case OPEN:
                 setPosition = Globals.OUTTAKE_CLAW_OPEN;
@@ -36,6 +39,7 @@ public class OuttakeClawCommand extends CommandBase {
                 outtakeClawSubsystem.outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
                 break;
         }
+        Log.i( "Outtake Claw Value: ", String.valueOf(outtakeClawSubsystem.outtakeClaw.getPosition()));
     }
 
     @Override

@@ -105,7 +105,7 @@ public class Globals {
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 980;
     public static int LIFT_SPECIMEN_DROP = 160;
-    public static int LIFT_RETRACT_POS = 0;
+    public static int LIFT_RETRACT_POS = 10;
     public static double LIFT_MAX_TOLERANCE = 5;
 
     public static double LIFT_P_SLOW = 0.009;
@@ -115,12 +115,12 @@ public class Globals {
     public static int EXTENDO_MAX_RETRACTION = 0;
     public static double EXTENDO_MAX_TOLERANCE = 5;
 
-    public static double EXTENDO_P_SLOW = 0.009;
+    public static double EXTENDO_P_SLOW = 0.006;
 
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.4;
-    public static double OUTTAKE_CLAW_TRANSFER = 0.4;
-    public static double OUTTAKE_CLAW_CLOSED = 0.05;
+    public static double OUTTAKE_CLAW_OPEN = 0.7;
+    public static double OUTTAKE_CLAW_TRANSFER = 0.7;
+    public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
     public static double OUTTAKE_ROTATION_TRANSFER = 0.60;
     public static double OUTTAKE_ROTATION_SPECIMEN = 0.60;

@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.Blue.Close;
 
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.AngularVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -54,36 +56,50 @@ public class CloseBasket4 extends OpMode {
 
         Action movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE_NEW)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00))
+                .splineToLinearHeading(
+                        new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00),
+                        new TranslationalVelConstraint(25)
+                )
                 .build();
 
         Action movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 54, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(48, 47.2, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(48, 47.2, Math.toRadians(90)), Math.toRadians(90)
+                )
                 .build();
 
         Action movement3 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(48, 47, Math.toRadians(90)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(
+                        new Pose2d(54, 53, Math.toRadians(45)), Math.toRadians(45)
+                )
                 .build();
 
         Action movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(59.5, 47, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(
+                        new Pose2d(59.5, 47, Math.toRadians(90)), Math.toRadians(90)
+                )
                 .build();
 
         Action movement5 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(58, 47, Math.toRadians(90)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(54, 55, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(
+                        new Pose2d(54, 55, Math.toRadians(45)), Math.toRadians(45)
+                )
                 .build();
 
         Action movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(53.5, 31.5, Math.toRadians(180)), Math.toRadians(40))
+                .splineToLinearHeading(
+                        new Pose2d(53.5, 31.5, Math.toRadians(180)), Math.toRadians(40)
+                )
                 .build();
 
         Action movement7 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(60, 27, Math.toRadians(0)))
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(52, 50, Math.toRadians(45)), Math.toRadians(45))
+                .splineToLinearHeading(
+                        new Pose2d(52, 50, Math.toRadians(45)), Math.toRadians(45)
+                )
                 .build();
 
         Action movement8 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(54, 53, Math.toRadians(45)))
@@ -113,7 +129,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement2, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(500),
+                        new WaitCommand(800),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -135,7 +151,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement4, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(400),
+                        new WaitCommand(800),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -147,7 +163,7 @@ public class CloseBasket4 extends OpMode {
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                         new WaitCommand(150),
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, 0.12, 400),
+                                new IntakeCommand(robot, 0.9, 400),
                                 new BucketDropCommand(robot),
                                 new WaitCommand(900)
                         ),
@@ -157,7 +173,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement6, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(150),
+                        new WaitCommand(800),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
