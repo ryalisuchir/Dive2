@@ -62,7 +62,7 @@ public class SubsystemTest extends CommandOpMode {
 
         if (gamepad1.circle) {
             schedule(
-                    new IntakeCommand(robot, 0.95, Globals.EXTENDO_MAX_EXTENSION)
+                    new IntakeCommand(robot, 0.39, Globals.EXTENDO_MAX_EXTENSION)
             );
         }
 
