@@ -20,7 +20,7 @@ public class TransferCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.CLOSED)),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.BETWEEN),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.TRANSFER)),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER, 0.95)),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER, 0.39)),
                         new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN),
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER)
