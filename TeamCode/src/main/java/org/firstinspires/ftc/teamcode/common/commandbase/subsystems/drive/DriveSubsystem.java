@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -16,7 +17,9 @@ public class DriveSubsystem extends SubsystemBase {
         fieldCentric = isFieldCentric;
     }
 
-    public Pose2d getPoseEstimate() {return new Pose2d(drive.pose.position, drive.pose.heading); }
+    public Pose2d getPoseEstimate() {
+        return new Pose2d(drive.pose.position, drive.pose.heading);
+    }
 
     public void updatePoseEstimate() {
         drive.updatePoseEstimate();

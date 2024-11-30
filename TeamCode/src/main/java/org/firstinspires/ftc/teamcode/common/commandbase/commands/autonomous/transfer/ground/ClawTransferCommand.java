@@ -6,9 +6,9 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.maincommandbase.regular.Intake4BarCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.maincommandbase.regular.OuttakeArmCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.maincommandbase.regular.OuttakeClawCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.Intake4BarCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeArmCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -22,7 +22,7 @@ public class ClawTransferCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                 new ParallelCommandGroup(
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
-                        new ScanningCommand(robot, 0.5, 0)
+                        new ScanningCommand(robot, 0.95, 0)
                 )
         );
     }

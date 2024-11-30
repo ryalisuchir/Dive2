@@ -101,7 +101,7 @@ public class Globals {
 
 
     // Lift Subsystem Constants
-    public static int LIFT_PARK_POS = 700;
+    public static int LIFT_PARK_POS = 800;
     public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 980;
@@ -141,13 +141,13 @@ public class Globals {
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0;
 
-    public static double INTAKE_ROTATION_REST = 0.5;
-    public static double INTAKE_ROTATION_TRANSFER = 0.5;
+    public static double INTAKE_ROTATION_REST = 0.95;
+    public static double INTAKE_ROTATION_TRANSFER = 0.95;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.565;
-    public static double INTAKE_FOURBAR_SCANNING = 0.6;
-    public static double INTAKE_FOURBAR_LOW = 0.56;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.76;
+    public static double INTAKE_FOURBAR_INTAKE = 0.48;
+    public static double INTAKE_FOURBAR_SCANNING = 0.59;
+    public static double INTAKE_FOURBAR_LOW = 0.52;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.74;
     public static double INTAKE_FOURBAR_BETWEEN = 0.63;
     public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
@@ -155,12 +155,13 @@ public class Globals {
     public static double INTAKE_COAXIAL_RESTING = 0.915;
     public static double INTAKE_COAXIAL_INTAKE = 0.15;
     public static double INTAKE_COAXIAL_SPECIMEN = 0.435;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.915;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.93;
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0.00));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270.00));
     public static Pose2d BLUE_CLOSE_START_POSE_NEW = new Pose2d(17, 64, Math.toRadians(90));
+    public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
 
     //Tele-Op Positions:
     public static double INTAKE_ROTATION_ZERO = 0.2;

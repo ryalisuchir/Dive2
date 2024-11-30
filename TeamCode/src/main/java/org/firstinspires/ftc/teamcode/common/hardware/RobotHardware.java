@@ -98,6 +98,9 @@ public class RobotHardware {
         intake4BarRight.setDirection(ServoImplEx.Direction.REVERSE);
         intakeCoaxialRight.setDirection(ServoImplEx.Direction.REVERSE);
 
+        outtakeArmRight.setPwmDisable();
+        intakeCoaxialRight.setPwmDisable();
+
         //Initializing all subsystems:
         intake4BarSubsystem = new Intake4BarSubsystem(intake4BarLeft, intake4BarRight);
         intakeClawSubsystem = new IntakeClawSubsystem(intakeClaw);

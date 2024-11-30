@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.maincommandbase.regular;
+package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
