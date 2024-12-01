@@ -81,7 +81,7 @@ public class MecanumDrive {
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
-        public double maxAngAccel = Math.PI;
+        public double maxAngAccel = 5; //This might screw everything up but it's okay! Was Math.PI before
 
         // path controller gains
         public double axialGain = 4.2;
