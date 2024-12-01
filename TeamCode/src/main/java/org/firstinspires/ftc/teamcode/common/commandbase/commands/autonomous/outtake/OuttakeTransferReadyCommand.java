@@ -13,11 +13,11 @@ public class OuttakeTransferReadyCommand extends SequentialCommandGroup {
     public OuttakeTransferReadyCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                        new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER),
-                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
-                        new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN_TRANSFER)
-                )
+                        new ParallelCommandGroup(
+                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER),
+                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
+                                new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN_TRANSFER)
+                        )
                 )
         );
     }

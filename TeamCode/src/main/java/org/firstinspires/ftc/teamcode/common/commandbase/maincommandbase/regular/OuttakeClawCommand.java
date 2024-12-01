@@ -3,11 +3,8 @@ package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regula
 import android.util.Log;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeClawSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 public class OuttakeClawCommand extends CommandBase {
@@ -23,8 +20,8 @@ public class OuttakeClawCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
-        Log.i( "Outtake Claw Command2: ", outtakeClawState.toString());
+    public void initialize() {
+        Log.i("Outtake Claw Command2: ", outtakeClawState.toString());
         switch (outtakeClawState) {
             case OPEN:
                 setPosition = Globals.OUTTAKE_CLAW_OPEN;
@@ -39,7 +36,7 @@ public class OuttakeClawCommand extends CommandBase {
                 outtakeClawSubsystem.outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
                 break;
         }
-        Log.i( "Outtake Claw Value: ", String.valueOf(outtakeClawSubsystem.outtakeClaw.getPosition()));
+        Log.i("Outtake Claw Value: ", String.valueOf(outtakeClawSubsystem.outtakeClaw.getPosition()));
     }
 
     @Override

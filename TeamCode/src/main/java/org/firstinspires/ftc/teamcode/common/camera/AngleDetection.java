@@ -19,8 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AngleDetection extends OpenCvPipeline
-{
+public class AngleDetection extends OpenCvPipeline {
 
     Mat ycrcbMat = new Mat();
     Mat cbMat = new Mat();
@@ -40,8 +39,7 @@ public class AngleDetection extends OpenCvPipeline
     static final Scalar BLUE = new Scalar(0, 0, 255);
     double cameraHeight = 45.72;
 
-    static class AnalyzedStone
-    {
+    static class AnalyzedStone {
         double angle;
         String color;
         Mat rvec;
@@ -57,8 +55,7 @@ public class AngleDetection extends OpenCvPipeline
     Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
     MatOfDouble distCoeffs = new MatOfDouble();
 
-    enum Stage
-    {
+    enum Stage {
         FINAL,
         YCrCb,
         MASKS,
@@ -70,8 +67,7 @@ public class AngleDetection extends OpenCvPipeline
 
     int stageNum = 0;
 
-    public AngleDetection()
-    {
+    public AngleDetection() {
         double fx = 800;
         double fy = 800;
         double cx = 320;
@@ -86,12 +82,10 @@ public class AngleDetection extends OpenCvPipeline
     }
 
     @Override
-    public void onViewportTapped()
-    {
+    public void onViewportTapped() {
         int nextStageNum = stageNum + 1;
 
-        if(nextStageNum >= stages.length)
-        {
+        if (nextStageNum >= stages.length) {
             nextStageNum = 0;
         }
 
@@ -99,41 +93,34 @@ public class AngleDetection extends OpenCvPipeline
     }
 
     @Override
-    public Mat processFrame(Mat input)
-    {
+    public Mat processFrame(Mat input) {
         internalStoneList.clear();
         findContours(input);
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
-        switch (stages[stageNum])
-        {
-            case YCrCb:
-            {
+        switch (stages[stageNum]) {
+            case YCrCb: {
                 return ycrcbMat;
             }
 
-            case FINAL:
-            {
+            case FINAL: {
                 return input;
             }
 
-            case MASKS:
-            {
+            case MASKS: {
                 Mat masks = new Mat();
                 Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
                 return masks;
             }
 
-            case MASKS_NR:
-            {
+            case MASKS_NR: {
                 Mat masksNR = new Mat();
                 Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
                 return masksNR;
             }
 
-            case CONTOURS:
-            {
+            case CONTOURS: {
                 return contoursOnPlainImageMat;
             }
         }
@@ -141,14 +128,12 @@ public class AngleDetection extends OpenCvPipeline
         return input;
     }
 
-    public ArrayList<AnalyzedStone> getDetectedStones()
-    {
+    public ArrayList<AnalyzedStone> getDetectedStones() {
         return clientStoneList;
     }
 
 
-    void morphMask(Mat input, Mat output)
-    {
+    void morphMask(Mat input, Mat output) {
         Imgproc.erode(input, output, erodeElement);
         Imgproc.erode(output, output, erodeElement);
 
@@ -260,8 +245,8 @@ public class AngleDetection extends OpenCvPipeline
 
 
     public MatOfPoint3f axisPoints;
-    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+
+    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         double axisLength = 5.0;
 
         axisPoints = new MatOfPoint3f(
@@ -306,8 +291,7 @@ public class AngleDetection extends OpenCvPipeline
         }
     }
 
-    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         double axisLength = 5.0;
 
         MatOfPoint3f axisPoints = new MatOfPoint3f(
@@ -325,15 +309,13 @@ public class AngleDetection extends OpenCvPipeline
         Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
     }
 
-    static Point[] orderPoints(Point[] pts)
-    {
+    static Point[] orderPoints(Point[] pts) {
         Point[] orderedPts = new Point[4];
 
         double[] sum = new double[4];
         double[] diff = new double[4];
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             sum[i] = pts[i].x + pts[i].y;
             diff[i] = pts[i].y - pts[i].x;
         }
@@ -353,15 +335,12 @@ public class AngleDetection extends OpenCvPipeline
         return orderedPts;
     }
 
-    static int indexOfMin(double[] array)
-    {
+    static int indexOfMin(double[] array) {
         int index = 0;
         double min = array[0];
 
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] < min)
-            {
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
                 min = array[i];
                 index = i;
             }
@@ -369,15 +348,12 @@ public class AngleDetection extends OpenCvPipeline
         return index;
     }
 
-    static int indexOfMax(double[] array)
-    {
+    static int indexOfMax(double[] array) {
         int index = 0;
         double max = array[0];
 
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] > max)
-            {
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
                 max = array[i];
                 index = i;
             }
@@ -385,8 +361,7 @@ public class AngleDetection extends OpenCvPipeline
         return index;
     }
 
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
         Scalar colorScalar = getColorScalar(color);
 
         Imgproc.putText(
@@ -401,21 +376,18 @@ public class AngleDetection extends OpenCvPipeline
                 1);
     }
 
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
-    {
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
         Point[] points = new Point[4];
         rect.points(points);
 
         Scalar colorScalar = getColorScalar(color);
 
-        for (int i = 0; i < 4; ++i)
-        {
+        for (int i = 0; i < 4; ++i) {
             Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
         }
     }
 
-    static Scalar getColorScalar(String color)
-    {
+    static Scalar getColorScalar(String color) {
         if (color.equals("Green")) {
             return new Scalar(0, 255, 0); // Green color
         }
@@ -446,7 +418,6 @@ public class AngleDetection extends OpenCvPipeline
             return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
-
 
 
     public double getGreenSampleArea() {

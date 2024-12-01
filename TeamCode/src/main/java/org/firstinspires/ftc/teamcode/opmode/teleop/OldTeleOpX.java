@@ -15,12 +15,12 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -96,7 +96,6 @@ public class OldTeleOpX extends CommandOpMode {
         }
 
 
-
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(() -> {
             double currentPosition = robot.intakeRotation.getPosition();
             double newPosition = Globals.INTAKE_ROTATION_ZERO +
@@ -121,7 +120,7 @@ public class OldTeleOpX extends CommandOpMode {
             robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
         }
 
-        if (extendoManualControl){
+        if (extendoManualControl) {
             robot.extendoSubsystem.extendoManualControlLoop(swethaController.left_stick_x);
         }
 
@@ -174,7 +173,7 @@ public class OldTeleOpX extends CommandOpMode {
 
         if (swethaController.triangle) {
             schedule(
-              new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
             );
         }
 
@@ -207,7 +206,7 @@ public class OldTeleOpX extends CommandOpMode {
         if (ahnafController.ps) {
             ahnafController.rumble(1000);
             swethaController.rumble(1000);
-            schedule (
+            schedule(
                     new AllSystemInitializeCommand(robot)
             );
         }
@@ -222,7 +221,7 @@ public class OldTeleOpX extends CommandOpMode {
 
         if (
                 robotPitch > 5 ||
-                robotPitch < -5
+                        robotPitch < -5
         ) {
 
             if (robotPitch > 5) {

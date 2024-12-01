@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OUTTAKE_ARM_SPECIMEN_LOWER;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeClawState.CLOSED;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -26,7 +22,7 @@ public class OuttakeArmSubsystem extends SubsystemBase {
         armState = Globals.OuttakeArmState.CUSTOM;
     }
 
-    public void update (Globals.OuttakeArmState outtakeArmStateInput) {
+    public void update(Globals.OuttakeArmState outtakeArmStateInput) {
         armState = outtakeArmStateInput; //Sets global position to the new outtake
         switch (outtakeArmStateInput) {
             case TRANSFER:

@@ -3,11 +3,8 @@ package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regula
 import android.util.Log;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 public class Intake4BarCommand extends CommandBase {
@@ -23,8 +20,8 @@ public class Intake4BarCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
-        Log.i( "Intake4Bar Command: ", fourBarState.toString());
+    public void initialize() {
+        Log.i("Intake4Bar Command: ", fourBarState.toString());
         switch (fourBarState) {
             case INTAKE:
                 setPosition = Globals.INTAKE_FOURBAR_INTAKE;
@@ -62,7 +59,7 @@ public class Intake4BarCommand extends CommandBase {
                 intake4BarSubsystem.intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
                 break;
         }
-        Log.i( "Intake4Bar Value: ", String.valueOf(intake4BarSubsystem.intake4BarRight.getPosition()));
+        Log.i("Intake4Bar Value: ", String.valueOf(intake4BarSubsystem.intake4BarRight.getPosition()));
     }
 
     @Override

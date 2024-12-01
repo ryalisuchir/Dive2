@@ -11,7 +11,7 @@ public class LinearRegression {
     private double b;
 
 
-    public LinearRegression(double [] y) {
+    public LinearRegression(double[] y) {
         this.y = y;
         x = new double[y.length];
         for (int i = 0; i < x.length; ++i) {
@@ -31,9 +31,9 @@ public class LinearRegression {
         for (double v : x) {
             x_squaredSum += Math.pow(v, 2);
         }
-        double m2 = n * x_squaredSum - Math.pow(Arrays.stream(x).sum(),2);
+        double m2 = n * x_squaredSum - Math.pow(Arrays.stream(x).sum(), 2);
 
-        m = m1/m2;
+        m = m1 / m2;
 
         b = Arrays.stream(y).sum() - m * Arrays.stream(x).sum();
         b /= n;
@@ -44,10 +44,6 @@ public class LinearRegression {
         System.out.println("in predict value, length is " + x.length + " m is " + m + " and b is " + b);
         return x.length * m + b;
     }
-
-
-
-
 
 
 }

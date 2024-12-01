@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.common.hardware;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -18,6 +19,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.Outt
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
+
+import java.util.List;
 
 public class RobotHardware {
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
@@ -41,8 +44,13 @@ public class RobotHardware {
     public PinpointDrive pinpointDrive;
 
     private double voltage = 0.0;
+    List<LynxModule> allHubs;
+
 
     public RobotHardware(HardwareMap hardwareMap, Pose2d initialPose) {
+        //Optimizing Loop Times:
+        allHubs = hardwareMap.getAll(LynxModule.class);
+
         //Configuration of all motors:
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -134,6 +142,13 @@ public class RobotHardware {
                 driveSubsystem
         );
     }
+
+    public void clearCache() {
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+    }
+
 
     public double getVoltage() {
         return voltage;

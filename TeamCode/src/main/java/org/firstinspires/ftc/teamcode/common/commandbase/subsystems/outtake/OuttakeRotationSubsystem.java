@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -21,7 +20,8 @@ public class OuttakeRotationSubsystem extends SubsystemBase {
         outtakeRotation.setPosition(rotationInput);
         outtakeRotationState = Globals.OuttakeRotationState.CUSTOM;
     }
-    public void update (Globals.OuttakeRotationState outtakeRotationStateInput) {
+
+    public void update(Globals.OuttakeRotationState outtakeRotationStateInput) {
         outtakeRotationState = outtakeRotationStateInput; //Sets global position to the new outtake
 
         switch (outtakeRotationStateInput) {

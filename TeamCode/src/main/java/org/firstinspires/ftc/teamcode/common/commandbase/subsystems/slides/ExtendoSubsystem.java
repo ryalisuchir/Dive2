@@ -24,10 +24,10 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
 
     public void currentLoop() {
-        if(extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() < extendoTargetPosition) {
+        if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() < extendoTargetPosition) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_EXTEND; //Hit another robot, will try again and then park if it doesn't work
             extendoState = REST;
-        } else if(extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+        } else if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() > extendoTargetPosition) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_RETRACT; //Internal problem
             extendoState = REST;
         }
@@ -44,16 +44,17 @@ public class ExtendoSubsystem extends SubsystemBase {
 //            extendoTargetPosition = 0;
 //        }
     }
+
     public void extendoManualControlLoop(double joystickInput) {
         if (
                 extendoMotor.getCurrentPosition() > Globals.EXTENDO_MAX_EXTENSION - Globals.EXTENDO_MAX_TOLERANCE ||
-                extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_RETRACTION + Globals.EXTENDO_MAX_TOLERANCE
+                        extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_RETRACTION + Globals.EXTENDO_MAX_TOLERANCE
         ) {
             extendoMotor.setPower(0);
         } else {
             extendoMotor.setPower(joystickInput);
         }
-        if (extendoMotor.getCurrentPosition() < 0)  {
+        if (extendoMotor.getCurrentPosition() < 0) {
             extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             extendoTargetPosition = 0;
         }

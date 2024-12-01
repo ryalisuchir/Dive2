@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.common.camera;
 
-import org.openftc.easyopencv.OpenCvPipeline;
-
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -10,17 +8,17 @@ import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
-import org.opencv.core.Point3;
 import org.opencv.core.Point;
+import org.opencv.core.Point3;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-public class BlueSampleDetection extends OpenCvPipeline
-{
+public class BlueSampleDetection extends OpenCvPipeline {
     /*
      * Our working image buffers
      */
@@ -52,8 +50,7 @@ public class BlueSampleDetection extends OpenCvPipeline
 
     static final int CONTOUR_LINE_THICKNESS = 2;
 
-    static class AnalyzedStone
-    {
+    static class AnalyzedStone {
         double angle;
         String color;
         Mat rvec;
@@ -72,8 +69,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     /*
      * Some stuff to handle returning our various buffers
      */
-    enum Stage
-    {
+    enum Stage {
         FINAL,
         YCrCb,
         MASKS,
@@ -86,8 +82,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     // Keep track of what stage the viewport is showing
     int stageNum = 0;
 
-    public BlueSampleDetection()
-    {
+    public BlueSampleDetection() {
         // Initialize camera parameters
         // Replace these values with your actual camera calibration parameters
 
@@ -109,12 +104,10 @@ public class BlueSampleDetection extends OpenCvPipeline
     }
 
     @Override
-    public void onViewportTapped()
-    {
+    public void onViewportTapped() {
         int nextStageNum = stageNum + 1;
 
-        if(nextStageNum >= stages.length)
-        {
+        if (nextStageNum >= stages.length) {
             nextStageNum = 0;
         }
 
@@ -122,8 +115,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     }
 
     @Override
-    public Mat processFrame(Mat input)
-    {
+    public Mat processFrame(Mat input) {
         // We'll be updating this with new data below
         internalStoneList.clear();
 
@@ -137,34 +129,28 @@ public class BlueSampleDetection extends OpenCvPipeline
         /*
          * Decide which buffer to send to the viewport
          */
-        switch (stages[stageNum])
-        {
-            case YCrCb:
-            {
+        switch (stages[stageNum]) {
+            case YCrCb: {
                 return ycrcbMat;
             }
 
-            case FINAL:
-            {
+            case FINAL: {
                 return input;
             }
 
-            case MASKS:
-            {
+            case MASKS: {
                 Mat masks = new Mat();
                 Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
                 return masks;
             }
 
-            case MASKS_NR:
-            {
+            case MASKS_NR: {
                 Mat masksNR = new Mat();
                 Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
                 return masksNR;
             }
 
-            case CONTOURS:
-            {
+            case CONTOURS: {
                 return contoursOnPlainImageMat;
             }
         }
@@ -172,13 +158,11 @@ public class BlueSampleDetection extends OpenCvPipeline
         return input;
     }
 
-    public ArrayList<AnalyzedStone> getDetectedStones()
-    {
+    public ArrayList<AnalyzedStone> getDetectedStones() {
         return clientStoneList;
     }
 
-    void findContours(Mat input)
-    {
+    void findContours(Mat input) {
         // Convert the input image to YCrCb color space
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
 
@@ -217,8 +201,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     }
 
 
-    void morphMask(Mat input, Mat output)
-    {
+    void morphMask(Mat input, Mat output) {
         /*
          * Apply some erosion and dilation for noise reduction
          */
@@ -231,8 +214,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     }
 
 
-    void analyzeContour(MatOfPoint contour, Mat input, String color)
-    {
+    void analyzeContour(MatOfPoint contour, Mat input, String color) {
         // Transform the contour to a different format
         Point[] points = contour.toArray();
         MatOfPoint2f contour2f = new MatOfPoint2f(points);
@@ -243,8 +225,7 @@ public class BlueSampleDetection extends OpenCvPipeline
 
         // The angle OpenCV gives us can be ambiguous, so adjust it
         double rotRectAngle = rotatedRectFitToContour.angle;
-        if (rotatedRectFitToContour.size.width < rotatedRectFitToContour.size.height)
-        {
+        if (rotatedRectFitToContour.size.width < rotatedRectFitToContour.size.height) {
             rotRectAngle += 90;
         }
 
@@ -286,8 +267,7 @@ public class BlueSampleDetection extends OpenCvPipeline
                 tvec
         );
 
-        if (success)
-        {
+        if (success) {
             // Draw only the largest area axis on the image
             drawLargestAreaAxis(input, rvec, tvec, cameraMatrix, distCoeffs);
 
@@ -301,8 +281,7 @@ public class BlueSampleDetection extends OpenCvPipeline
         }
     }
 
-    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         // Length of the axis lines
         double axisLength = 5.0;
 
@@ -362,8 +341,7 @@ public class BlueSampleDetection extends OpenCvPipeline
     }
 
 
-    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         // Length of the axis lines
         double axisLength = 5.0;
 
@@ -387,8 +365,7 @@ public class BlueSampleDetection extends OpenCvPipeline
 //        Imgproc.line(img, imgPts[0], imgPts[3], new Scalar(255, 0, 0), 2); // Z axis in blue
     }
 
-    static Point[] orderPoints(Point[] pts)
-    {
+    static Point[] orderPoints(Point[] pts) {
         // Orders the array of 4 points in the order: top-left, top-right, bottom-right, bottom-left
         Point[] orderedPts = new Point[4];
 
@@ -396,8 +373,7 @@ public class BlueSampleDetection extends OpenCvPipeline
         double[] sum = new double[4];
         double[] diff = new double[4];
 
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             sum[i] = pts[i].x + pts[i].y;
             diff[i] = pts[i].y - pts[i].x;
         }
@@ -421,15 +397,12 @@ public class BlueSampleDetection extends OpenCvPipeline
         return orderedPts;
     }
 
-    static int indexOfMin(double[] array)
-    {
+    static int indexOfMin(double[] array) {
         int index = 0;
         double min = array[0];
 
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] < min)
-            {
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
                 min = array[i];
                 index = i;
             }
@@ -437,15 +410,12 @@ public class BlueSampleDetection extends OpenCvPipeline
         return index;
     }
 
-    static int indexOfMax(double[] array)
-    {
+    static int indexOfMax(double[] array) {
         int index = 0;
         double max = array[0];
 
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] > max)
-            {
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
                 max = array[i];
                 index = i;
             }
@@ -453,8 +423,7 @@ public class BlueSampleDetection extends OpenCvPipeline
         return index;
     }
 
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
         Scalar colorScalar = getColorScalar(color);
 
         Imgproc.putText(
@@ -469,8 +438,7 @@ public class BlueSampleDetection extends OpenCvPipeline
                 1); // Font thickness
     }
 
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
-    {
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
         /*
          * Draws a rotated rect by drawing each of the 4 lines individually
          */
@@ -480,14 +448,12 @@ public class BlueSampleDetection extends OpenCvPipeline
 
         Scalar colorScalar = getColorScalar(color);
 
-        for (int i = 0; i < 4; ++i)
-        {
+        for (int i = 0; i < 4; ++i) {
             Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
         }
     }
 
-    static Scalar getColorScalar(String color)
-    {
+    static Scalar getColorScalar(String color) {
         return BLUE;
     }
 }

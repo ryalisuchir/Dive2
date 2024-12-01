@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.transfer.wall.TSpecimenTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -49,7 +47,7 @@ public class SubsystemTest extends CommandOpMode {
         robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
 
         if (gamepad1.ps) {
-            schedule (
+            schedule(
                     new AllSystemInitializeCommand(robot)
             );
         }
@@ -67,19 +65,19 @@ public class SubsystemTest extends CommandOpMode {
         }
 
         if (gamepad1.left_trigger > 0) {
-            schedule (
+            schedule(
                     new IntakeCommand(robot, 0.68, Globals.EXTENDO_MAX_EXTENSION)
             );
         }
 
         if (gamepad1.square) {
-            schedule (
+            schedule(
                     new SpecimenIntakeCommand(robot)
             );
         }
 
         if (gamepad1.triangle) {
-            schedule (
+            schedule(
                     new SpecimenGrabAndTransferCommand(robot)
             );
         }
@@ -101,7 +99,7 @@ public class SubsystemTest extends CommandOpMode {
         }
 
         if (gamepad1.left_bumper || gamepad1.right_bumper) {
-            schedule (
+            schedule(
                     new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
             );
         }

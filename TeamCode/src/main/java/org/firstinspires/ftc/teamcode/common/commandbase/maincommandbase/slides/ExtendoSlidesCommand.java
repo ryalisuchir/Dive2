@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
 
 public class ExtendoSlidesCommand extends CommandBase {
@@ -16,7 +15,7 @@ public class ExtendoSlidesCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
         extendoSubsystem.extendoSetPosition(extendoLength);
     }
 

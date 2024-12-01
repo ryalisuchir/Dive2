@@ -1,14 +1,24 @@
 package org.firstinspires.ftc.teamcode.common.camera;
 
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.calib3d.Calib3d;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfDouble;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfPoint3f;
+import org.opencv.core.Point;
+import org.opencv.core.Point3;
+import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
-public class RedSampleDetection extends OpenCvPipeline
-{
+public class RedSampleDetection extends OpenCvPipeline {
     /*
      * Our working image buffers
      */
@@ -38,8 +48,7 @@ public class RedSampleDetection extends OpenCvPipeline
 
     static final int CONTOUR_LINE_THICKNESS = 2;
 
-    static class AnalyzedStone
-    {
+    static class AnalyzedStone {
         double angle;
         String color;
         Mat rvec;
@@ -58,8 +67,7 @@ public class RedSampleDetection extends OpenCvPipeline
     /*
      * Some stuff to handle returning our various buffers
      */
-    enum Stage
-    {
+    enum Stage {
         FINAL,
         YCrCb,
         MASKS,
@@ -70,8 +78,7 @@ public class RedSampleDetection extends OpenCvPipeline
     Stage[] stages = Stage.values();
     int stageNum = 0;
 
-    public RedSampleDetection()
-    {
+    public RedSampleDetection() {
         // Initialize camera parameters
         double fx = 800; // Replace with your camera's focal length in pixels
         double fy = 800;
@@ -83,25 +90,21 @@ public class RedSampleDetection extends OpenCvPipeline
     }
 
     @Override
-    public void onViewportTapped()
-    {
+    public void onViewportTapped() {
         int nextStageNum = stageNum + 1;
-        if(nextStageNum >= stages.length)
-        {
+        if (nextStageNum >= stages.length) {
             nextStageNum = 0;
         }
         stageNum = nextStageNum;
     }
 
     @Override
-    public Mat processFrame(Mat input)
-    {
+    public Mat processFrame(Mat input) {
         internalStoneList.clear();
         findContours(input);
         clientStoneList = new ArrayList<>(internalStoneList);
 
-        switch (stages[stageNum])
-        {
+        switch (stages[stageNum]) {
             case YCrCb:
                 return ycrcbMat;
 
@@ -125,13 +128,11 @@ public class RedSampleDetection extends OpenCvPipeline
         return input;
     }
 
-    public ArrayList<AnalyzedStone> getDetectedStones()
-    {
+    public ArrayList<AnalyzedStone> getDetectedStones() {
         return clientStoneList;
     }
 
-    void findContours(Mat input)
-    {
+    void findContours(Mat input) {
         // Convert the input image to YCrCb color space
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);
 
@@ -166,16 +167,14 @@ public class RedSampleDetection extends OpenCvPipeline
         }
     }
 
-    void morphMask(Mat input, Mat output)
-    {
+    void morphMask(Mat input, Mat output) {
         Imgproc.erode(input, output, erodeElement);
         Imgproc.erode(output, output, erodeElement);
         Imgproc.dilate(output, output, dilateElement);
         Imgproc.dilate(output, output, dilateElement);
     }
 
-    void analyzeContour(MatOfPoint contour, Mat input, String color)
-    {
+    void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
         MatOfPoint2f contour2f = new MatOfPoint2f(points);
 
@@ -222,8 +221,7 @@ public class RedSampleDetection extends OpenCvPipeline
         }
     }
 
-    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         double axisLength = 5.0;
         MatOfPoint3f axisPoints = new MatOfPoint3f(
                 new Point3(0, 0, 0),
@@ -247,14 +245,12 @@ public class RedSampleDetection extends OpenCvPipeline
         }
     }
 
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
         Scalar colorScalar = getColorScalar(color);
         Imgproc.putText(mat, text, new Point(rect.center.x - 50, rect.center.y + 25), Imgproc.FONT_HERSHEY_PLAIN, 1, colorScalar, 1);
     }
 
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
-    {
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
         Point[] points = new Point[4];
         rect.points(points);
         Scalar colorScalar = getColorScalar(color);
@@ -263,8 +259,7 @@ public class RedSampleDetection extends OpenCvPipeline
         }
     }
 
-    static Scalar getColorScalar(String color)
-    {
+    static Scalar getColorScalar(String color) {
         return RED;
     }
 

@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 public class OuttakeArmCommand extends CommandBase {
@@ -20,7 +18,7 @@ public class OuttakeArmCommand extends CommandBase {
     }
 
     @Override
-    public void initialize(){
+    public void initialize() {
         switch (outtakeArmState) {
             case TRANSFER:
                 setPosition = Globals.OUTTAKE_ARM_TRANSFER;

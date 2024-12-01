@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous;
 
+import android.util.Log;
+
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -11,13 +13,14 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
@@ -25,11 +28,13 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
+
 @Autonomous
 public class CloseSpecimen1Basket3 extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
+    Globals.ExtendoFailState extendoFailState;
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
@@ -94,6 +99,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
 
     @Override
     public void init_loop() {
+        robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Close");
         telemetry.addData("Description: ", "1 Specimen, 3 Basket, Park");
@@ -188,6 +194,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
         );
 
     }
+
     @Override
     public void loop() {
         CommandScheduler.getInstance().run();
@@ -201,11 +208,17 @@ public class CloseSpecimen1Basket3 extends OpMode {
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
 
-        telemetry.addData("Deposit Slides Position: ", robot.rightLift.getCurrentPosition());
-        telemetry.addData("Extendo Slides Position: ", robot.extendoMotor.getCurrentPosition());
+        if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
+            Log.i("Extendo Failed:", "FAILED_EXTENSION");
+        }
+
+        if (extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
+            Log.i("Extendo Failed:", "FAILED_RETRACTION");
+        }
 
         loop = time;
         telemetry.update();
+        robot.clearCache();
     }
 
     @Override

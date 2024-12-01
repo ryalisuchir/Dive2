@@ -16,6 +16,7 @@ public class Globals {
         FAILED_EXTEND,
         FAILED_RETRACT
     }
+
     Globals.ExtendoFailState extendoFailState = ExtendoFailState.GOOD;
 
     public enum ExtendoState {
@@ -23,6 +24,7 @@ public class Globals {
         RETRACTING,
         REST
     }
+
     Globals.ExtendoState extendoState = ExtendoState.REST;
 
     public enum OuttakeState {
@@ -30,6 +32,7 @@ public class Globals {
         RETRACTING,
         REST
     }
+
     Globals.OuttakeState outtakeState = OuttakeState.REST;
 
     //Intake States:
@@ -40,6 +43,7 @@ public class Globals {
         SPECIMEN,
         OPEN_TRANSFER
     }
+
     Globals.IntakeClawState intakeClawState = IntakeClawState.CLOSED;
 
     public enum IntakeRotationState {
@@ -47,6 +51,7 @@ public class Globals {
         REST,
         TRANSFER
     }
+
     Globals.IntakeRotationState intakeRotationState = IntakeRotationState.TRANSFER;
 
     public enum IntakeCoaxialState {
@@ -56,6 +61,7 @@ public class Globals {
         SPECIMEN,
         INTAKE
     }
+
     Globals.IntakeCoaxialState intakeCoaxialState = IntakeCoaxialState.REST;
 
     public enum FourBarState {
@@ -68,6 +74,7 @@ public class Globals {
         BETWEEN,
         SPECIMEN
     }
+
     Globals.FourBarState fourBarState = FourBarState.RESTING;
 
     //Outtake States:
@@ -77,6 +84,7 @@ public class Globals {
         CLOSED,
         OPEN_TRANSFER
     }
+
     Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
 
     public enum OuttakeRotationState {
@@ -85,6 +93,7 @@ public class Globals {
         TRANSFER,
         SPECIMEN
     }
+
     Globals.OuttakeRotationState outtakeRotationState = OuttakeRotationState.TRANSFER;
 
     public enum OuttakeArmState {
@@ -97,6 +106,7 @@ public class Globals {
         SPECIMEN_INTAKE,
         SPECIMEN_OUTTAKE
     }
+
     Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
 
 

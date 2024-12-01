@@ -4,7 +4,19 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.reflection.ReflectionConfig;
 import com.acmerobotics.roadrunner.MotorFeedforward;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ftc.*;
+import com.acmerobotics.roadrunner.ftc.AngularRampLogger;
+import com.acmerobotics.roadrunner.ftc.DeadWheelDirectionDebugger;
+import com.acmerobotics.roadrunner.ftc.DriveType;
+import com.acmerobotics.roadrunner.ftc.DriveView;
+import com.acmerobotics.roadrunner.ftc.DriveViewFactory;
+import com.acmerobotics.roadrunner.ftc.Encoder;
+import com.acmerobotics.roadrunner.ftc.ForwardPushTest;
+import com.acmerobotics.roadrunner.ftc.ForwardRampLogger;
+import com.acmerobotics.roadrunner.ftc.LateralPushTest;
+import com.acmerobotics.roadrunner.ftc.LateralRampLogger;
+import com.acmerobotics.roadrunner.ftc.ManualFeedforwardTuner;
+import com.acmerobotics.roadrunner.ftc.MecanumMotorDirectionDebugger;
+import com.acmerobotics.roadrunner.ftc.PinpointEncoder;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -26,7 +38,8 @@ public final class TuningOpModes {
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
 
-    private TuningOpModes() {}
+    private TuningOpModes() {
+    }
 
     private static OpModeMeta metaForClass(Class<? extends OpMode> cls) {
         return new OpModeMeta.Builder()
@@ -42,40 +55,40 @@ public final class TuningOpModes {
 
         DriveViewFactory dvf;
         if (DRIVE_CLASS.equals(PinpointDrive.class)) {
-                dvf = hardwareMap -> {
-                    PinpointDrive pd = new PinpointDrive(hardwareMap, new Pose2d(0, 0, 0));
+            dvf = hardwareMap -> {
+                PinpointDrive pd = new PinpointDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-                    List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
-                    List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
-                    parEncs.add(new PinpointEncoder(pd.pinpoint,false, pd.leftBack));
-                    perpEncs.add(new PinpointEncoder(pd.pinpoint,true, pd.leftBack));
+                List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
+                List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
+                parEncs.add(new PinpointEncoder(pd.pinpoint, false, pd.leftBack));
+                perpEncs.add(new PinpointEncoder(pd.pinpoint, true, pd.leftBack));
 
-                    return new DriveView(
-                            DriveType.MECANUM,
-                            MecanumDrive.PARAMS.inPerTick,
-                            MecanumDrive.PARAMS.maxWheelVel,
-                            MecanumDrive.PARAMS.minProfileAccel,
-                            MecanumDrive.PARAMS.maxProfileAccel,
-                            hardwareMap.getAll(LynxModule.class),
-                            Arrays.asList(
-                                    pd.leftFront,
-                                    pd.leftBack
-                            ),
-                            Arrays.asList(
-                                    pd.rightFront,
-                                    pd.rightBack
-                            ),
-                            leftEncs,
-                            rightEncs,
-                            parEncs,
-                            perpEncs,
-                            pd.lazyImu,
-                            pd.voltageSensor,
-                            () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
-                                    MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
-                                    MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
-                    );
-                };
+                return new DriveView(
+                        DriveType.MECANUM,
+                        MecanumDrive.PARAMS.inPerTick,
+                        MecanumDrive.PARAMS.maxWheelVel,
+                        MecanumDrive.PARAMS.minProfileAccel,
+                        MecanumDrive.PARAMS.maxProfileAccel,
+                        hardwareMap.getAll(LynxModule.class),
+                        Arrays.asList(
+                                pd.leftFront,
+                                pd.leftBack
+                        ),
+                        Arrays.asList(
+                                pd.rightFront,
+                                pd.rightBack
+                        ),
+                        leftEncs,
+                        rightEncs,
+                        parEncs,
+                        perpEncs,
+                        pd.lazyImu,
+                        pd.voltageSensor,
+                        () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
+                                MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+                                MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
+                );
+            };
         } else {
             throw new RuntimeException();
         }

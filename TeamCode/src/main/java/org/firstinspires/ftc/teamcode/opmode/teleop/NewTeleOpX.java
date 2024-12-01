@@ -4,24 +4,12 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.TAllSystemRestCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.intake.TPeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.transfer.ground.TTransferCommand;
@@ -62,19 +50,19 @@ public class NewTeleOpX extends CommandOpMode {
         //Ahnaf Controls:
 
         ahnafButtonController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
-          new TPeckerCommand(
-                  robot,
-                  Globals.INTAKE_FOURBAR_LOW //fourbar position for the drop as it grabs
-          ));
+                new TPeckerCommand(
+                        robot,
+                        Globals.INTAKE_FOURBAR_LOW //fourbar position for the drop as it grabs
+                ));
 
 
         ahnafButtonController.getGamepadButton(GamepadKeys.Button.A).whenPressed( //x
                 new TTransferCommand(
-                    robot,
-                    Globals.INTAKE_FOURBAR_TRANSFER
+                        robot,
+                        Globals.INTAKE_FOURBAR_TRANSFER
                 ));
 
-        }
+    }
 
     @Override
     public void run() {
@@ -98,7 +86,7 @@ public class NewTeleOpX extends CommandOpMode {
         if (ahnafController.ps) {
             ahnafController.rumble(1000);
             swethaController.rumble(1000);
-            schedule (
+            schedule(
                     new TAllSystemRestCommand(
                             robot,
                             Globals.INTAKE_CLAW_OPEN, //intakeClawInput
