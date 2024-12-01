@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.ExtendoSlidesCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 public class TransferCommand extends SequentialCommandGroup {
     public TransferCommand(RobotHardware robot) {

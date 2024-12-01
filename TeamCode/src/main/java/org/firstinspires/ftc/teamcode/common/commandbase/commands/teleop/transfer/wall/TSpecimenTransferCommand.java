@@ -5,8 +5,9 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals;
 
 public class TSpecimenTransferCommand extends SequentialCommandGroup {
     public TSpecimenTransferCommand(
@@ -16,7 +17,7 @@ public class TSpecimenTransferCommand extends SequentialCommandGroup {
         super(
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
                 new WaitCommand(waitMillisecondsInput),
-                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+                new OuttakeCommand(robot, TeleOpGlobals.LIFT_SPECIMEN_POS)
         );
     }
 }

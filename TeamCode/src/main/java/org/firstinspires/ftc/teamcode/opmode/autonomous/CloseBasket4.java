@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 import java.util.Collections;
 
@@ -40,7 +40,7 @@ public class CloseBasket4 extends OpMode {
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        robot = new RobotHardware(hardwareMap, Globals.BLUE_CLOSE_START_POSE_NEW);
+        robot = new RobotHardware(hardwareMap, Globals.BLUE_CLOSE_START_POSE_NEW, true);
 
         telemetry.addData("Ready: ", "Initialized subsystems.");
         telemetry.update();

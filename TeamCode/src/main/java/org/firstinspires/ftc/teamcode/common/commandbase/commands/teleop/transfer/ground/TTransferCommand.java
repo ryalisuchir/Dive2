@@ -5,15 +5,15 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.TransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleop.intake.TScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.Intake4BarCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.ExtendoSlidesCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals;
 
 public class TTransferCommand extends SequentialCommandGroup {
     public TTransferCommand(
@@ -24,7 +24,7 @@ public class TTransferCommand extends SequentialCommandGroup {
         super(
                 //Transfer Command:
                 new ParallelCommandGroup(
-                        new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
+                        new ExtendoSlidesCommand(robot.extendoSubsystem, TeleOpGlobals.EXTENDO_MAX_RETRACTION),
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.CLOSED)),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.BETWEEN),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.intakeCoaxialCustom(coaxialInput)),
@@ -43,7 +43,14 @@ public class TTransferCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                         new ParallelCommandGroup(
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
-                                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, 0)
+                                new TScanningCommand(
+                                        robot,
+                                        TeleOpGlobals.INTAKE_CLAW_OPEN,
+                                        TeleOpGlobals.INTAKE_FOURBAR_SCANNING,
+                                        TeleOpGlobals.INTAKE_COAXIAL_INTAKE,
+                                        TeleOpGlobals.INTAKE_ROTATION_REST,
+                                        TeleOpGlobals.EXTENDO_MAX_RETRACTION
+                                )
                         )
                 )
         );

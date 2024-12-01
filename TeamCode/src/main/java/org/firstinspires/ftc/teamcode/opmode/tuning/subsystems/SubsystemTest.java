@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 @TeleOp
 public class SubsystemTest extends CommandOpMode {
@@ -26,7 +26,7 @@ public class SubsystemTest extends CommandOpMode {
 
     @Override
     public void initialize() {
-        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, true);
     }
 
     @Override

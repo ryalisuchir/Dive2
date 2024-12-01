@@ -5,8 +5,9 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.DepositSlidesCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals;
 
 public class TSpecimenIntakeCommand extends SequentialCommandGroup {
     public TSpecimenIntakeCommand(
@@ -15,7 +16,7 @@ public class TSpecimenIntakeCommand extends SequentialCommandGroup {
     ) {
         super(
                 new ParallelCommandGroup(
-                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
+                        new DepositSlidesCommand(robot.depositSubsystem, TeleOpGlobals.LIFT_RETRACT_POS),
                         new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.SPECIMEN_INTAKE))
                 ),
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawOpen())

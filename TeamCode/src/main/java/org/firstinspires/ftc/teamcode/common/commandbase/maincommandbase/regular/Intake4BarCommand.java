@@ -5,7 +5,7 @@ import android.util.Log;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 
 public class Intake4BarCommand extends CommandBase {
     Intake4BarSubsystem intake4BarSubsystem;

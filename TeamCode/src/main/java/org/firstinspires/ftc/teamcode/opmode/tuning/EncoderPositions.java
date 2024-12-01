@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 
 @Autonomous
@@ -21,7 +21,7 @@ public class EncoderPositions extends OpMode {
 
     @Override
     public void init() {
-        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, true);
 
         telemetry.addData("Ready: ", "Initialized robot.");
         telemetry.update();

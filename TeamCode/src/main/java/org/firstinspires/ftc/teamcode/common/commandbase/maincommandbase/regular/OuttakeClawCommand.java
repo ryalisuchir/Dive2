@@ -5,7 +5,7 @@ import android.util.Log;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeClawSubsystem;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 
 public class OuttakeClawCommand extends CommandBase {
     OuttakeClawSubsystem outtakeClawSubsystem;

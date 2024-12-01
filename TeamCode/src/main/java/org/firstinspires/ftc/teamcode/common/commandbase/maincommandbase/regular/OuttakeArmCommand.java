@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regula
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 
 public class OuttakeArmCommand extends CommandBase {
     OuttakeArmSubsystem outtakeArmSubsystem;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.hardware;
+package org.firstinspires.ftc.teamcode.common.hardware.auto;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
@@ -45,7 +45,7 @@ public class RobotHardware {
     List<LynxModule> allHubs;
 
 
-    public RobotHardware(HardwareMap hardwareMap, Pose2d initialPose) {
+    public RobotHardware(HardwareMap hardwareMap, Pose2d initialPose, boolean autoBoolean) {
         //Optimizing Loop Times:
         allHubs = hardwareMap.getAll(LynxModule.class);
 
@@ -77,9 +77,11 @@ public class RobotHardware {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //Resetting encoders (RR will take care of drivetrain motors):
-        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (autoBoolean) {
+            leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
 
         //Creating a P Controller requires these motors to be run without an encoder:
         leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

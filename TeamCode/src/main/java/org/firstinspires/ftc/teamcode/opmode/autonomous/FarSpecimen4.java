@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
-import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 import java.util.Collections;
 
@@ -39,7 +39,7 @@ public class FarSpecimen4 extends OpMode {
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        robot = new RobotHardware(hardwareMap, Globals.BLUE_FAR_START_POSE);
+        robot = new RobotHardware(hardwareMap, Globals.BLUE_FAR_START_POSE, true);
 
         telemetry.addData("Ready: ", "Initialized subsystems.");
         telemetry.update();

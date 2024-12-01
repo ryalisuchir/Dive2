@@ -1,15 +1,15 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeState.EXTENDING;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeState.REST;
-import static org.firstinspires.ftc.teamcode.common.hardware.Globals.OuttakeState.RETRACTING;
+import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.OuttakeState.EXTENDING;
+import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.OuttakeState.REST;
+import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.OuttakeState.RETRACTING;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 
 @Config
 public class DepositSubsystem extends SubsystemBase {

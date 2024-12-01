@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.hardware;
+package org.firstinspires.ftc.teamcode.common.hardware.auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -170,8 +170,4 @@ public class Globals {
     public static Pose2d BLUE_CLOSE_START_POSE_NEW = new Pose2d(17, 64, Math.toRadians(90));
     public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
 
-    //Tele-Op Positions:
-    public static double INTAKE_ROTATION_ZERO = 0.2;
-    public static double INTAKE_ROTATION_MAX = 0.8;
-    public static double INTAKE_ROTATION_INCREMENT = 0.25;
 }
