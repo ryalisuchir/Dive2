@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlideParkCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -110,18 +110,16 @@ public class CloseBasket4 extends OpMode {
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 )
                         ),
-                        new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.39, 1000),
                                 new BucketDropCommand(robot)
                         ),
-                        new WaitCommand(150),
                         //First Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(900),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -131,18 +129,16 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Second Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.39, 1000),
                                 new BucketDropCommand(robot)
                         ),
-                        new WaitCommand(150),
                         //Second Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(800),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -152,18 +148,16 @@ public class CloseBasket4 extends OpMode {
                         ),
                         //Third Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                        new WaitCommand(150),
                         new ParallelCommandGroup(
                                 new IntakeCommand(robot, 0.68, 400),
                                 new BucketDropCommand(robot)
                         ),
-                        new WaitCommand(150),
                         //Fourth Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement6A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(800),
+                        new WaitCommand(250),
                         new ParallelCommandGroup(
                                 new SlowCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -174,7 +168,6 @@ public class CloseBasket4 extends OpMode {
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                         new BucketDropCommand(robot),
-                        new WaitCommand(150),
                         //Park
                         new ParallelCommandGroup(
                                 new SlideParkCommand(robot),
@@ -192,7 +185,7 @@ public class CloseBasket4 extends OpMode {
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
-        telemetry.addLine("Currently running: 1+3 (4 High Basket)");
+        telemetry.addLine("Currently running: 0+4 (4 High Basket)");
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);

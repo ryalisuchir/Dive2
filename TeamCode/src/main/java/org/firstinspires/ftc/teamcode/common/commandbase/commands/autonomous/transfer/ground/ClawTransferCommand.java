@@ -22,7 +22,7 @@ public class ClawTransferCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                 new ParallelCommandGroup(
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
-                        new ScanningCommand(robot, 0.95, 0)
+                        new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, 0)
                 )
         );
     }

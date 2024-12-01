@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlideParkCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
@@ -96,7 +96,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
     public void init_loop() {
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Close");
-        telemetry.addData("Description: ", "4 Basket, Park");
+        telemetry.addData("Description: ", "1 Specimen, 3 Basket, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -196,7 +196,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
-        telemetry.addLine("Currently running: 1+3 (4 High Basket)");
+        telemetry.addLine("Currently running: 1+3 (1 Specimen 3 High Basket)");
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);

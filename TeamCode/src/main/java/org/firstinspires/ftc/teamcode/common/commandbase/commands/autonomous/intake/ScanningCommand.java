@@ -20,7 +20,7 @@ public class ScanningCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, intakeRotation)),
                         //Prevents intake stuff from getting stuck:
                         new SequentialCommandGroup(
-                                new WaitCommand(100),
+                                new WaitCommand(150),
                                 new ExtendoSlidesCommand(robot.extendoSubsystem, extendoPosition)
                         )
                 )

@@ -229,7 +229,7 @@ public class FarSpecimen4 extends OpMode {
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
-        telemetry.addLine("Currently running: 1+3 (4 High Basket)");
+        telemetry.addLine("Currently running: 4+0 (4 Specimen)");
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
