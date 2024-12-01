@@ -133,10 +133,6 @@ public class Globals {
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
-    public static double OUTTAKE_ROTATION_TRANSFER = 0.60;
-    public static double OUTTAKE_ROTATION_SPECIMEN = 0.60;
-    public static double OUTTAKE_ROTATION_EXIT = 0.60;
-
     public static double OUTTAKE_ARM_TRANSFER = 0.04;
     public static double OUTTAKE_ARM_RAISING = 0.446;
     public static double OUTTAKE_ARM_BUCKET = 0.63;

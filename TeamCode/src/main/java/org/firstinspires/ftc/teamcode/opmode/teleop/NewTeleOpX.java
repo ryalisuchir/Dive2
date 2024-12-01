@@ -96,7 +96,6 @@ public class NewTeleOpX extends CommandOpMode {
                             0, //extendoPositionInput
                             0, //depositPositionInput
                             Globals.OUTTAKE_CLAW_OPEN, //outtakeClawInput
-                            Globals.OUTTAKE_ROTATION_TRANSFER, //outtakeRotationInput
                             Globals.OUTTAKE_ARM_TRANSFER //outtakeArmInput
                     )
             );

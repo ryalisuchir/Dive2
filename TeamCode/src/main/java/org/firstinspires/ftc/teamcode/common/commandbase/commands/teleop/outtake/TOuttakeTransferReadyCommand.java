@@ -11,14 +11,12 @@ public class TOuttakeTransferReadyCommand extends SequentialCommandGroup {
             RobotHardware robot,
             double outtakeArmInput,
             double depositSlidesInput,
-            double outtakeRotationInput,
             double outtakeClawInput
     ) {
         super(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmCustom(outtakeArmInput)),
                         new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(depositSlidesInput)),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.outtakeRotationCustom(outtakeRotationInput)),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawCustom(outtakeClawInput))
                 )
         );

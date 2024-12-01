@@ -17,7 +17,6 @@ public class TAllSystemRestCommand extends SequentialCommandGroup {
             double extendoPositionInput,
             double depositPositionInput,
             double outtakeClawInput,
-            double outtakeRotationInput,
             double outtakeArmInput
     ) {
         super(
@@ -29,7 +28,6 @@ public class TAllSystemRestCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.extendoSubsystem.extendoSetPosition(extendoPositionInput)),
                         new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(depositPositionInput)),
                         new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawCustom(outtakeClawInput)),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.outtakeRotationCustom(outtakeRotationInput)),
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmCustom(outtakeArmInput))
                 )
         );

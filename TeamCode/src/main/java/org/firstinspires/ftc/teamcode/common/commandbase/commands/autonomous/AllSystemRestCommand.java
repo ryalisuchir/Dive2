@@ -22,7 +22,6 @@ public class AllSystemRestCommand extends SequentialCommandGroup {
                         new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
                         new InstantCommand(() -> robot.depositSubsystem.outtakeRetract()),
                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN_TRANSFER),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.TRANSFER)),
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER)
                 )
         );

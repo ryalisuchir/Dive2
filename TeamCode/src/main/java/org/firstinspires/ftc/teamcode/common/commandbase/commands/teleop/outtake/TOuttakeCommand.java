@@ -10,14 +10,12 @@ public class TOuttakeCommand extends SequentialCommandGroup {
     public TOuttakeCommand(
             RobotHardware robot,
             double liftPositionInput,
-            double outtakeArmInput,
-            double outtakeRotationInput
+            double outtakeArmInput
     ) {
         super(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmCustom(outtakeArmInput)),
-                        new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(liftPositionInput)),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.outtakeRotationCustom(outtakeRotationInput))
+                        new InstantCommand(() -> robot.depositSubsystem.outtakeSetPosition(liftPositionInput))
                 )
         );
     }

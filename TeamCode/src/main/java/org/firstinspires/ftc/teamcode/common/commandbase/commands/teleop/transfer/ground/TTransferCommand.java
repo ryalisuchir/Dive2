@@ -5,29 +5,45 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.TransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.Intake4BarCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeArmCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.regular.OuttakeClawCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.DepositSlidesCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.ExtendoSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class TTransferCommand extends SequentialCommandGroup {
     public TTransferCommand(
             RobotHardware robot,
-            double intakeFourBarInput
+            double intakeFourBarInput,
+            double coaxialInput
     ) {
         super(
+                //Transfer Command:
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
-                        new WaitCommand(350),
-                        new TransferCommand(robot),
-                        new WaitCommand(750),
+                        new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
+                        new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.CLOSED)),
+                        new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.BETWEEN),
+                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.intakeCoaxialCustom(coaxialInput)),
+                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER, Globals.INTAKE_ROTATION_REST)),
+                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
+                        new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN),
+                        new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER)
+                ),
+                new WaitCommand(50),
+                //Claw Transfer Command:
+                new SequentialCommandGroup(
                         new InstantCommand(() -> robot.intake4BarSubsystem.intake4BarCustom(intakeFourBarInput)),
                         new WaitCommand(100),
-                        new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawClosed()),
-                        new WaitCommand(75),
+                        new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.CLOSED),
+                        new WaitCommand(300),
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()),
                         new ParallelCommandGroup(
-                                new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING)),
-                                new InstantCommand(() -> robot.intake4BarSubsystem.update(Globals.FourBarState.BETWEEN))
+                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
+                                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, 0)
                         )
                 )
         );

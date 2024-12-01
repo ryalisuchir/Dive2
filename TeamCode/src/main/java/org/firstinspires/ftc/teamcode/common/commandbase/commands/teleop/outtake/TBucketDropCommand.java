@@ -15,9 +15,9 @@ public class TBucketDropCommand extends SequentialCommandGroup {
     ) {
         super(
                 new InstantCommand(() -> robot.outtakeArmSubsystem.outtakeArmCustom(outtakeArmInput)),
-                new WaitCommand(70),
+                new WaitCommand(100),
                 new InstantCommand(() -> robot.outtakeClawSubsystem.outtakeClawCustom(outtakeClawInput)),
-                new WaitCommand(600),
+                new WaitCommand(100),
                 new InstantCommand(() -> robot.outtakeArmSubsystem.update(Globals.OuttakeArmState.RAISING))
         );
     }

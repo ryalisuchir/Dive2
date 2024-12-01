@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intak
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.IntakeRotationSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeArmSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeClawSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.outtake.OuttakeRotationSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
 import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
@@ -37,7 +36,6 @@ public class RobotHardware {
     public IntakeRotationSubsystem intakeRotationSubsystem;
     public OuttakeArmSubsystem outtakeArmSubsystem;
     public OuttakeClawSubsystem outtakeClawSubsystem;
-    public OuttakeRotationSubsystem outtakeRotationSubsystem;
     public DepositSubsystem depositSubsystem;
     public ExtendoSubsystem extendoSubsystem;
     public DriveSubsystem driveSubsystem;
@@ -116,7 +114,6 @@ public class RobotHardware {
         intakeRotationSubsystem = new IntakeRotationSubsystem(intakeRotation);
         outtakeArmSubsystem = new OuttakeArmSubsystem(outtakeArmLeft, outtakeArmRight);
         outtakeClawSubsystem = new OuttakeClawSubsystem(outtakeClaw);
-        outtakeRotationSubsystem = new OuttakeRotationSubsystem(outtakeRotation);
         depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
 
@@ -134,7 +131,6 @@ public class RobotHardware {
                 //Outtakes:
                 outtakeArmSubsystem,
                 outtakeClawSubsystem,
-                outtakeRotationSubsystem,
                 //Slides:
                 depositSubsystem,
                 extendoSubsystem,

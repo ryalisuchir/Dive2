@@ -23,7 +23,6 @@ public class AllSystemInitializeCommand extends SequentialCommandGroup {
                         new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
                         new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),
                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.CLOSED),
-                        new InstantCommand(() -> robot.outtakeRotationSubsystem.update(Globals.OuttakeRotationState.EXIT)),
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING)
                 )
         );
