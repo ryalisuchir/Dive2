@@ -101,7 +101,7 @@ public class Globals {
 
 
     // Lift Subsystem Constants
-    public static int LIFT_PARK_POS = 800;
+    public static int LIFT_PARK_POS = 710;
     public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 960;
