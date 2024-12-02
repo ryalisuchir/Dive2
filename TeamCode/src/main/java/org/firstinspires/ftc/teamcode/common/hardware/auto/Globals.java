@@ -115,7 +115,7 @@ public class Globals {
     public static int LIFT_HIGH_POS = 2600;
     public static int LIFT_MID_POS = 1400;
     public static int LIFT_SPECIMEN_POS = 960;
-    public static int LIFT_SPECIMEN_DROP = 160;
+    public static int LIFT_SPECIMEN_DROP = 185;
     public static int LIFT_RETRACT_POS = -5;
     public static double LIFT_MAX_TOLERANCE = 5;
 
@@ -133,14 +133,14 @@ public class Globals {
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
-    public static double OUTTAKE_ARM_TRANSFER = 0.04;
-    public static double OUTTAKE_ARM_RAISING = 0.446;
-    public static double OUTTAKE_ARM_BUCKET = 0.63;
-    public static double OUTTAKE_ARM_DUNK = 0.62;
-    public static double OUTTAKE_ARM_INTAKE = 0.75;
+    public static double OUTTAKE_ARM_TRANSFER = 0.08;
+    public static double OUTTAKE_ARM_RAISING = 0.46;
+    public static double OUTTAKE_ARM_BUCKET = 0.66;
+    public static double OUTTAKE_ARM_DUNK = 0.76;
+    public static double OUTTAKE_ARM_INTAKE = 0.8;
 
-    public static double OUTTAKE_ARM_SPECIMEN = 0.66;
-    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.76;
+    public static double OUTTAKE_ARM_SPECIMEN = 0.69;
+    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.8;
 
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
@@ -155,7 +155,7 @@ public class Globals {
     public static double INTAKE_FOURBAR_SCANNING = 0.59;
     public static double INTAKE_FOURBAR_LOW = 0.52;
     public static double INTAKE_FOURBAR_TRANSFER = 0.74;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.60;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.55;
     public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
 

@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
@@ -49,7 +50,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_CLOSE_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE)
-                .splineToLinearHeading(new Pose2d(7.23, 31.78, Math.toRadians(270.00)), Math.toRadians(270));
+                .splineToLinearHeading(new Pose2d(7.23, 31, Math.toRadians(270.00)), Math.toRadians(270));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
@@ -63,7 +64,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(70, 48, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(69.4, 48, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -73,7 +74,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(63, 32.6, Math.toRadians(180)), Math.toRadians(40));
+                        new Pose2d(62.3, 32.6, Math.toRadians(180)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -120,7 +121,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
                                         new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                                 )
                         ),
-                        new SpecimenClipCommand(robot),
+                        new SlowerSpecimenClipCommand(robot),
                         new WaitCommand(150),
                         //First Intake:
                         new ParallelCommandGroup(
@@ -143,7 +144,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                         new WaitCommand(150),
                         new ParallelCommandGroup(
-                                new IntakeCommand(robot, 0.39, 950),
+                                new IntakeCommand(robot, 0.39, 900),
                                 new BucketDropCommand(robot)
                         ),
                         new WaitCommand(150),
@@ -152,7 +153,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(800),
+                        new WaitCommand(900),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -173,7 +174,7 @@ public class CloseSpecimen1Basket3 extends OpMode {
                                 new ActionCommand(movement6A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(800),
+                        new WaitCommand(900),
                         new ParallelCommandGroup(
                                 new SlowCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(

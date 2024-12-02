@@ -29,7 +29,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals;
 
 @TeleOp
-public class NewTeleOpX extends CommandOpMode {
+public class teleopAHNAFFFF extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;
@@ -62,14 +62,14 @@ public class NewTeleOpX extends CommandOpMode {
 
         //Ahnaf Controls:
 
-        ahnafButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+        swethaButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex + 1) % intakeRotationPositions.length;
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        ahnafButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+        swethaButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex - 1 + intakeRotationPositions.length) % intakeRotationPositions.length; // Wrap to the end
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
@@ -107,50 +107,50 @@ public class NewTeleOpX extends CommandOpMode {
                 ));
 
         ahnafButtonController.getGamepadButton(GamepadKeys.Button.Y).whenPressed( //triangle
-           new TBucketDropCommand(
-                   robot,
-                   TeleOpGlobals.OUTTAKE_ARM_DUNK, //how low outtake arm should drop into bucket
-                   TeleOpGlobals.OUTTAKE_CLAW_OPEN //how much outtake claw opens
-           ));
+                new TBucketDropCommand(
+                        robot,
+                        TeleOpGlobals.OUTTAKE_ARM_DUNK, //how low outtake arm should drop into bucket
+                        TeleOpGlobals.OUTTAKE_CLAW_OPEN //how much outtake claw opens
+                ));
 
         //Swetha Controls:
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.B).whenPressed( //Circle
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, TeleOpGlobals.EXTENDO_MAX_EXTENSION)
-            );
+                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, TeleOpGlobals.EXTENDO_MAX_EXTENSION)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.X).whenPressed( //Square
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) TeleOpGlobals.EXTENDO_MAX_EXTENSION / 2))
-            );
+                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) TeleOpGlobals.EXTENDO_MAX_EXTENSION / 2))
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed( //Dpad_Right
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) TeleOpGlobals.EXTENDO_MAX_EXTENSION / 4))
-            );
+                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) TeleOpGlobals.EXTENDO_MAX_EXTENSION / 4))
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed( //Dpad_Left
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, TeleOpGlobals.EXTENDO_MAX_RETRACTION)
-            );
+                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, TeleOpGlobals.EXTENDO_MAX_RETRACTION)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.Y).whenPressed( //Triangle
-                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-            );
+                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+        );
 
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.A).whenPressed( //Cross
-                    new OuttakeCommand(robot, Globals.LIFT_MID_POS)
-            );
+                new OuttakeCommand(robot, Globals.LIFT_MID_POS)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed( //Dpad_Up
-                    new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
-            );
+                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed( //Dpad_Down
-                    new OuttakeCommand(robot, Globals.LIFT_RETRACT_POS)
-            );
+                new OuttakeCommand(robot, Globals.LIFT_RETRACT_POS)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed( //Left Bumper
-                    new OuttakeTransferReadyCommand(robot)
-            );
+                new OuttakeTransferReadyCommand(robot)
+        );
 
         swethaButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed( //Right Bumper
                 new SpecimenIntakeCommand(robot)

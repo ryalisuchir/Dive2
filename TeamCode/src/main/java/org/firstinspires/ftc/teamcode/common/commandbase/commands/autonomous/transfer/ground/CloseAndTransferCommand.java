@@ -13,11 +13,11 @@ public class CloseAndTransferCommand extends SequentialCommandGroup {
         super(
                 new SequentialCommandGroup(
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.INTAKE),
-                        new WaitCommand(50),
+                        new WaitCommand(350),
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
-                        new WaitCommand(50),
+                        new WaitCommand(350),
                         new TransferCommand(robot),
-                        new WaitCommand(150),
+                        new WaitCommand(500),
                         new ClawTransferCommand(robot)
                 )
         );

@@ -53,7 +53,7 @@ public class CloseBasket4 extends OpMode {
                 .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(48.4, 47.9, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(48.1, 47.9, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -63,7 +63,7 @@ public class CloseBasket4 extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(59.5, 47, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(59.2, 47, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -73,7 +73,7 @@ public class CloseBasket4 extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(52, 30, Math.toRadians(180)), Math.toRadians(40));
+                        new Pose2d(51.6, 30, Math.toRadians(180)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -125,7 +125,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(250),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -144,7 +144,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(250),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -163,7 +163,7 @@ public class CloseBasket4 extends OpMode {
                                 new ActionCommand(movement6A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(250),
+                        new WaitCommand(500),
                         new ParallelCommandGroup(
                                 new SlowCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(

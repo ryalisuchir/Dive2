@@ -16,11 +16,10 @@ public class RUN_THIS_FOR_OUTTAKE extends OpMode {
     public static double outtakeRotationPosition = 0;
     public static double outtakeClawPosition = 0;
 
-    public Servo outtakeRotation, leftOuttakeArm, rightOuttakeArm, outtakeClaw;
+    public Servo leftOuttakeArm, rightOuttakeArm, outtakeClaw;
 
     @Override
     public void init() {
-        outtakeRotation = hardwareMap.get(Servo.class, "outtakeRotation");
         leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
         rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
         outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
@@ -31,7 +30,6 @@ public class RUN_THIS_FOR_OUTTAKE extends OpMode {
 
     @Override
     public void loop() {
-        outtakeRotation.setPosition(outtakeRotationPosition);
         leftOuttakeArm.setPosition(armPositionGeneral);
         rightOuttakeArm.setPosition(armPositionGeneral);
         outtakeClaw.setPosition(outtakeClawPosition);
