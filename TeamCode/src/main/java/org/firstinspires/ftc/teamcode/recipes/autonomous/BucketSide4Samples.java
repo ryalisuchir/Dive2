@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous;
+package org.firstinspires.ftc.teamcode.recipes.autonomous;
 
 
 import android.util.Log;
@@ -30,7 +30,7 @@ import java.util.Collections;
 
 @Autonomous
 
-public class CloseBasket4 extends OpMode {
+public class BucketSide4Samples extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;

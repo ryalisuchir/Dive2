@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
+package org.firstinspires.ftc.teamcode.recipes.tuning.subsystems;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;

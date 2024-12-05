@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
+package org.firstinspires.ftc.teamcode.recipes.tuning.subsystems;
 
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;

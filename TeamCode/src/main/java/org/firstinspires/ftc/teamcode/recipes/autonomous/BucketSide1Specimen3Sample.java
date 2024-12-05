@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous;
+package org.firstinspires.ftc.teamcode.recipes.autonomous;
 
 import android.util.Log;
 
@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlowerSpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
@@ -31,7 +30,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class CloseSpecimen1Basket3 extends OpMode {
+public class BucketSide1Specimen3Sample extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;

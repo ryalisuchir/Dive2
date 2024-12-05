@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous;
+package org.firstinspires.ftc.teamcode.recipes.autonomous;
 
 import android.util.Log;
 
@@ -29,7 +29,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class FarSpecimen4 extends OpMode {
+public class HPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;

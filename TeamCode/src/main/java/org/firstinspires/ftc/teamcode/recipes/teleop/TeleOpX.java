@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.teleop;
+package org.firstinspires.ftc.teamcode.recipes.teleop;
 
 import static org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals.intakeRotationPositions;
 
@@ -9,7 +9,6 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
@@ -29,7 +28,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.teleop.TeleOpGlobals;
 
 @TeleOp
-public class teleopAHNAFFFF extends CommandOpMode {
+public class TeleOpX extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;

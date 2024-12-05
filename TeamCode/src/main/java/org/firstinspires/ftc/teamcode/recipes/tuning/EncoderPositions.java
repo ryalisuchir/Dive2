@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.tuning;
+package org.firstinspires.ftc.teamcode.recipes.tuning;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
