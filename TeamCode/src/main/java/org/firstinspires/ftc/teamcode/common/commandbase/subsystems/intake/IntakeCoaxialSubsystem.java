@@ -30,13 +30,13 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);
                 coaxialRight.setPosition(Globals.INTAKE_COAXIAL_RESTING);
                 break;
+            case BETWEEN:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_BETWEEN);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_BETWEEN);
+                break;
             case TRANSFER:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
                 coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
-                break;
-            case SPECIMEN:
-                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_SPECIMEN);
-                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_SPECIMEN);
                 break;
             case INTAKE:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);

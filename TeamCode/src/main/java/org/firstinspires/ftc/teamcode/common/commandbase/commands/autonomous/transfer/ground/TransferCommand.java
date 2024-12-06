@@ -19,6 +19,7 @@ public class TransferCommand extends SequentialCommandGroup {
                         new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.CLOSED)),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.BETWEEN),
+//                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.BETWEEN)),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.TRANSFER)),
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.TRANSFER, Globals.INTAKE_ROTATION_REST)),
                         new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS),

@@ -8,7 +8,7 @@ public class Globals {
     public static boolean AUTO = false;
     public static boolean IS_PARKING = false;
 
-    public static double extendoStaticMax = 7; //TODO: tune this by pushing hand against extendo
+    public static double extendoStaticMax = 15; //TODO: tune this by pushing hand against extendo
 
     //Slide States:
     public enum ExtendoFailState { // This will be used to track current on extendo motors.
@@ -59,7 +59,8 @@ public class Globals {
         REST,
         TRANSFER,
         SPECIMEN,
-        INTAKE
+        INTAKE,
+        BETWEEN
     }
 
     Globals.IntakeCoaxialState intakeCoaxialState = IntakeCoaxialState.REST;
@@ -148,21 +149,20 @@ public class Globals {
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0;
 
-    public static double INTAKE_ROTATION_REST = 0.39;
-    public static double INTAKE_ROTATION_TRANSFER = 0.39;
+    public static double INTAKE_ROTATION_REST = 0.83;
+    public static double INTAKE_ROTATION_TRANSFER = 0.83;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.52;
-    public static double INTAKE_FOURBAR_SCANNING = 0.59;
-    public static double INTAKE_FOURBAR_LOW = 0.52;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.74;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.55;
-    public static double INTAKE_FOURBAR_SPECIMEN = 0.675;
+    public static double INTAKE_FOURBAR_INTAKE = 0.56;
+    public static double INTAKE_FOURBAR_SCANNING = 0.615;
+    public static double INTAKE_FOURBAR_LOW = 0.55;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.79;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.685;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
 
-    public static double INTAKE_COAXIAL_RESTING = 0.915;
-    public static double INTAKE_COAXIAL_INTAKE = 0.15;
-    public static double INTAKE_COAXIAL_SPECIMEN = 0.435;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.93;
+    public static double INTAKE_COAXIAL_RESTING = 0.8;
+    public static double INTAKE_COAXIAL_INTAKE = 0.05;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.86;
+    public static double INTAKE_COAXIAL_BETWEEN = 0.85;
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));

@@ -48,11 +48,6 @@ public class Intake4BarCommand extends CommandBase {
                 intake4BarSubsystem.intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 intake4BarSubsystem.intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 break;
-            case SPECIMEN:
-                setPosition = Globals.INTAKE_FOURBAR_SPECIMEN;
-                intake4BarSubsystem.intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SPECIMEN);
-                intake4BarSubsystem.intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SPECIMEN);
-                break;
             case BETWEEN:
                 setPosition = Globals.INTAKE_FOURBAR_BETWEEN;
                 intake4BarSubsystem.intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);

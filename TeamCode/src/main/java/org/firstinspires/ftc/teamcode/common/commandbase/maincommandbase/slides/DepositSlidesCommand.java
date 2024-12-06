@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
+import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 
 public class DepositSlidesCommand extends CommandBase {
     DepositSubsystem depositSubsystem;
-    double depositHeight;
+    public double depositHeight;
 
     public DepositSlidesCommand(DepositSubsystem depositSubsystemInput, double heightInput) {
         this.depositSubsystem = depositSubsystemInput;

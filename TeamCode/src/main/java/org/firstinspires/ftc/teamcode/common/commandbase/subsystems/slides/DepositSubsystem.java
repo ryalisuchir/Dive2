@@ -53,21 +53,24 @@ public class DepositSubsystem extends SubsystemBase {
     }
 
     public void depositManualControlLoop(double joystickInput) {
-        if (
-                rightLift.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.LIFT_MAX_TOLERANCE ||
-                        rightLift.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.LIFT_MAX_TOLERANCE
-        ) {
-            rightLift.setPower(0);
-            leftLift.setPower(0);
-        } else {
-            rightLift.setPower(joystickInput);
-            leftLift.setPower(joystickInput);
-        }
+//        if (
+//                rightLift.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.LIFT_MAX_TOLERANCE ||
+//                        rightLift.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.LIFT_MAX_TOLERANCE
+//        ) {
+//            rightLift.setPower(0);
+//            leftLift.setPower(0);
+//        } else {
+//            rightLift.setPower(joystickInput);
+//            leftLift.setPower(joystickInput);
+//        }
+        rightLift.setPower(joystickInput);
+        leftLift.setPower(joystickInput);
 
-        if (rightLift.getCurrentPosition() < 0) {
-            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            slidesTargetPosition = 0;
-        }
+//        if (rightLift.getCurrentPosition() < 0) {
+//            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//            slidesTargetPosition = 0;
+//        }
     }
 
     public void outtakeRetract() {
