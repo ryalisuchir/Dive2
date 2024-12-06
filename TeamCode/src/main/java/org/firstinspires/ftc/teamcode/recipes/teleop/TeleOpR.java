@@ -5,16 +5,12 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
@@ -23,12 +19,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
 @TeleOp
-public class OldTeleOpX extends CommandOpMode {
+public class TeleOpR extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean extendoManualControl;
@@ -71,10 +66,6 @@ public class OldTeleOpX extends CommandOpMode {
                 })
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.A).whenPressed(
-                new InstantCommand(() -> new SlowCloseAndTransferCommand(robot).schedule(false))
-        );
-
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, robot.extendoMotor.getCurrentPosition())
         );
@@ -115,6 +106,12 @@ public class OldTeleOpX extends CommandOpMode {
         //Extendo Slides Stuff:
 
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
+
+        if (ahnafController.cross) {
+            schedule(
+                    new InstantCommand(() -> new CloseAndTransferCommand(robot).schedule(false))
+            );
+        }
 
         if (swethaController.circle) {
             schedule(
