@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
@@ -109,7 +110,7 @@ public class TeleOpR extends CommandOpMode {
 
         if (ahnafController.cross) {
             schedule(
-                    new InstantCommand(() -> new CloseAndTransferCommand(robot).schedule(false))
+                    new UninterruptableCommand(new CloseAndTransferCommand(robot))
             );
         }
 
