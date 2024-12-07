@@ -152,8 +152,8 @@ public class Globals {
     public static double INTAKE_ROTATION_REST = 0.83;
     public static double INTAKE_ROTATION_TRANSFER = 0.83;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.56;
-    public static double INTAKE_FOURBAR_SCANNING = 0.615;
+    public static double INTAKE_FOURBAR_INTAKE = 0.535;
+    public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
     public static double INTAKE_FOURBAR_TRANSFER = 0.79;
     public static double INTAKE_FOURBAR_BETWEEN = 0.685;

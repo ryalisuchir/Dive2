@@ -53,7 +53,7 @@ public class BlueBucketSide4Samples extends OpMode {
                 .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(48.1, 47.9, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(48.2, 48, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -73,7 +73,7 @@ public class BlueBucketSide4Samples extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(51.6, 30, Math.toRadians(180)), Math.toRadians(40));
+                        new Pose2d(51.6, 30.7, Math.toRadians(180)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)

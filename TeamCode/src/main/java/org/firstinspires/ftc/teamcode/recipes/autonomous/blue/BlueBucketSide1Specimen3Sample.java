@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.out
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlowerSpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
@@ -53,7 +55,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(58, 41, Math.toRadians(90)), Math.toRadians(-90.00));
+                .splineToLinearHeading(new Pose2d(58.2, 41.3, Math.toRadians(90)), Math.toRadians(-90.00));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -63,7 +65,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(69.4, 48, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(69.2, 49.0, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -120,8 +122,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                         new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                                 )
                         ),
-                        new SlowerSpecimenClipCommand(robot),
-                        new WaitCommand(150),
+                        new SpecimenClipCommand(robot),
                         //First Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),

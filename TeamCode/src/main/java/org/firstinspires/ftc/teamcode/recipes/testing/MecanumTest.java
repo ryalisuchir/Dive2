@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.Act
 import java.util.Collections;
 
 @Autonomous
-@Disabled
 public class MecanumTest extends OpMode {
 
     private DriveRobotHardware robot = DriveRobotHardware.getInstance();
@@ -25,7 +24,7 @@ public class MecanumTest extends OpMode {
     @Override
     public void init() {
         CommandScheduler.getInstance().reset();
-        robot.init(hardwareMap, new Pose2d(-37.87, 11.58, Math.toRadians(90.00)));
+        robot.init(hardwareMap, new Pose2d(-6.70, 30.38, Math.toRadians(90.00)));
 
         CommandScheduler.getInstance().registerSubsystem(robot.driveSubsystem);
 
@@ -37,12 +36,9 @@ public class MecanumTest extends OpMode {
     @Override
     public void start() {
         time_since_start = new ElapsedTime();
-        robot.driveSubsystem.setPoseEstimate(new Pose2d(-37.87, 11.58, Math.toRadians(90.00)));
-        Action movement1Left = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(-37.87, 11.58, Math.toRadians(90.00)))
-                .splineTo(new Vector2d(-49.71, 20.11), Math.toRadians(90.00))
-                .splineTo(new Vector2d(-50, 61.90), Math.toRadians(90.00))
-                .setReversed(true)
-                .splineTo(new Vector2d(-50, 17.85), Math.toRadians(90.00))
+        robot.driveSubsystem.setPoseEstimate(new Pose2d(-6.70, 30.38, Math.toRadians(90.00)));
+        Action movement1Left = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(-6.70, 30.38, Math.toRadians(90.00)))
+                .splineTo(new Vector2d(-35.43, 30.04), Math.toRadians(270.00))
                 .build();
 
         CommandScheduler.getInstance().schedule(

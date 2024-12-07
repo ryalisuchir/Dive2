@@ -5,6 +5,8 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -15,10 +17,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.ScanningCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.teleop.CLTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.teleop.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.teleop.SlowCLTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
@@ -29,10 +38,12 @@ public class TeleOpR extends CommandOpMode {
     private boolean depositManualControl;
     private boolean extendoManualControl;
     private boolean driverControlUnlocked;
-    public static final double[] intakeRotationPositions = { 0.83, 0.7383, 0.64667, 0.555, 0.46333, 0.37167, 0.28 };
+    public static final double[] intakeRotationPositions = { 0.83,  0.6925, 0.555, 0.4175, 0.28 };
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
     Gamepad ahnafPreviousGamepad = new Gamepad();
+
+    private boolean isCloseAndTransfer = true; // Track toggle state
 
     double robotPitch;
     double antiTipPower;
@@ -52,6 +63,25 @@ public class TeleOpR extends CommandOpMode {
         driverControlUnlocked = true;
         depositManualControl = true;
         extendoManualControl = true;
+        isCloseAndTransfer = true; // Track toggle state
+
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+                new SpecimenIntakeCommand(robot)
+        );
+
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+                new SpecimenGrabAndTransferAndLiftCommand(robot)
+        );
+
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new UninterruptableCommand(
+                        new SequentialCommandGroup(
+                                new SpecimenClipCommand(robot),
+                                new WaitCommand(300),
+                                new SpecimenReadyCommand(robot)
+                        )
+                )
+        );
 
         swethaLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> {
@@ -67,9 +97,14 @@ public class TeleOpR extends CommandOpMode {
                 })
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
-                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, robot.extendoMotor.getCurrentPosition())
-        );
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+            if (isCloseAndTransfer) {
+                new IntakePeckerCommand(robot).schedule();
+            } else {
+                new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()).schedule();
+            }
+            isCloseAndTransfer = !isCloseAndTransfer;
+        });
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new BucketDropCommand(robot)
@@ -109,9 +144,17 @@ public class TeleOpR extends CommandOpMode {
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
         if (ahnafController.cross) {
-            schedule(
-                    new UninterruptableCommand(new CloseAndTransferCommand(robot))
-            );
+            if (robot.extendoMotor.getCurrentPosition() > 100) {
+                schedule(
+                        new UninterruptableCommand(new CLTransferCommand(robot)),
+                        new InstantCommand(() -> isCloseAndTransfer = true)
+                );
+            } else {
+                schedule(
+                        new UninterruptableCommand(new SlowCLTransferCommand(robot)),
+                        new InstantCommand(() -> isCloseAndTransfer = true)
+                );
+            }
         }
 
         if (swethaController.circle) {
@@ -169,7 +212,7 @@ public class TeleOpR extends CommandOpMode {
 
         if (swethaController.dpad_up) {
             schedule(
-                    new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+                    new OuttakeCommand(robot, Globals.LIFT_PARK_POS)
             );
         }
 
