@@ -87,7 +87,7 @@ public class BlueHPSide4Specimen extends OpMode {
                 )
                 .strafeToLinearHeading(new Vector2d(-27.5, 60), Math.toRadians(90))
                 .strafeToLinearHeading(
-                        new Vector2d(-27.5, 65), Math.toRadians(90),
+                        new Vector2d(-27.5, 66), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -215,9 +215,9 @@ public class BlueHPSide4Specimen extends OpMode {
                         new WaitCommand(100),
                         new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement8A, Collections.emptySet()),
-                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_TRANSFER, 1000)
+                                new OuttakeTransferReadyCommand(robot)
+//                                new ActionCommand(movement8A, Collections.emptySet()),
+//                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_TRANSFER, 1000)
                         )
                 )
         );

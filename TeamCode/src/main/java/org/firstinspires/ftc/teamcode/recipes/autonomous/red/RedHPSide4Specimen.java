@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
@@ -158,7 +159,7 @@ public class RedHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SpecimenClipCommand(robot),
+                        new SlowerSpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -215,9 +216,9 @@ public class RedHPSide4Specimen extends OpMode {
                         new WaitCommand(100),
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement8A, Collections.emptySet()),
-                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_TRANSFER, 1000)
+                                new OuttakeTransferReadyCommand(robot)
+//                                new ActionCommand(movement8A, Collections.emptySet()),
+//                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_TRANSFER, 1000)
                         )
                 )
         );

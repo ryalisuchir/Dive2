@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -66,16 +67,23 @@ public class TeleOpR extends CommandOpMode {
         isCloseAndTransfer = true; // Track toggle state
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
-                new SpecimenIntakeCommand(robot)
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> depositManualControl = false),
+                        new SpecimenIntakeCommand(robot)
+                )
         );
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new SpecimenGrabAndTransferAndLiftCommand(robot)
+                new ParallelCommandGroup(
+                        new SpecimenGrabAndTransferAndLiftCommand(robot),
+                        new InstantCommand(() -> depositManualControl = false)
+                )
         );
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
+                                new InstantCommand(() -> depositManualControl = false),
                                 new SpecimenClipCommand(robot),
                                 new WaitCommand(300),
                                 new SpecimenReadyCommand(robot)
