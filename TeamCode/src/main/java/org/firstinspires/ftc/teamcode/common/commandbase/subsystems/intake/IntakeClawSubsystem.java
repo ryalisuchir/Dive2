@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.IntakeClawState.OPEN;
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.IntakeClawState.OPEN;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class IntakeClawSubsystem extends SubsystemBase {

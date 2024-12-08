@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides;
 
-import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.ExtendoState.EXTENDING;
-import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.ExtendoState.REST;
-import static org.firstinspires.ftc.teamcode.common.hardware.auto.Globals.ExtendoState.RETRACTING;
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoState.EXTENDING;
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoState.REST;
+import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoState.RETRACTING;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
+import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class ExtendoSubsystem extends SubsystemBase {
