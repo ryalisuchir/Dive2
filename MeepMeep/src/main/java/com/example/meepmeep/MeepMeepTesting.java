@@ -1,6 +1,7 @@
 package com.example.meepmeep;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueLight;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -23,9 +24,15 @@ public class MeepMeepTesting {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-6.70, 30.38, Math.toRadians(-90)))
                         .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-38.22, 27.95, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-38.22, 18, Math.toRadians(0)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-41, 18, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-38.22, 27.95, Math.toRadians(0)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-38.22, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-38.22, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-48, 60), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-48, 20), Math.toRadians(90))
+                        .setReversed(true)
+                .splineToConstantHeading(new Vector2d(-54, 17), Math.toRadians(90))
+                        .setReversed(false)
+                .splineToConstantHeading(new Vector2d(-54, 60), Math.toRadians(90))
                 .build());
 
         Image fieldBackground = null;

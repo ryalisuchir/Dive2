@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.specimen;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -10,15 +10,15 @@ import org.firstinspires.ftc.teamcode.common.commandbase.maincommandbase.slides.
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.RobotHardware;
 
-public class SecondarySpecimenClipCommand extends SequentialCommandGroup {
-    public SecondarySpecimenClipCommand(RobotHardware robot) {
+public class SlowerSpecimenClipCommand extends SequentialCommandGroup {
+    public SlowerSpecimenClipCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_OUTTAKE),
-                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS - (Globals.LIFT_SPECIMEN_DROP + 160))
+                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS - Globals.LIFT_SPECIMEN_DROP)
                         ),
-                        new WaitCommand(500),
+                        new WaitCommand(800),
                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN)
                 )
         );

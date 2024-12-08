@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.int
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.SpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.autonomous.transfer.wall.SpecimenGrabAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.auto.Globals;
