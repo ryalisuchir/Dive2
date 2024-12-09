@@ -16,8 +16,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 public class EncoderPositions extends OpMode {
 
     private RobotHardware robot;
-    private ElapsedTime time_since_start;
-    private double loop;
 
     @Override
     public void init() {

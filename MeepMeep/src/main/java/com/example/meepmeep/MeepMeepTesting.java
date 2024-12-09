@@ -31,7 +31,6 @@ public class MeepMeepTesting {
                 .splineToConstantHeading(new Vector2d(-48, 20), Math.toRadians(90))
                         .setReversed(true)
                 .splineToConstantHeading(new Vector2d(-54, 17), Math.toRadians(90))
-                        .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-54, 60), Math.toRadians(90))
                 .build());
 

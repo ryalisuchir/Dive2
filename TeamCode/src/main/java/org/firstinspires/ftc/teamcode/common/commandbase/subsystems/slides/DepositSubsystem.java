@@ -28,34 +28,11 @@ public class DepositSubsystem extends SubsystemBase {
 
         leftLift.setPower(error * powerInput);
         rightLift.setPower(error * powerInput);
-
-
-//        double target = slidesTargetPosition;
-//        double error = 0;
-//        double prevError = 0;
-//        double derivative = 0;
-//
-//        error = target - rightLift.getCurrentPosition();
-//        derivative = error - prevError;
-//        double output = (powerInput * error) + (0.006 * derivative);
-//        leftLift.setPower(output);
-//        rightLift.setPower(output);
-//        prevError = error;
-
-//
-//        if (rightLift.getCurrentPosition() < 0)  {
-//            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//            slidesTargetPosition = 0;
-//        }
-
     }
 
     public void depositManualControlLoop(double joystickInput) {
         if (
                 rightLift.getCurrentPosition() > Globals.LIFT_HIGH_POS - Globals.LIFT_MAX_TOLERANCE
-            //||
-            //                        rightLift.getCurrentPosition() < Globals.LIFT_RETRACT_POS + Globals.LIFT_MAX_TOLERANCE
         ) {
             rightLift.setPower(0);
             leftLift.setPower(0);
@@ -65,27 +42,6 @@ public class DepositSubsystem extends SubsystemBase {
         }
         rightLift.setPower(joystickInput);
         leftLift.setPower(joystickInput);
-
-//        if (rightLift.getCurrentPosition() < 0) {
-//            rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//            slidesTargetPosition = 0;
-//        }
-    }
-
-    public void outtakeRetract() {
-        slidesTargetPosition = Globals.LIFT_RETRACT_POS;
-        outtakeState = RETRACTING;
-    }
-
-    public void outtakeSpecimenExtend() {
-        slidesTargetPosition = Globals.LIFT_SPECIMEN_POS;
-        outtakeState = EXTENDING;
-    }
-
-    public void outtakeMaxExtend() {
-        slidesTargetPosition = Globals.LIFT_HIGH_POS;
-        outtakeState = EXTENDING;
     }
 
     public void outtakeSetPosition(double customSlidesPosition) {

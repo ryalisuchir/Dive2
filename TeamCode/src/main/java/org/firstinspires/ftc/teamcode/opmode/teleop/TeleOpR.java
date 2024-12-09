@@ -175,13 +175,13 @@ public class TeleOpR extends CommandOpMode {
             );
         }
 
-        if (swethaController.dpad_right) {
+        if (swethaController.triangle) {
             schedule(
                     new ScanningCommand(robot, 0.5, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
             );
         }
 
-        if (swethaController.dpad_left) {
+        if (swethaController.cross) {
             schedule(
                     new ScanningCommand(robot, 0.5, Globals.EXTENDO_MAX_RETRACTION)
             );
@@ -198,25 +198,25 @@ public class TeleOpR extends CommandOpMode {
         if (swethaController.right_stick_y > 0) {
             depositManualControl = true;
         }
-        if (swethaController.triangle || swethaController.cross || swethaController.dpad_up || swethaController.dpad_down) {
+        if (swethaController.dpad_left || swethaController.dpad_right || swethaController.dpad_up || swethaController.dpad_down) {
             robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             depositManualControl = false;
         }
 
-        if (swethaController.triangle) {
+        if (swethaController.dpad_up) {
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
             );
         }
 
-        if (swethaController.cross) {
+        if (swethaController.dpad_right) {
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_MID_POS)
             );
         }
 
-        if (swethaController.dpad_up) {
+        if (swethaController.dpad_left) {
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_PARK_POS)
             );

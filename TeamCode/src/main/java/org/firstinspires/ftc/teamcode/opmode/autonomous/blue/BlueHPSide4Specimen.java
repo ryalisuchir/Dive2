@@ -51,39 +51,48 @@ public class BlueHPSide4Specimen extends OpMode {
                 .splineToLinearHeading(new Pose2d(-3, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
+//                .setReversed(true)
+//                .strafeToLinearHeading(
+//                        new Vector2d(-6, 42), Math.toRadians(180),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToLinearHeading(
+//                        new Vector2d(-33, 42), Math.toRadians(180),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToLinearHeading(
+//                        new Vector2d(-33, 20), Math.toRadians(90),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToConstantHeading(
+//                        new Vector2d(-38, 20),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToConstantHeading(
+//                        new Vector2d(-38, 60),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToConstantHeading(
+//                        new Vector2d(-44, 20),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToConstantHeading(
+//                        new Vector2d(-47, 20),
+//                        new TranslationalVelConstraint(60)
+//                )
+//                .strafeToConstantHeading(
+//                        new Vector2d(-47, 60),
+//                        new TranslationalVelConstraint(60)
+//                )
                 .setReversed(true)
-                .strafeToLinearHeading(
-                        new Vector2d(-6, 42), Math.toRadians(180),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(
-                        new Vector2d(-33, 42), Math.toRadians(180),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(
-                        new Vector2d(-33, 20), Math.toRadians(90),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 60),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-44, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 60),
-                        new TranslationalVelConstraint(60)
-                )
+                .splineToLinearHeading(new Pose2d(-35, 27.95, Math.toRadians(0)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-42, 60), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-42, 20), Math.toRadians(90))
+                .setReversed(true)
+                .splineToConstantHeading(new Vector2d(-50, 17), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-50, 60), Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(-27.5, 60), Math.toRadians(90))
                 .strafeToLinearHeading(
                         new Vector2d(-27.5, 66), Math.toRadians(90),
