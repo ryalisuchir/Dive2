@@ -35,7 +35,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 public class TeleOpR extends CommandOpMode {
     private RobotHardware robot;
     private boolean depositManualControl;
-    private boolean extendoManualControl;
     private boolean driverControlUnlocked;
     public static final double[] intakeRotationPositions = {0.83, 0.6925, 0.555, 0.4175, 0.28};
     Gamepad ahnafController, swethaController;
@@ -61,7 +60,6 @@ public class TeleOpR extends CommandOpMode {
 
         driverControlUnlocked = true;
         depositManualControl = true;
-        extendoManualControl = true;
         isCloseAndTransfer = true; // Track toggle state
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
@@ -243,7 +241,5 @@ public class TeleOpR extends CommandOpMode {
                     new AllSystemInitializeCommand(robot)
             );
         }
-
-
     }
 }

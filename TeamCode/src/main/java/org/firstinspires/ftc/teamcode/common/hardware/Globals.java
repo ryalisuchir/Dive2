@@ -88,15 +88,6 @@ public class Globals {
 
     Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
 
-    public enum OuttakeRotationState {
-        CUSTOM,
-        EXIT,
-        TRANSFER,
-        SPECIMEN
-    }
-
-    Globals.OuttakeRotationState outtakeRotationState = OuttakeRotationState.TRANSFER;
-
     public enum OuttakeArmState {
         CUSTOM,
         TRANSFER,

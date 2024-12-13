@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
 
 import android.util.Log;
 
@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -29,9 +30,11 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class BlueHPSide4Specimen extends OpMode {
+public class SpeedyRedHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
+    private double loop;
+    Globals.ExtendoFailState extendoFailState;
     Globals.OuttakeClawState outtakeClawState;
     Globals.OuttakeArmState outtakeArmState;
     Globals.FourBarState fourBarState;
@@ -41,8 +44,6 @@ public class BlueHPSide4Specimen extends OpMode {
     Globals.ExtendoState extendoState;
     Globals.OuttakeState outtakeState;
 
-    private double loop;
-    Globals.ExtendoFailState extendoFailState;
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
@@ -61,41 +62,19 @@ public class BlueHPSide4Specimen extends OpMode {
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-35, 27.95, Math.toRadians(0)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-42, 60), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-42, 20), Math.toRadians(90))
+                .setReversed(true)
+                .splineToConstantHeading(new Vector2d(-50, 17), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-50, 60), Math.toRadians(90))
+
+                .strafeToLinearHeading(new Vector2d(-28.5, 60), Math.toRadians(90))
+
                 .strafeToLinearHeading(
-                        new Vector2d(-6, 42), Math.toRadians(180),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(
-                        new Vector2d(-33, 42), Math.toRadians(180),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(
-                        new Vector2d(-33, 20), Math.toRadians(90),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 60),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-44, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 60),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(new Vector2d(-27.5, 60), Math.toRadians(90))
-                .strafeToLinearHeading(
-                        new Vector2d(-27.5, 66), Math.toRadians(90),
+                        new Vector2d(-28.5, 65), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -105,9 +84,9 @@ public class BlueHPSide4Specimen extends OpMode {
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.4, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.4, 65, Math.toRadians(90)), Math.toRadians(90),
+                        new Pose2d(-28, 65, Math.toRadians(90)), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -117,9 +96,9 @@ public class BlueHPSide4Specimen extends OpMode {
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.5, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.5, 65, Math.toRadians(90)), Math.toRadians(90),
+                        new Pose2d(-28, 65, Math.toRadians(90)), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -130,7 +109,7 @@ public class BlueHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-29, 58, Math.toRadians(0)), Math.toRadians(180));
+                        new Pose2d(-35, 58, Math.toRadians(0)), Math.toRadians(180));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -147,7 +126,7 @@ public class BlueHPSide4Specimen extends OpMode {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Far");
-        telemetry.addData("Description: ", "4 Specimen - Regular Speed, Park");
+        telemetry.addData("Description: ", "4 Specimen - Speedy, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -185,6 +164,7 @@ public class BlueHPSide4Specimen extends OpMode {
                         ),
                         new WaitCommand(100),
                         new SecondarySpecimenClipCommand(robot),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -222,7 +202,8 @@ public class BlueHPSide4Specimen extends OpMode {
                         new WaitCommand(100),
                         new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot)
+                                new OuttakeTransferReadyCommand(robot),
+                                new ActionCommand(movement8A, Collections.emptySet())
                         )
                 )
         );
@@ -250,7 +231,6 @@ public class BlueHPSide4Specimen extends OpMode {
         telemetry.addData("FourBar State: ", fourBarState);
         telemetry.addData("Outtake Arm State: ", outtakeArmState);
         telemetry.addData("Outtake Claw State: ", outtakeClawState);
-
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");

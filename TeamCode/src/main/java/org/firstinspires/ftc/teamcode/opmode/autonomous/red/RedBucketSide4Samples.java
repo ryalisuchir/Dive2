@@ -35,6 +35,15 @@ public class RedBucketSide4Samples extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
     Globals.ExtendoFailState extendoFailState;
+    Globals.OuttakeClawState outtakeClawState;
+    Globals.OuttakeArmState outtakeArmState;
+    Globals.FourBarState fourBarState;
+    Globals.IntakeClawState intakeClawState;
+    Globals.IntakeCoaxialState intakeCoaxialState;
+    Globals.IntakeRotationState intakeRotationState;
+    Globals.ExtendoState extendoState;
+    Globals.OuttakeState outtakeState;
+
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
@@ -196,6 +205,15 @@ public class RedBucketSide4Samples extends OpMode {
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
+        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose);
+        telemetry.addData("Extendo State: ", extendoState);
+        telemetry.addData("Outtake State: ", outtakeState);
+        telemetry.addData("Intake Rotation State: ", intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", intakeClawState);
+        telemetry.addData("FourBar State: ", fourBarState);
+        telemetry.addData("Outtake Arm State: ", outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", outtakeClawState);
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");

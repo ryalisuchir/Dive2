@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemIniti
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
@@ -34,6 +35,15 @@ public class RedHPSide4Specimen extends OpMode {
     private ElapsedTime time_since_start;
     private double loop;
     Globals.ExtendoFailState extendoFailState;
+    Globals.OuttakeClawState outtakeClawState;
+    Globals.OuttakeArmState outtakeArmState;
+    Globals.FourBarState fourBarState;
+    Globals.IntakeClawState intakeClawState;
+    Globals.IntakeCoaxialState intakeCoaxialState;
+    Globals.IntakeRotationState intakeRotationState;
+    Globals.ExtendoState extendoState;
+    Globals.OuttakeState outtakeState;
+
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
@@ -138,8 +148,8 @@ public class RedHPSide4Specimen extends OpMode {
     public void init_loop() {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
-        telemetry.addData("Side: ", "Close");
-        telemetry.addData("Description: ", "4 Specimen, Park");
+        telemetry.addData("Side: ", "Far");
+        telemetry.addData("Description: ", "4 Specimen - Slow, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -158,7 +168,7 @@ public class RedHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SlowerSpecimenClipCommand(robot),
+                        new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -176,7 +186,7 @@ public class RedHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SpecimenClipCommand(robot),
+                        new SecondarySpecimenClipCommand(robot),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement4A, Collections.emptySet()),
@@ -195,7 +205,7 @@ public class RedHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SpecimenClipCommand(robot),
+                        new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement6A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -213,11 +223,9 @@ public class RedHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SpecimenClipCommand(robot),
+                        new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot)
-//                                new ActionCommand(movement8A, Collections.emptySet()),
-//                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_TRANSFER, 1000)
                         )
                 )
         );
@@ -236,6 +244,15 @@ public class RedHPSide4Specimen extends OpMode {
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
+        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose);
+        telemetry.addData("Extendo State: ", extendoState);
+        telemetry.addData("Outtake State: ", outtakeState);
+        telemetry.addData("Intake Rotation State: ", intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", intakeClawState);
+        telemetry.addData("FourBar State: ", fourBarState);
+        telemetry.addData("Outtake Arm State: ", outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", outtakeClawState);
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");
