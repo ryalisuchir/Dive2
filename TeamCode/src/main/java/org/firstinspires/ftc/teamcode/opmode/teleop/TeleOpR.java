@@ -23,10 +23,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Bucket
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
@@ -42,7 +39,15 @@ public class TeleOpR extends CommandOpMode {
     public static final double[] intakeRotationPositions = {0.83, 0.6925, 0.555, 0.4175, 0.28};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
-    Gamepad ahnafPreviousGamepad = new Gamepad();
+
+    Globals.OuttakeClawState outtakeClawState;
+    Globals.OuttakeArmState outtakeArmState;
+    Globals.FourBarState fourBarState;
+    Globals.IntakeClawState intakeClawState;
+    Globals.IntakeCoaxialState intakeCoaxialState;
+    Globals.IntakeRotationState intakeRotationState;
+    Globals.ExtendoState extendoState;
+    Globals.OuttakeState outtakeState;
 
     private boolean isCloseAndTransfer = true; // Track toggle state
 
@@ -152,7 +157,15 @@ public class TeleOpR extends CommandOpMode {
 
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
-        telemetry.addData("Extendo: ", robot.extendoMotor.getCurrentPosition());
+        telemetry.addData("Extendo Position: ", robot.extendoMotor.getCurrentPosition());
+        telemetry.addData("Extendo State: ", extendoState.toString());
+        telemetry.addData("Outtake State: ", outtakeState.toString());
+        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
+        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
+        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
+        telemetry.addData("FourBar State: ", fourBarState.toString());
+        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
+        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
         telemetry.update();
 
         if (ahnafController.cross) {

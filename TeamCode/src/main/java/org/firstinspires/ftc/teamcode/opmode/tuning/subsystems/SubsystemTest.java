@@ -5,8 +5,6 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
@@ -15,8 +13,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
@@ -45,7 +41,6 @@ public class SubsystemTest extends CommandOpMode {
         ));
 
 
-
         //Loop:
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
@@ -69,7 +64,8 @@ public class SubsystemTest extends CommandOpMode {
                 new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()).schedule();
             }
             isCloseAndTransfer = !isCloseAndTransfer;
-        };
+        }
+        ;
 
         if (gamepad1.cross) {
             if (robot.extendoMotor.getCurrentPosition() < 200) {
