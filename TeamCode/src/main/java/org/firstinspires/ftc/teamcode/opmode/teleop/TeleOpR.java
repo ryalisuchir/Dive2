@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
@@ -82,7 +83,8 @@ public class TeleOpR extends CommandOpMode {
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> depositManualControl = false),
-                                new SpecimenClipCommand(robot),
+//                                new SpecimenClipCommand(robot),
+                                new SecondarySpecimenClipCommand(robot), //NEW - TEST //TODO: TEST TEST TEST
                                 new WaitCommand(300),
                                 new SpecimenReadyCommand(robot)
                         )
