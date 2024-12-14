@@ -6,11 +6,13 @@ import android.util.Log;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,7 +23,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeC
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -29,7 +31,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-
+@Disabled
 public class BlueBucketSide4Samples extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -59,10 +61,13 @@ public class BlueBucketSide4Samples extends OpMode {
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_CLOSE_START_POSE_NEW)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(54, 54, Math.toRadians(45.00)), Math.toRadians(90.00));
+                .splineToLinearHeading(new Pose2d(56, 53.5, Math.toRadians(45.00)), Math.toRadians(90.00));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(48.2, 48, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(
+                        new Pose2d(45.8, 49.2, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(20)
+                );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -72,7 +77,9 @@ public class BlueBucketSide4Samples extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(59.2, 47, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(57.3, 48.5, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(20)
+                );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -82,7 +89,9 @@ public class BlueBucketSide4Samples extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(51.6, 30.7, Math.toRadians(180)), Math.toRadians(40));
+                        new Pose2d(51.6, 30, Math.toRadians(180)), Math.toRadians(40),
+                        new TranslationalVelConstraint(20)
+                );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -136,7 +145,7 @@ public class BlueBucketSide4Samples extends OpMode {
                         ),
                         new WaitCommand(500),
                         new ParallelCommandGroup(
-                                new CloseAndTransferCommand(robot),
+                                new SlowCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
                                         new WaitCommand(900),
                                         new ActionCommand(movement3A, Collections.emptySet())
@@ -155,7 +164,7 @@ public class BlueBucketSide4Samples extends OpMode {
                         ),
                         new WaitCommand(500),
                         new ParallelCommandGroup(
-                                new CloseAndTransferCommand(robot),
+                                new SlowCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
                                         new WaitCommand(900),
                                         new ActionCommand(movement5A, Collections.emptySet())
@@ -174,7 +183,7 @@ public class BlueBucketSide4Samples extends OpMode {
                         ),
                         new WaitCommand(500),
                         new ParallelCommandGroup(
-                                new SlowCloseAndTransferCommand(robot),
+                                new RetractedCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
                                         new WaitCommand(900),
                                         new ActionCommand(movement7A, Collections.emptySet())

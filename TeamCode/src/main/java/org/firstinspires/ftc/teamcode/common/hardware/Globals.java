@@ -138,7 +138,7 @@ public class Globals {
     public static double INTAKE_CLAW_OPEN = 0.5;
     public static double INTAKE_CLAW_TRANSFER = 0.6;
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
-    public static double INTAKE_CLAW_CLOSED = 0;
+    public static double INTAKE_CLAW_CLOSED = 0.13;
 
     public static double INTAKE_ROTATION_REST = 0.83;
     public static double INTAKE_ROTATION_TRANSFER = 0.83;
@@ -146,13 +146,13 @@ public class Globals {
     public static double INTAKE_FOURBAR_INTAKE = 0.535;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.79;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.685;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.77;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.68;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
 
     public static double INTAKE_COAXIAL_RESTING = 0.8;
-    public static double INTAKE_COAXIAL_INTAKE = 0.05;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.86;
+    public static double INTAKE_COAXIAL_INTAKE = 0;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.80; //878
     public static double INTAKE_COAXIAL_BETWEEN = 0.85;
 
     //Auto Positions:

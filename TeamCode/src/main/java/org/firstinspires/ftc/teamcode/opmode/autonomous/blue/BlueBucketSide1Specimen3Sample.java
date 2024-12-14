@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeC
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class BlueBucketSide1Specimen3Sample extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -129,13 +131,13 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                         new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                                 )
                         ),
-                        new SpecimenClipCommand(robot),
+                        new SecondarySpecimenClipCommand(robot),
                         //First Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(2200),
+                                        new WaitCommand(1200),
                                         new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, 400)
                                 )
                         ),

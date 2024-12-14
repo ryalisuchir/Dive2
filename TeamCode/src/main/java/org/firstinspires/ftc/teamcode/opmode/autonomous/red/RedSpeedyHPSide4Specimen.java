@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
 
 import android.util.Log;
 
@@ -21,7 +21,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -29,7 +28,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class SpeedyBlueHPSide4Specimen extends OpMode {
+public class RedSpeedyHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     Globals.OuttakeClawState outtakeClawState;
@@ -61,52 +60,53 @@ public class SpeedyBlueHPSide4Specimen extends OpMode {
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-35, 27.95, Math.toRadians(0)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-42, 60), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-32, 27.95, Math.toRadians(0)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-32, 18, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-42, 15, Math.toRadians(90)), Math.toRadians(90))
+
+                .splineToConstantHeading(new Vector2d(-42, 52), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-42, 20), Math.toRadians(90))
                 .setReversed(true)
                 .splineToConstantHeading(new Vector2d(-50, 17), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-50, 60), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(-27.5, 60), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-50, 54), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-27.5, 54), Math.toRadians(90))
                 .strafeToLinearHeading(
-                        new Vector2d(-27.5, 66), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Vector2d(-27.5, 65), Math.toRadians(90),
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 31.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.4, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28.2, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.4, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-28.2, 64, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-9, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-9, 31.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.5, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28.9, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.5, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-28.9, 64, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-11, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-11, 31.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-29, 58, Math.toRadians(0)), Math.toRadians(180));
+                        new Pose2d(-45, 58, Math.toRadians(0)), Math.toRadians(180));
 
         movement1A = movement1.build();
         movement2A = movement2.build();

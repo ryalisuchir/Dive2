@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class MecanumTest extends OpMode {
 
     private DriveRobotHardware robot = DriveRobotHardware.getInstance();

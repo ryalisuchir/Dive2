@@ -4,8 +4,8 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,18 +14,20 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeC
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-@Disabled
 public class SubsystemTest extends CommandOpMode {
     private RobotHardware robot;
+    private boolean isCloseAndTransfer = true; // Track toggle state
 
     @Override
     public void initialize() {
@@ -42,6 +44,8 @@ public class SubsystemTest extends CommandOpMode {
                 -0.5 * Math.tan(1.12 * gamepad1.right_stick_x)
         ));
 
+
+
         //Loop:
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
@@ -49,16 +53,34 @@ public class SubsystemTest extends CommandOpMode {
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
         robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
 
+        telemetry.addData("Extendo:", robot.extendoMotor.getCurrentPosition());
+        telemetry.update();
+
         if (gamepad1.ps) {
             schedule(
                     new AllSystemInitializeCommand(robot)
             );
         }
 
+        if (gamepad1.dpad_left) {
+            if (isCloseAndTransfer) {
+                new IntakePeckerCommand(robot).schedule();
+            } else {
+                new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawOpen()).schedule();
+            }
+            isCloseAndTransfer = !isCloseAndTransfer;
+        };
+
         if (gamepad1.cross) {
-            schedule(
-                    new CloseAndTransferCommand(robot)
-            );
+            if (robot.extendoMotor.getCurrentPosition() < 200) {
+                schedule(
+                        new CLRetractedCloseAndTransfer(robot)
+                );
+            } else {
+                schedule(
+                        new CLCloseAndTransfer(robot)
+                );
+            }
         }
 
         if (gamepad1.circle) {

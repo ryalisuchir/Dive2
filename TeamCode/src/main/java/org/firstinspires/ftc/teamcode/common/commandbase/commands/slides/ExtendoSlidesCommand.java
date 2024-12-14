@@ -21,6 +21,6 @@ public class ExtendoSlidesCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extendoSubsystem.extendoMotor.getCurrentPosition() - extendoLength) < 35);
+        return (Math.abs(extendoSubsystem.extendoMotor.getCurrentPosition() - extendoLength) < 70);
     }
 }

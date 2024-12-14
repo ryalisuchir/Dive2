@@ -21,8 +21,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SlowerSpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -30,7 +28,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class SpeedyRedHPSide4Specimen extends OpMode {
+public class SlowHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
@@ -58,24 +56,47 @@ public class SpeedyRedHPSide4Specimen extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-3, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-3, 33.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-35, 27.95, Math.toRadians(0)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-35, 18, Math.toRadians(90)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-42, 60), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-42, 20), Math.toRadians(90))
-                .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-50, 17), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-50, 60), Math.toRadians(90))
-
-                .strafeToLinearHeading(new Vector2d(-28.5, 60), Math.toRadians(90))
+                .strafeToLinearHeading(
+                        new Vector2d(-6, 42), Math.toRadians(180),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToLinearHeading(
+                        new Vector2d(-33, 42), Math.toRadians(180),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToLinearHeading(
+                        new Vector2d(-33, 20), Math.toRadians(90),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-38, 20),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-38, 60),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-42, 20),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-47, 20),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-47, 60),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToLinearHeading(new Vector2d(-27, 60), Math.toRadians(90))
 
                 .strafeToLinearHeading(
-                        new Vector2d(-28.5, 65), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Vector2d(-27, 65), Math.toRadians(90),
+                        new TranslationalVelConstraint(12)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
@@ -126,7 +147,7 @@ public class SpeedyRedHPSide4Specimen extends OpMode {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Far");
-        telemetry.addData("Description: ", "4 Specimen - Speedy, Park");
+        telemetry.addData("Description: ", "4 Specimen - Slow, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -202,8 +223,7 @@ public class SpeedyRedHPSide4Specimen extends OpMode {
                         new WaitCommand(100),
                         new SecondarySpecimenClipCommand(robot),
                         new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement8A, Collections.emptySet())
+                                new OuttakeTransferReadyCommand(robot)
                         )
                 )
         );

@@ -24,9 +24,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.SlowCLTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -102,6 +104,7 @@ public class TeleOpR extends CommandOpMode {
         );
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+            currentIndex = 0;
             if (isCloseAndTransfer) {
                 new IntakePeckerCommand(robot).schedule();
             } else {
@@ -147,15 +150,19 @@ public class TeleOpR extends CommandOpMode {
 
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
+        telemetry.addData("Extendo: ", robot.extendoMotor.getCurrentPosition());
+        telemetry.update();
+
         if (ahnafController.cross) {
-            if (robot.extendoMotor.getCurrentPosition() > 100) {
+            if (robot.extendoMotor.getCurrentPosition() > 800) {
                 schedule(
-                        new UninterruptableCommand(new CLTransferCommand(robot)),
+                        new UninterruptableCommand(new CLCloseAndTransfer(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
-            } else {
+            }
+            if (robot.extendoMotor.getCurrentPosition() < 800) {
                 schedule(
-                        new UninterruptableCommand(new SlowCLTransferCommand(robot)),
+                        new UninterruptableCommand(new CLRetractedCloseAndTransfer(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }
@@ -203,6 +210,10 @@ public class TeleOpR extends CommandOpMode {
         }
 
         if (swethaController.dpad_up) {
+            if (robot.extendoMotor.getCurrentPosition() < 100) {
+                robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
             );
