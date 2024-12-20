@@ -12,6 +12,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,6 +29,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class RedSpeedyHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -219,14 +221,14 @@ public class RedSpeedyHPSide4Specimen extends OpMode {
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
         telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", extendoState.toString());
-        telemetry.addData("Outtake State: ", outtakeState.toString());
-        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
-        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
-        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
-        telemetry.addData("FourBar State: ", fourBarState.toString());
-        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
-        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
+        telemetry.addData("Extendo State: ", extendoState);
+        telemetry.addData("Outtake State: ", outtakeState);
+        telemetry.addData("Intake Rotation State: ", intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", intakeClawState);
+        telemetry.addData("FourBar State: ", fourBarState);
+        telemetry.addData("Outtake Arm State: ", outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", outtakeClawState);
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");

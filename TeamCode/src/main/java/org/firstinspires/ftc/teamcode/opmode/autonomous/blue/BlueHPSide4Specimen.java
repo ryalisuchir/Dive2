@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -29,7 +30,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-@Disabled
 public class BlueHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -108,7 +108,7 @@ public class BlueHPSide4Specimen extends OpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-27.4, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.4, 65, Math.toRadians(90)), Math.toRadians(90),
+                        new Pose2d(-27.4, 66, Math.toRadians(90)), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -167,7 +167,8 @@ public class BlueHPSide4Specimen extends OpMode {
                                 )
                         ),
                         new WaitCommand(100),
-                        new SecondarySpecimenClipCommand(robot),
+                        new SlowerSpecimenClipCommand(robot),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -243,14 +244,14 @@ public class BlueHPSide4Specimen extends OpMode {
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
         telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", extendoState.toString());
-        telemetry.addData("Outtake State: ", outtakeState.toString());
-        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
-        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
-        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
-        telemetry.addData("FourBar State: ", fourBarState.toString());
-        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
-        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
+        telemetry.addData("Extendo State: ", extendoState);
+        telemetry.addData("Outtake State: ", outtakeState);
+        telemetry.addData("Intake Rotation State: ", intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", intakeClawState);
+        telemetry.addData("FourBar State: ", fourBarState);
+        telemetry.addData("Outtake Arm State: ", outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", outtakeClawState);
 
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {

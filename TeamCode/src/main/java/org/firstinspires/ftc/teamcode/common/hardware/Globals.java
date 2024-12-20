@@ -152,7 +152,7 @@ public class Globals {
 
     public static double INTAKE_COAXIAL_RESTING = 0.8;
     public static double INTAKE_COAXIAL_INTAKE = 0;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.80; //878
+    public static double INTAKE_COAXIAL_TRANSFER = 0.83; //878
     public static double INTAKE_COAXIAL_BETWEEN = 0.85;
 
     //Auto Positions:

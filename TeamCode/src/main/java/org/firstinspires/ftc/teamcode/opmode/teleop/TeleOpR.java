@@ -144,8 +144,8 @@ public class TeleOpR extends CommandOpMode {
         if (driverControlUnlocked) {
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
-                            0.5 * Math.tan(1.12 * ahnafController.left_stick_y),
-                            0.5 * Math.tan(1.12 * ahnafController.left_stick_x)
+                            0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
+                            0.48 * Math.tan(1.12 * ahnafController.left_stick_x) //48 is more fire than 50 lmao. graph it on desmos!
                     ),
                     -ahnafController.right_stick_x
             ));
@@ -158,14 +158,14 @@ public class TeleOpR extends CommandOpMode {
         robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
 
         telemetry.addData("Extendo Position: ", robot.extendoMotor.getCurrentPosition());
-        telemetry.addData("Extendo State: ", extendoState.toString());
-        telemetry.addData("Outtake State: ", outtakeState.toString());
-        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
-        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
-        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
-        telemetry.addData("FourBar State: ", fourBarState.toString());
-        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
-        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
+//        telemetry.addData("Extendo State: ", extendoState.toString());
+//        telemetry.addData("Outtake State: ", outtakeState.toString());
+//        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
+//        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
+//        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
+//        telemetry.addData("FourBar State: ", fourBarState.toString());
+//        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
+//        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
         telemetry.update();
 
         if (ahnafController.cross) {
