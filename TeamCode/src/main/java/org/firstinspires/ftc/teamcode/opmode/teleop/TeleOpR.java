@@ -39,6 +39,8 @@ public class TeleOpR extends CommandOpMode {
     public static final double[] intakeRotationPositions = {0.83, 0.6925, 0.555, 0.4175, 0.28};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
+    double targetHeading = 0;
+    HeadingPID headingPID = new HeadingPID(0.2, 0.0, 0.001); // Tune kP, kI, kD
 
     Globals.OuttakeClawState outtakeClawState;
     Globals.OuttakeArmState outtakeArmState;
@@ -140,16 +142,49 @@ public class TeleOpR extends CommandOpMode {
         }
 
         //Ahnaf's Controls:
+        // Add this to your class
+        boolean headingLocked = false;
+        double powerSet = 0;
 
         if (driverControlUnlocked) {
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
-                            0.48 * Math.tan(1.12 * ahnafController.left_stick_x) //48 is more fire than 50 lmao. graph it on desmos!
+                            0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
                     ),
-                    -ahnafController.right_stick_x
-            ));
+                    -ahnafController.right_stick_x // Manual turning
+                    ));
+//            telemetry.addData("Rightstick: ", ahnafController.right_stick_x);
+//
+//            if (Math.abs(ahnafController.right_stick_x) < 0.1 && Math.abs(ahnafController.left_stick_x) > 0.1) {
+//
+//                double error = targetHeading - robot.pinpointDrive.pinpoint.getHeading();
+//
+//                powerSet = error*3;
+//
+//                telemetry.addData("power: ", powerSet);
+//
+//                robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
+//                        new Vector2d(
+//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
+//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
+//                        ),
+//                        powerSet
+//                ));
+//            } else {
+//                targetHeading = robot.pinpointDrive.pinpoint.getHeading();
+//                telemetry.addData("Target Heading: ", targetHeading);
+//                robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
+//                        new Vector2d(
+//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
+//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
+//                        ),
+//                        -ahnafController.right_stick_x // Manual turning
+//                ));
+//            }
         }
+
+
 
 
         //Swetha's Controls:
@@ -252,10 +287,11 @@ public class TeleOpR extends CommandOpMode {
             );
         }
 
-        if (swethaController.left_trigger > 0.5 || swethaController.right_trigger > 0.5) {
-            schedule(
-                    new OuttakeTransferReadyCommand(robot)
-            );
+        if (swethaController.left_trigger > 0.5) {
+            robot.leftHang.setPower(1);
+        }
+        if (swethaController.right_trigger > 0.5) {
+            robot.leftHang.setPower(-1);
         }
 
 

@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.CloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.slow.SlowCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -31,7 +32,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-@Disabled
 public class BlueBucketSide1Specimen3Sample extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -74,7 +74,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(69.2, 49.0, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(65, 49.0, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -141,7 +141,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                         new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, 400)
                                 )
                         ),
-                        new WaitCommand(900),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -156,13 +156,12 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                 new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, 900),
                                 new BucketDropCommand(robot)
                         ),
-                        new WaitCommand(150),
                         //Second Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(900),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new CloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
@@ -177,15 +176,14 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                 new IntakeCommand(robot, 0.55, 400),
                                 new BucketDropCommand(robot)
                         ),
-                        new WaitCommand(150),
                         //Fourth Intake:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement6A, Collections.emptySet()),
                                 new OuttakeTransferReadyCommand(robot)
                         ),
-                        new WaitCommand(900),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
-                                new SlowCloseAndTransferCommand(robot),
+                                new RetractedCloseAndTransferCommand(robot),
                                 new SequentialCommandGroup(
                                         new WaitCommand(900),
                                         new ActionCommand(movement7A, Collections.emptySet())
@@ -194,7 +192,6 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                         //Fourth Drop:
                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                         new BucketDropCommand(robot),
-                        new WaitCommand(150),
                         //Park
                         new ParallelCommandGroup(
                                 new SlideParkCommand(robot),

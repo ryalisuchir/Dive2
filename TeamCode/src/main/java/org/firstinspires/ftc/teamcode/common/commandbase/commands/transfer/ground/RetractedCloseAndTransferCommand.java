@@ -19,7 +19,7 @@ public class RetractedCloseAndTransferCommand extends SequentialCommandGroup {
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
                         new WaitCommand(350),
                         new TransferCommand(robot),
-                        new WaitCommand(600),
+                        new WaitCommand(1000),
                         new ClawTransferCommand(robot)
                 )
         );
