@@ -15,19 +15,16 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class DepositSubsystem extends SubsystemBase {
-    public final DcMotorEx leftLift, rightLift;
-
     public static double p = 0.011;
     public static double i = 0;
     public static double d = 0.0002;
     public static double f = 0.00016;
-    int motorPosition;
+    private static final PIDFController slidePIDF = new PIDFController(p, i, d, f);
     public static double setPoint = 0;
     public static double maxPowerConstant = 1.0;
-
-    private static final PIDFController slidePIDF = new PIDFController(p,i,d, f);
+    public final DcMotorEx leftLift, rightLift;
     public ElapsedTime timer = new ElapsedTime();
-
+    int motorPosition;
     Globals.OuttakeState outtakeState;
 
     public DepositSubsystem(DcMotorEx depoLeftInput, DcMotorEx depoRightInput) {
@@ -35,7 +32,7 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesLoop(double powerInput) {
+    public void outtakeSlidesLoop() {
         timer.reset();
 
         motorPosition = rightLift.getCurrentPosition();

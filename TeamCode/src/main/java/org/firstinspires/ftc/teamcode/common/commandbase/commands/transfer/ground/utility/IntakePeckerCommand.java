@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -8,14 +8,14 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.Intake
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class SlowerPeckCommand extends SequentialCommandGroup {
-    public SlowerPeckCommand(RobotHardware robot) {
+public class IntakePeckerCommand extends SequentialCommandGroup {
+    public IntakePeckerCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.INTAKE),
-                        new WaitCommand(75),
+                        new WaitCommand(200),
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
-                        new WaitCommand(100),
+                        new WaitCommand(75),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.SCANNING)
                 )
         );

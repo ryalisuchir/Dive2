@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;

@@ -14,17 +14,14 @@ import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 
 @Config
 public class DriveRobotHardware {
+    private static DriveRobotHardware instance = null;
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
-
     public DriveSubsystem driveSubsystem;
-
+    public boolean enabled;
+    GoBildaPinpointDriverRR pinPointDriver;
     private double voltage = 0.0;
     private ElapsedTime voltageTimer;
-
-    private static DriveRobotHardware instance = null;
-    public boolean enabled;
     private HardwareMap hardwareMap;
-    GoBildaPinpointDriverRR pinPointDriver;
 
     public static DriveRobotHardware getInstance() {
         if (instance == null) {

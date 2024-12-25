@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SlowerSpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -31,20 +30,10 @@ import java.util.Collections;
 
 @Autonomous
 public class BlueHPSide4Specimen extends OpMode {
+    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
-    Globals.ExtendoFailState extendoFailState;
-    Globals.OuttakeClawState outtakeClawState;
-    Globals.OuttakeArmState outtakeArmState;
-    Globals.FourBarState fourBarState;
-    Globals.IntakeClawState intakeClawState;
-    Globals.IntakeCoaxialState intakeCoaxialState;
-    Globals.IntakeRotationState intakeRotationState;
-    Globals.ExtendoState extendoState;
-    Globals.OuttakeState outtakeState;
-
-    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
     public void init() {
@@ -247,29 +236,29 @@ public class BlueHPSide4Specimen extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
+        robot.depositSubsystem.outtakeSlidesLoop();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
+        robot.extendoSubsystem.extendoSlidesLoop();
 
         telemetry.addLine("Currently running: 4+0 (4 Specimen)");
         double time = System.currentTimeMillis();
         telemetry.addData("Time Elapsed: ", time_since_start);
         telemetry.addData("Current Loop Time: ", time - loop);
         telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", extendoState);
-        telemetry.addData("Outtake State: ", outtakeState);
-        telemetry.addData("Intake Rotation State: ", intakeRotationState);
-        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState);
-        telemetry.addData("Intake Claw State: ", intakeClawState);
-        telemetry.addData("FourBar State: ", fourBarState);
-        telemetry.addData("Outtake Arm State: ", outtakeArmState);
-        telemetry.addData("Outtake Claw State: ", outtakeClawState);
+        telemetry.addData("Extendo State: ", Globals.extendoState);
+        telemetry.addData("Outtake State: ", Globals.outtakeState);
+        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
+        telemetry.addData("FourBar State: ", Globals.fourBarState);
+        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
 
-        if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
+        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");
         }
 
-        if (extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
+        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
             Log.i("Extendo Failed:", "FAILED_RETRACTION");
         }
 

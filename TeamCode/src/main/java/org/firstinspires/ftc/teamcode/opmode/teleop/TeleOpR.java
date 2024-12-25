@@ -22,40 +22,25 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Scannin
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
 public class TeleOpR extends CommandOpMode {
-    private RobotHardware robot;
-    private boolean depositManualControl;
-    private boolean driverControlUnlocked;
     public static final double[] intakeRotationPositions = {0.83, 0.6925, 0.555, 0.4175, 0.28};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
-    double targetHeading = 0;
-    HeadingPID headingPID = new HeadingPID(0.2, 0.0, 0.001); // Tune kP, kI, kD
-
-    Globals.OuttakeClawState outtakeClawState;
-    Globals.OuttakeArmState outtakeArmState;
-    Globals.FourBarState fourBarState;
-    Globals.IntakeClawState intakeClawState;
-    Globals.IntakeCoaxialState intakeCoaxialState;
-    Globals.IntakeRotationState intakeRotationState;
-    Globals.ExtendoState extendoState;
-    Globals.OuttakeState outtakeState;
-
+    private RobotHardware robot;
+    private boolean depositManualControl;
+    private boolean driverControlUnlocked;
     private boolean isCloseAndTransfer = true; // Track toggle state
 
-    double robotPitch;
-    double antiTipPower;
     private int currentIndex = 0; //for rotation
 
     @Override
@@ -91,7 +76,6 @@ public class TeleOpR extends CommandOpMode {
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> depositManualControl = false),
-//                                new SpecimenClipCommand(robot),
                                 new SecondarySpecimenClipCommand(robot), //NEW - TEST //TODO: TEST TEST TEST
                                 new WaitCommand(300),
                                 new SpecimenReadyCommand(robot)
@@ -143,9 +127,6 @@ public class TeleOpR extends CommandOpMode {
         }
 
         //Ahnaf's Controls:
-        // Add this to your class
-        boolean headingLocked = false;
-        double powerSet = 0;
 
         if (driverControlUnlocked) {
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
@@ -153,67 +134,25 @@ public class TeleOpR extends CommandOpMode {
                             0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
                             0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
                     ),
-                    -ahnafController.right_stick_x // Manual turning
-                    ));
-//            telemetry.addData("Rightstick: ", ahnafController.right_stick_x);
-//
-//            if (Math.abs(ahnafController.right_stick_x) < 0.1 && Math.abs(ahnafController.left_stick_x) > 0.1) {
-//
-//                double error = targetHeading - robot.pinpointDrive.pinpoint.getHeading();
-//
-//                powerSet = error*3;
-//
-//                telemetry.addData("power: ", powerSet);
-//
-//                robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
-//                        new Vector2d(
-//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
-//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
-//                        ),
-//                        powerSet
-//                ));
-//            } else {
-//                targetHeading = robot.pinpointDrive.pinpoint.getHeading();
-//                telemetry.addData("Target Heading: ", targetHeading);
-//                robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
-//                        new Vector2d(
-//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
-//                                0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
-//                        ),
-//                        -ahnafController.right_stick_x // Manual turning
-//                ));
-//            }
+                    -ahnafController.right_stick_x
+            ));
         }
-
-
-
 
         //Swetha's Controls:
         //Extendo Slides Stuff:
-
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
-
-        telemetry.addData("Extendo Position: ", robot.extendoMotor.getCurrentPosition());
-//        telemetry.addData("Extendo State: ", extendoState.toString());
-//        telemetry.addData("Outtake State: ", outtakeState.toString());
-//        telemetry.addData("Intake Rotation State: ", intakeRotationState.toString());
-//        telemetry.addData("Intake Coaxial State: ", intakeCoaxialState.toString());
-//        telemetry.addData("Intake Claw State: ", intakeClawState.toString());
-//        telemetry.addData("FourBar State: ", fourBarState.toString());
-//        telemetry.addData("Outtake Arm State: ", outtakeArmState.toString());
-//        telemetry.addData("Outtake Claw State: ", outtakeClawState.toString());
+        robot.extendoSubsystem.extendoSlidesLoop();
         telemetry.update();
 
         if (ahnafController.cross) {
-            if (robot.extendoMotor.getCurrentPosition() > 800) {
+            if (robot.extendoMotor.getCurrentPosition() > Globals.EXTENDO_MAX_EXTENSION / 2) {
                 schedule(
-                        new UninterruptableCommand(new CLCloseAndTransfer(robot)),
+                        new UninterruptableCommand(new LigmaTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }
-            if (robot.extendoMotor.getCurrentPosition() < 800) {
+            if (robot.extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_EXTENSION / 2) {
                 schedule(
-                        new UninterruptableCommand(new CLRetractedCloseAndTransfer(robot)),
+                        new UninterruptableCommand(new RetractedCloseAndTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }
@@ -245,7 +184,7 @@ public class TeleOpR extends CommandOpMode {
 
         //Deposit Slides Stuff:
         if (!depositManualControl) {
-            robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
+            robot.depositSubsystem.outtakeSlidesLoop();
         }
         if (depositManualControl) {
             robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);
@@ -261,7 +200,7 @@ public class TeleOpR extends CommandOpMode {
         }
 
         if (swethaController.dpad_up) {
-            if (robot.extendoMotor.getCurrentPosition() < 100) {
+            if (robot.extendoMotor.getCurrentPosition() < 50) {
                 robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
@@ -299,7 +238,7 @@ public class TeleOpR extends CommandOpMode {
         }
 
         if (swethaController.right_trigger > 0.5) {
-            schedule (
+            schedule(
                     new HangUpCommand(robot.hangSubsystem, -1, 5000)
             );
         }
@@ -312,5 +251,14 @@ public class TeleOpR extends CommandOpMode {
                     new AllSystemInitializeCommand(robot)
             );
         }
+
+        telemetry.addData("Extendo State: ", Globals.extendoState);
+        telemetry.addData("Outtake State: ", Globals.outtakeState);
+        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
+        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
+        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
+        telemetry.addData("FourBar State: ", Globals.fourBarState);
+        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
+        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
     }
 }

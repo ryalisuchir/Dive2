@@ -13,20 +13,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.common.roadrunner.messages.PoseMessage;
 
 public class PinpointDrive extends MecanumDrive {
-    public static class Params {
-
-        public double xOffset = 2.486136954703216;
-        public double yOffset = 5.203429930760357;
-
-        public double encoderResolution = GoBildaPinpointDriverRR.goBILDA_4_BAR_POD;
-        public GoBildaPinpointDriver.EncoderDirection xDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
-        public GoBildaPinpointDriver.EncoderDirection yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
-    }
-
     public static Params PARAMS = new Params();
     public GoBildaPinpointDriverRR pinpoint;
     private Pose2d lastPinpointPose = pose;
-
     public PinpointDrive(HardwareMap hardwareMap, Pose2d pose) {
         super(hardwareMap, pose);
         FlightRecorder.write("PINPOINT_PARAMS", PARAMS);
@@ -64,6 +53,16 @@ public class PinpointDrive extends MecanumDrive {
         FlightRecorder.write("PINPOINT_STATUS", pinpoint.getDeviceStatus());
 
         return pinpoint.getVelocityRR();
+    }
+
+    public static class Params {
+
+        public double xOffset = 2.486136954703216;
+        public double yOffset = 5.203429930760357;
+
+        public double encoderResolution = GoBildaPinpointDriverRR.goBILDA_4_BAR_POD;
+        public GoBildaPinpointDriver.EncoderDirection xDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        public GoBildaPinpointDriver.EncoderDirection yDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
     }
 
     public static final class FTCPoseMessage {

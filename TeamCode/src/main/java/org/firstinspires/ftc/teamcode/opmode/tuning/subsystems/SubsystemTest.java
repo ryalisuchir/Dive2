@@ -16,9 +16,9 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Bucket
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -48,8 +48,8 @@ public class SubsystemTest extends CommandOpMode {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.extendoSubsystem.currentLoop();
-        robot.extendoSubsystem.extendoSlidesLoop(Globals.EXTENDO_P_SLOW);
-        robot.depositSubsystem.outtakeSlidesLoop(Globals.LIFT_P_SLOW);
+        robot.extendoSubsystem.extendoSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop();
 
         telemetry.addData("Extendo:", robot.extendoMotor.getCurrentPosition());
         telemetry.update();
@@ -73,11 +73,11 @@ public class SubsystemTest extends CommandOpMode {
         if (gamepad1.cross) {
             if (robot.extendoMotor.getCurrentPosition() < 200) {
                 schedule(
-                        new CLRetractedCloseAndTransfer(robot)
+                        new RetractedCloseAndTransferCommand(robot)
                 );
             } else {
                 schedule(
-                        new CLCloseAndTransfer(robot)
+                        new LigmaTransferCommand(robot)
                 );
             }
         }
@@ -101,7 +101,7 @@ public class SubsystemTest extends CommandOpMode {
         }
 
         if (gamepad1.dpad_right) {
-            schedule (
+            schedule(
                     new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
             );
         }
@@ -114,9 +114,9 @@ public class SubsystemTest extends CommandOpMode {
         if (gamepad1.dpad_up) {
             schedule(
                     new SequentialCommandGroup(
-                    new BucketDropCommand(robot),
-                    new WaitCommand(100),
-                    new OuttakeTransferReadyCommand(robot)
+                            new BucketDropCommand(robot),
+                            new WaitCommand(100),
+                            new OuttakeTransferReadyCommand(robot)
                     )
             );
         }

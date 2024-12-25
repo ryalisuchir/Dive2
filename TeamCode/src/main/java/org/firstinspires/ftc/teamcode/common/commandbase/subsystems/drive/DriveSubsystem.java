@@ -21,12 +21,12 @@ public class DriveSubsystem extends SubsystemBase {
         return new Pose2d(drive.pose.position, drive.pose.heading);
     }
 
-    public void updatePoseEstimate() {
-        drive.updatePoseEstimate();
-    }
-
     public void setPoseEstimate(Pose2d initialPose) {
         drive.pose = initialPose;
+    }
+
+    public void updatePoseEstimate() {
+        drive.updatePoseEstimate();
     }
 
     public void setDrivePowers(double x, double y, double angle) {

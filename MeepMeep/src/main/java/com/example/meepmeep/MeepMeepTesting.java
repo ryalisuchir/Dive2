@@ -23,10 +23,9 @@ public class MeepMeepTesting {
                 .setConstraints(60, 50, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(66, 57, Math.toRadians(45)))
-                .setReversed(true)
-                .splineToLinearHeading(
-                        new Pose2d(62, 51, Math.toRadians(90)), Math.toRadians(90))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(6, 34, Math.toRadians(270.00)))
+                        .setReversed(true)
+                .setTangent(Math.toRadians(-90)).splineToLinearHeading(new Pose2d(57.9, 54.5, Math.toRadians(90)), Math.toRadians(90))
                 .build());
 
         Image fieldBackground = null;

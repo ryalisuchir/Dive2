@@ -45,8 +45,6 @@ public class RobotHardware {
     public DriveSubsystem driveSubsystem;
     public PinpointDrive pinpointDrive;
     public HangSubsystem hangSubsystem;
-
-    private double voltage = 0.0;
     List<LynxModule> allHubs;
 
 
@@ -113,9 +111,6 @@ public class RobotHardware {
         intakeCoaxialRight.setDirection(ServoImplEx.Direction.REVERSE);
         rightHang.setDirection(DcMotorSimple.Direction.REVERSE);
 
-//        outtakeArmRight.setPwmDisable();
-//        intakeCoaxialRight.setPwmDisable();
-
         //Initializing all subsystems:
         intake4BarSubsystem = new Intake4BarSubsystem(intake4BarLeft, intake4BarRight);
         intakeClawSubsystem = new IntakeClawSubsystem(intakeClaw);
@@ -126,9 +121,7 @@ public class RobotHardware {
         depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
         hangSubsystem = new HangSubsystem(leftHang, rightHang);
-
         pinpointDrive = new PinpointDrive(hardwareMap, initialPose);
-
         driveSubsystem = new DriveSubsystem(pinpointDrive, false);
 
         //Registering all subsystems:
@@ -146,6 +139,7 @@ public class RobotHardware {
                 extendoSubsystem,
                 //Drivetrain:
                 driveSubsystem,
+                //Hang:
                 hangSubsystem
         );
     }
@@ -154,11 +148,6 @@ public class RobotHardware {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
-    }
-
-
-    public double getVoltage() {
-        return voltage;
     }
 
 }

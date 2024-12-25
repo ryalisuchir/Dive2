@@ -4,8 +4,8 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.SlowerPeckCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.ClawTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 public class LigmaTransferCommand extends SequentialCommandGroup {

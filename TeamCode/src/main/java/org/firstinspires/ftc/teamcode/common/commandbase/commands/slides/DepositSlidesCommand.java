@@ -5,8 +5,8 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
 
 public class DepositSlidesCommand extends CommandBase {
-    DepositSubsystem depositSubsystem;
     public double depositHeight;
+    DepositSubsystem depositSubsystem;
 
     public DepositSlidesCommand(DepositSubsystem depositSubsystemInput, double heightInput) {
         this.depositSubsystem = depositSubsystemInput;
