@@ -16,14 +16,15 @@ public class SecondarySpecimenClipCommand extends SequentialCommandGroup {
                 new SequentialCommandGroup(
                         new ParallelCommandGroup(
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_OUTTAKE),
-                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS - (Globals.LIFT_SPECIMEN_DROP + 170))
+                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS - (Globals.LIFT_SPECIMEN_DROP))
                         ),
+                        new WaitCommand(75),
                         new ParallelCommandGroup(
                                 new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN_TRANSFER),
                                 new SequentialCommandGroup(
                                         new WaitCommand(75),
                                         new ParallelCommandGroup(
-                                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER),
+                                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
                                                 new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS)
                                         )
                                 )

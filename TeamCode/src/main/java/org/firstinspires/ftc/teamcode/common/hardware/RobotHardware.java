@@ -6,9 +6,11 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
+import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.HangSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.IntakeClawSubsystem;
@@ -30,7 +32,7 @@ public class RobotHardware {
     //2 is right
     public ServoImplEx intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public ServoImplEx outtakeRotation, outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
-    public CRServo leftHang;
+    public CRServo leftHang, rightHang;
 
     public Intake4BarSubsystem intake4BarSubsystem;
     public IntakeClawSubsystem intakeClawSubsystem;
@@ -42,6 +44,7 @@ public class RobotHardware {
     public ExtendoSubsystem extendoSubsystem;
     public DriveSubsystem driveSubsystem;
     public PinpointDrive pinpointDrive;
+    public HangSubsystem hangSubsystem;
 
     private double voltage = 0.0;
     List<LynxModule> allHubs;
@@ -98,6 +101,7 @@ public class RobotHardware {
         intake4BarLeft = hardwareMap.get(ServoImplEx.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(ServoImplEx.class, "intake4Bar2");
         leftHang = hardwareMap.get(CRServo.class, "leftHang");
+        rightHang = hardwareMap.get(CRServo.class, "rightHang");
         outtakeRotation = hardwareMap.get(ServoImplEx.class, "outtakeRotation");
         outtakeArmLeft = hardwareMap.get(ServoImplEx.class, "leftOuttakeArm");
         outtakeArmRight = hardwareMap.get(ServoImplEx.class, "rightOuttakeArm");
@@ -107,6 +111,7 @@ public class RobotHardware {
         outtakeArmRight.setDirection(ServoImplEx.Direction.REVERSE);
         intake4BarRight.setDirection(ServoImplEx.Direction.REVERSE);
         intakeCoaxialRight.setDirection(ServoImplEx.Direction.REVERSE);
+        rightHang.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //        outtakeArmRight.setPwmDisable();
 //        intakeCoaxialRight.setPwmDisable();
@@ -120,6 +125,7 @@ public class RobotHardware {
         outtakeClawSubsystem = new OuttakeClawSubsystem(outtakeClaw);
         depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
+        hangSubsystem = new HangSubsystem(leftHang, rightHang);
 
         pinpointDrive = new PinpointDrive(hardwareMap, initialPose);
 
@@ -139,7 +145,8 @@ public class RobotHardware {
                 depositSubsystem,
                 extendoSubsystem,
                 //Drivetrain:
-                driveSubsystem
+                driveSubsystem,
+                hangSubsystem
         );
     }
 

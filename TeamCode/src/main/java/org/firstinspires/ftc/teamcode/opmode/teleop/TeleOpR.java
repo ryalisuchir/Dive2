@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
@@ -289,11 +290,19 @@ public class TeleOpR extends CommandOpMode {
 
         if (swethaController.left_trigger > 0.5) {
             robot.leftHang.setPower(1);
-        }
-        if (swethaController.right_trigger > 0.5) {
-            robot.leftHang.setPower(-1);
+            robot.rightHang.setPower(1);
         }
 
+        if (swethaController.left_trigger < 0.5) {
+            robot.leftHang.setPower(0);
+            robot.rightHang.setPower(0);
+        }
+
+        if (swethaController.right_trigger > 0.5) {
+            schedule (
+                    new HangUpCommand(robot.hangSubsystem, -1, 5000)
+            );
+        }
 
         //Overrides:
         if (ahnafController.ps) {

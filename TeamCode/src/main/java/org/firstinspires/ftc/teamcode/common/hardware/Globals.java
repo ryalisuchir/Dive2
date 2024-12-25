@@ -103,22 +103,22 @@ public class Globals {
 
 
     // Lift Subsystem Constants
-    public static int LIFT_PARK_POS = 710;
-    public static int LIFT_HIGH_POS = 2600;
-    public static int LIFT_MID_POS = 1400;
-    public static int LIFT_SPECIMEN_POS = 960;
-    public static int LIFT_SPECIMEN_DROP = 185;
-    public static int LIFT_RETRACT_POS = -5;
-    public static double LIFT_MAX_TOLERANCE = 5;
+    public static int LIFT_HIGH_POS = 1900;
+    public static int LIFT_MID_POS = 980;
+    public static int LIFT_PARK_POS = 502;
+    public static int LIFT_SPECIMEN_POS = 830;
+    public static int LIFT_SPECIMEN_DROP = 270;
+    public static int LIFT_RETRACT_POS = 0;
+    public static double LIFT_MAX_TOLERANCE = 10;
 
-    public static double LIFT_P_SLOW = 0.0045;
+    public static double LIFT_P_SLOW = 0.005;
 
     //Extendo Subsystem Constants
-    public static int EXTENDO_MAX_EXTENSION = 1766;
-    public static int EXTENDO_MAX_RETRACTION = -5;
+    public static int EXTENDO_MAX_EXTENSION = 480;
+    public static int EXTENDO_MAX_RETRACTION = 0;
     public static double EXTENDO_MAX_TOLERANCE = 5;
 
-    public static double EXTENDO_P_SLOW = 0.006;
+    public static double EXTENDO_P_SLOW = 0.007;
 
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
@@ -131,8 +131,8 @@ public class Globals {
     public static double OUTTAKE_ARM_DUNK = 0.76;
     public static double OUTTAKE_ARM_INTAKE = 0.8;
 
-    public static double OUTTAKE_ARM_SPECIMEN = 0.69;
-    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.8;
+    public static double OUTTAKE_ARM_SPECIMEN = 0.8;
+    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.85;
 
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;

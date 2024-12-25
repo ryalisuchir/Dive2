@@ -12,12 +12,12 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
@@ -33,6 +33,8 @@ import java.util.Collections;
 public class BlueHPSide4Specimen extends OpMode {
     private RobotHardware robot;
     private ElapsedTime time_since_start;
+    private double loop;
+    Globals.ExtendoFailState extendoFailState;
     Globals.OuttakeClawState outtakeClawState;
     Globals.OuttakeArmState outtakeArmState;
     Globals.FourBarState fourBarState;
@@ -42,8 +44,6 @@ public class BlueHPSide4Specimen extends OpMode {
     Globals.ExtendoState extendoState;
     Globals.OuttakeState outtakeState;
 
-    private double loop;
-    Globals.ExtendoFailState extendoFailState;
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
 
     @Override
@@ -58,80 +58,88 @@ public class BlueHPSide4Specimen extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-3, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-8.5, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .strafeToLinearHeading(
                         new Vector2d(-6, 42), Math.toRadians(180),
+                        new TranslationalVelConstraint(40)
+                )
+                .strafeToLinearHeading(
+                        new Vector2d(-37, 42), Math.toRadians(180),
+                        new TranslationalVelConstraint(30)
+                )
+                .strafeToLinearHeading(
+                        new Vector2d(-37, 20), Math.toRadians(90),
+                        new TranslationalVelConstraint(30)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-40, 20),
+                        new TranslationalVelConstraint(30)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-38, 57),
+                        new TranslationalVelConstraint(60)
+                )
+                //here
+                .strafeToConstantHeading(
+                        new Vector2d(-35, 17),
+                        new TranslationalVelConstraint(60)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-53, 17),
+                        new TranslationalVelConstraint(45)
+                )
+                .strafeToConstantHeading(
+                        new Vector2d(-53, 60),
                         new TranslationalVelConstraint(60)
                 )
                 .strafeToLinearHeading(
-                        new Vector2d(-33, 42), Math.toRadians(180),
-                        new TranslationalVelConstraint(60)
+                        new Vector2d(-28.3, 60), Math.toRadians(90),
+                        new TranslationalVelConstraint(40)
                 )
+
                 .strafeToLinearHeading(
-                        new Vector2d(-33, 20), Math.toRadians(90),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 60),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-44, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 20),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-47, 60),
-                        new TranslationalVelConstraint(60)
-                )
-                .strafeToLinearHeading(new Vector2d(-27.5, 60), Math.toRadians(90))
-                .strafeToLinearHeading(
-                        new Vector2d(-27.5, 66), Math.toRadians(90),
+                        new Vector2d(-28.3, 67), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 37, Math.toRadians(-90)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-7, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.4, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-28.8, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.4, 66, Math.toRadians(90)), Math.toRadians(90),
+                        new Pose2d(-28.8, 66, Math.toRadians(90)), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-9, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7.5, 37, Math.toRadians(-90)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-7.5, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27.5, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-29.2, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27.5, 65, Math.toRadians(90)), Math.toRadians(90),
+                        new Pose2d(-29.2, 66, Math.toRadians(90)), Math.toRadians(90),
                         new TranslationalVelConstraint(15)
                 );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-11, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-10, 37, Math.toRadians(-90)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-10, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-29, 58, Math.toRadians(0)), Math.toRadians(180));
+                        new Pose2d(-35, 58, Math.toRadians(0)), Math.toRadians(180));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -148,7 +156,7 @@ public class BlueHPSide4Specimen extends OpMode {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Far");
-        telemetry.addData("Description: ", "4 Specimen - Regular Speed, Park");
+        telemetry.addData("Description: ", "4 Specimen - Slow, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -157,74 +165,78 @@ public class BlueHPSide4Specimen extends OpMode {
         time_since_start = new ElapsedTime();
 
         CommandScheduler.getInstance().schedule(
-                new SequentialCommandGroup(
-                        //First Drop:
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement1A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
-                                )
-                        ),
-                        new WaitCommand(100),
-                        new SlowerSpecimenClipCommand(robot),
-                        new WaitCommand(100),
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement2A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new SpecimenIntakeCommand(robot)
-                                )
-                        ),
-                        new ParallelCommandGroup(
-                                new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(250),
-                                        new ParallelCommandGroup(
-                                                new ActionCommand(movement3A, Collections.emptySet())
+                new ParallelCommandGroup(
+                        new HangUpCommand(robot.hangSubsystem, 1, 1230),
+                        new SequentialCommandGroup(
+                                //First Drop:
+                                new ParallelCommandGroup(
+                                        new ActionCommand(movement1A, Collections.emptySet()),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(300),
+                                                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                                         )
-                                )
-                        ),
-                        new WaitCommand(100),
-                        new SecondarySpecimenClipCommand(robot),
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement4A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new SpecimenIntakeCommand(robot)
-                                )
-                        ),
-                        new ParallelCommandGroup(
-                                new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(250),
-                                        new ParallelCommandGroup(
-                                                new ActionCommand(movement5A, Collections.emptySet())
+                                ),
+                                new WaitCommand(100),
+                                new SecondarySpecimenClipCommand(robot),
+                                new ParallelCommandGroup(
+                                        new ActionCommand(movement2A, Collections.emptySet()),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(200),
+                                                new SpecimenIntakeCommand(robot)
                                         )
-                                )
-                        ),
-                        new WaitCommand(100),
-                        new SecondarySpecimenClipCommand(robot),
-                        new ParallelCommandGroup(
-                                new ActionCommand(movement6A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new SpecimenIntakeCommand(robot)
-                                )
-                        ),
-                        new ParallelCommandGroup(
-                                new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(250),
-                                        new ParallelCommandGroup(
-                                                new ActionCommand(movement7A, Collections.emptySet())
+                                ),
+                                new ParallelCommandGroup(
+                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new ParallelCommandGroup(
+                                                        new ActionCommand(movement3A, Collections.emptySet())
+                                                )
                                         )
+                                ),
+                                new WaitCommand(100),
+                                new SecondarySpecimenClipCommand(robot),
+                                new WaitCommand(100),
+                                new ParallelCommandGroup(
+                                        new ActionCommand(movement4A, Collections.emptySet()),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(200),
+                                                new SpecimenIntakeCommand(robot)
+                                        )
+                                ),
+                                new ParallelCommandGroup(
+                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new ParallelCommandGroup(
+                                                        new ActionCommand(movement5A, Collections.emptySet())
+                                                )
+                                        )
+                                ),
+                                new WaitCommand(100),
+                                new SecondarySpecimenClipCommand(robot),
+                                new ParallelCommandGroup(
+                                        new ActionCommand(movement6A, Collections.emptySet()),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(200),
+                                                new SpecimenIntakeCommand(robot)
+                                        )
+                                ),
+                                new ParallelCommandGroup(
+                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(250),
+                                                new ParallelCommandGroup(
+                                                        new ActionCommand(movement7A, Collections.emptySet())
+                                                )
+                                        )
+                                ),
+                                new WaitCommand(100),
+                                new SecondarySpecimenClipCommand(robot),
+                                new ParallelCommandGroup(
+                                        new ActionCommand(movement8A, Collections.emptySet()),
+                                        new OuttakeTransferReadyCommand(robot)
                                 )
-                        ),
-                        new WaitCommand(100),
-                        new SecondarySpecimenClipCommand(robot),
-                        new ParallelCommandGroup(
-                                new OuttakeTransferReadyCommand(robot)
                         )
                 )
         );
@@ -252,7 +264,6 @@ public class BlueHPSide4Specimen extends OpMode {
         telemetry.addData("FourBar State: ", fourBarState);
         telemetry.addData("Outtake Arm State: ", outtakeArmState);
         telemetry.addData("Outtake Claw State: ", outtakeClawState);
-
 
         if (extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
             Log.i("Extendo Failed:", "FAILED_EXTENSION");

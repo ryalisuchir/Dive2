@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Disabled
 public class RUN_THIS_FOR_OUTTAKE extends OpMode {
 
-    public static double armPositionGeneral = 0;
+    public static double armPositionGeneral = 0.76;
     public static double outtakeRotationPosition = 0;
-    public static double outtakeClawPosition = 0;
+    public static double outtakeClawPosition = 0.4;
 
     public Servo leftOuttakeArm, rightOuttakeArm, outtakeClaw;
 

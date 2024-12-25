@@ -6,8 +6,11 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoStat
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -15,8 +18,21 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class ExtendoSubsystem extends SubsystemBase {
     public DcMotorEx extendoMotor;
-    private double extendoTargetPosition = 0;
     Globals.ExtendoState extendoState;
+
+    public static double p = 0.0245;
+    public static double i = 0;
+    public static double d = 0.0003;
+    public static double f = 0;
+
+    public static double setPoint = 0;
+    public static double maxPowerConstant = 1;
+
+    private static final PIDFController extendoPIDF = new PIDFController(p,i,d, f);
+
+    public ElapsedTime timer = new ElapsedTime();
+
+    int motorPos = 0;
 
     public ExtendoSubsystem(DcMotorEx extendoMotorInput) {
         extendoMotor = extendoMotorInput;
@@ -24,19 +40,31 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
 
     public void currentLoop() {
-        if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() < extendoTargetPosition) {
+        if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() < setPoint) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_EXTEND; //Hit another robot, will try again and then park if it doesn't work
             extendoState = REST;
-        } else if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() > extendoTargetPosition) {
+        } else if (extendoMotor.isOverCurrent() && extendoMotor.getCurrentPosition() > setPoint) {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_RETRACT; //Internal problem
             extendoState = REST;
         }
     }
 
     public void extendoSlidesLoop(double powerInput) {
-        double target = extendoTargetPosition;
-        double error = target - extendoMotor.getCurrentPosition();
-        extendoMotor.setPower(error * powerInput);
+        timer.reset();
+
+        motorPos = extendoMotor.getCurrentPosition();
+
+        extendoPIDF.setP(p);
+        extendoPIDF.setI(i);
+        extendoPIDF.setD(d);
+        extendoPIDF.setF(f);
+
+        extendoPIDF.setSetPoint(setPoint);
+
+        double maxPower = (f * motorPos) + maxPowerConstant;
+        double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
+
+        extendoMotor.setPower(power);
 
 //        if (extendoMotor.getCurrentPosition() < 0)  {
 //            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -56,22 +84,22 @@ public class ExtendoSubsystem extends SubsystemBase {
         }
         if (extendoMotor.getCurrentPosition() < 0) {
             extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            extendoTargetPosition = 0;
+            setPoint = 0;
         }
     }
 
     public void extendoRetract() {
-        extendoTargetPosition = Globals.EXTENDO_MAX_RETRACTION;
+        setPoint = Globals.EXTENDO_MAX_RETRACTION;
         extendoState = RETRACTING;
     }
 
     public void extendoMaxExtend() {
-        extendoTargetPosition = Globals.EXTENDO_MAX_EXTENSION;
+        setPoint = Globals.EXTENDO_MAX_EXTENSION;
         extendoState = EXTENDING;
     }
 
     public void extendoSetPosition(double customSlidesPosition) {
-        extendoTargetPosition = customSlidesPosition;
+        setPoint = customSlidesPosition;
         if (customSlidesPosition > extendoMotor.getCurrentPosition()) {
             extendoState = EXTENDING;
         } else if (customSlidesPosition < extendoMotor.getCurrentPosition()) {

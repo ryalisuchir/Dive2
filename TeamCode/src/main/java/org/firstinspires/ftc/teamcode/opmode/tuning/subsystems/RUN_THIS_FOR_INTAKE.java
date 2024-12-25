@@ -12,10 +12,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Autonomous
 @Disabled
 public class RUN_THIS_FOR_INTAKE extends OpMode {
-    public static double fourBarPositionGeneral = 1;
-    public static double coaxialPositionGeneral = 1;
-    public static double intakeRotationPosition = 0;
-    public static double intakeClawPosition = 0;
+    public static double fourBarPositionGeneral = 0.675;
+    public static double coaxialPositionGeneral = 0;
+    public static double intakeRotationPosition = 0.34;
+    public static double intakeClawPosition = 0.5;
 
     public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
 

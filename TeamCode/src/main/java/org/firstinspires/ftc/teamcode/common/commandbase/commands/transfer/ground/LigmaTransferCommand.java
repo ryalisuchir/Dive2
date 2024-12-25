@@ -1,21 +1,18 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.Intake4BarCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.hardware.Globals;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.SlowerPeckCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class CloseAndTransferCommand extends SequentialCommandGroup {
-    public CloseAndTransferCommand(RobotHardware robot) {
+public class LigmaTransferCommand extends SequentialCommandGroup {
+    public LigmaTransferCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new OuttakeTransferReadyCommand(robot),
-                        new IntakePeckerCommand(robot),
                         new WaitCommand(10),
                         new TransferCommand(robot),
                         new WaitCommand(450),
@@ -25,4 +22,3 @@ public class CloseAndTransferCommand extends SequentialCommandGroup {
     }
 
 }
-

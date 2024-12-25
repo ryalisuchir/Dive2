@@ -5,6 +5,8 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
@@ -12,6 +14,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeC
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLCloseAndTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.teleop.CLRetractedCloseAndTransfer;
@@ -34,8 +37,8 @@ public class SubsystemTest extends CommandOpMode {
     public void run() {
         robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                 new Vector2d(
-                        0.5 * Math.tan(1.12 * gamepad1.left_stick_y),
-                        0.5 * Math.tan(1.12 * gamepad1.left_stick_x)
+                        -0.5 * Math.tan(1.12 * gamepad1.left_stick_y),
+                        -0.5 * Math.tan(1.12 * gamepad1.left_stick_x)
                 ),
                 -0.5 * Math.tan(1.12 * gamepad1.right_stick_x)
         ));
@@ -97,6 +100,11 @@ public class SubsystemTest extends CommandOpMode {
             );
         }
 
+        if (gamepad1.dpad_right) {
+            schedule (
+                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+            );
+        }
         if (gamepad1.triangle) {
             schedule(
                     new SpecimenGrabAndTransferCommand(robot)
@@ -105,7 +113,11 @@ public class SubsystemTest extends CommandOpMode {
 
         if (gamepad1.dpad_up) {
             schedule(
-                    new BucketDropCommand(robot)
+                    new SequentialCommandGroup(
+                    new BucketDropCommand(robot),
+                    new WaitCommand(100),
+                    new OuttakeTransferReadyCommand(robot)
+                    )
             );
         }
 
