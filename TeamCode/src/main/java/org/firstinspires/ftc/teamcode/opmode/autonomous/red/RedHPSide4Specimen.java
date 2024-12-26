@@ -47,7 +47,7 @@ public class RedHPSide4Specimen extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-7, 32.5, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 36.5, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
@@ -94,22 +94,9 @@ public class RedHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-7, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7, 35, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 36, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-28, 60, Math.toRadians(90)), Math.toRadians(90))
-                .splineToLinearHeading(
-                        new Pose2d(-28, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
-                );
-
-        TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-7.5, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7.5, 35, Math.toRadians(-90)), Math.toRadians(-90));
-
-        TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-29, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
@@ -117,10 +104,23 @@ public class RedHPSide4Specimen extends OpMode {
                         new TranslationalVelConstraint(15)
                 );
 
+        TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-7.5, 38, Math.toRadians(-90)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-7.5, 36, Math.toRadians(-90)), Math.toRadians(-90));
+
+        TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-30, 60, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(
+                        new Pose2d(-30, 65, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(15)
+                );
+
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-10, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-10, 35, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-10, 36, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)

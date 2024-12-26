@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common.commandbase.commands.slides;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
+import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 public class ExtendoSlidesCommand extends CommandBase {
     ExtendoSubsystem extendoSubsystem;
@@ -21,6 +22,6 @@ public class ExtendoSlidesCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(extendoSubsystem.extendoMotor.getCurrentPosition() - extendoLength) < 70);
+        return (Math.abs(extendoSubsystem.extendoMotor.getCurrentPosition() - extendoLength) < Globals.EXTENDO_MAX_TOLERANCE);
     }
 }

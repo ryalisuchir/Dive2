@@ -7,7 +7,6 @@ import static org.firstinspires.ftc.teamcode.common.hardware.Globals.ExtendoStat
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -60,37 +59,6 @@ public class ExtendoSubsystem extends SubsystemBase {
         double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
 
         extendoMotor.setPower(power);
-
-//        if (extendoMotor.getCurrentPosition() < 0)  {
-//            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//            extendoTargetPosition = 0;
-//        }
-    }
-
-    public void extendoManualControlLoop(double joystickInput) {
-        if (
-                extendoMotor.getCurrentPosition() > Globals.EXTENDO_MAX_EXTENSION - Globals.EXTENDO_MAX_TOLERANCE ||
-                        extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_RETRACTION + Globals.EXTENDO_MAX_TOLERANCE
-        ) {
-            extendoMotor.setPower(0);
-        } else {
-            extendoMotor.setPower(joystickInput);
-        }
-        if (extendoMotor.getCurrentPosition() < 0) {
-            extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            setPoint = 0;
-        }
-    }
-
-    public void extendoRetract() {
-        setPoint = Globals.EXTENDO_MAX_RETRACTION;
-        extendoState = RETRACTING;
-    }
-
-    public void extendoMaxExtend() {
-        setPoint = Globals.EXTENDO_MAX_EXTENSION;
-        extendoState = EXTENDING;
     }
 
     public void extendoSetPosition(double customSlidesPosition) {
