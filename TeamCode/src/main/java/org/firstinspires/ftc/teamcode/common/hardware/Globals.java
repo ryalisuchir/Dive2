@@ -19,14 +19,15 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1900;
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 830;
-    public static int LIFT_SPECIMEN_DROP = 270;
+    public static int LIFT_SPECIMEN_POS = 825;
+    public static int LIFT_SPECIMEN_DROP = 160;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 10;
+
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 480;
     public static int EXTENDO_MAX_RETRACTION = 0;
-    public static double EXTENDO_MAX_TOLERANCE = 5;
+    public static double EXTENDO_MAX_TOLERANCE = 10;
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
@@ -43,17 +44,20 @@ public class Globals {
     public static double INTAKE_CLAW_TRANSFER = 0.6;
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0.13;
+
     public static double INTAKE_ROTATION_REST = 0.83;
     public static double INTAKE_ROTATION_TRANSFER = 0.83;
+
     public static double INTAKE_FOURBAR_INTAKE = 0.535;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
     public static double INTAKE_FOURBAR_TRANSFER = 0.77;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.68;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.64;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
+
     public static double INTAKE_COAXIAL_RESTING = 0.8;
-    public static double INTAKE_COAXIAL_INTAKE = 0;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.83; //878
+    public static double INTAKE_COAXIAL_INTAKE = 0.01;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.83;
     public static double INTAKE_COAXIAL_BETWEEN = 0.85;
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
