@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -22,8 +23,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Scannin
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiBucketDropCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
@@ -108,7 +112,7 @@ public class TeleOpR extends CommandOpMode {
         });
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new BucketDropCommand(robot)
+                new SkibidiBucketDropCommand(robot)
         );
     }
 
@@ -175,7 +179,6 @@ public class TeleOpR extends CommandOpMode {
                     new ScanningCommand(robot, 0.5, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
             );
         }
-
         if (swethaController.cross) {
             schedule(
                     new ScanningCommand(robot, 0.5, Globals.EXTENDO_MAX_RETRACTION)
@@ -205,7 +208,9 @@ public class TeleOpR extends CommandOpMode {
                 robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             }
             schedule(
-                    new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                    new ParallelCommandGroup(
+                            new SkibidiOuttakeCommand(robot)
+                    )
             );
         }
 
