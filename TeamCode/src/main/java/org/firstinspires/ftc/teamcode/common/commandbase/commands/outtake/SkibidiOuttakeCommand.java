@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeArmCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.slides.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;

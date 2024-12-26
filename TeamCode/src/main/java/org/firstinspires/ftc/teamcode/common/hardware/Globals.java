@@ -63,12 +63,14 @@ public class Globals {
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270));
     public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
+
     //Slide States:
     public enum ExtendoFailState { // This will be used to track current on extendo motors.
         GOOD,
         FAILED_EXTEND,
         FAILED_RETRACT
     }
+
     public enum ExtendoState {
         EXTENDING,
         RETRACTING,
@@ -80,6 +82,7 @@ public class Globals {
         RETRACTING,
         REST
     }
+
     //Intake States:
     public enum IntakeClawState {
         CUSTOM,
@@ -88,11 +91,13 @@ public class Globals {
         SPECIMEN,
         OPEN_TRANSFER
     }
+
     public enum IntakeRotationState {
         CUSTOM,
         REST,
         TRANSFER
     }
+
     public enum IntakeCoaxialState {
         CUSTOM,
         REST,
@@ -112,6 +117,7 @@ public class Globals {
         BETWEEN,
         SPECIMEN
     }
+
     //Outtake States:
     public enum OuttakeClawState {
         CUSTOM,
@@ -119,6 +125,7 @@ public class Globals {
         CLOSED,
         OPEN_TRANSFER
     }
+
     public enum OuttakeArmState {
         CUSTOM,
         TRANSFER,

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -21,13 +20,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiBucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;

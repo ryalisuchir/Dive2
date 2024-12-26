@@ -16,6 +16,7 @@ public class PinpointDrive extends MecanumDrive {
     public static Params PARAMS = new Params();
     public GoBildaPinpointDriverRR pinpoint;
     private Pose2d lastPinpointPose = pose;
+
     public PinpointDrive(HardwareMap hardwareMap, Pose2d pose) {
         super(hardwareMap, pose);
         FlightRecorder.write("PINPOINT_PARAMS", PARAMS);
