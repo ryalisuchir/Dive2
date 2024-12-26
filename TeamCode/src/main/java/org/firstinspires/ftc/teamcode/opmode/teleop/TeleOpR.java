@@ -16,15 +16,14 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiBucketDropCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.SkibidiOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomBucketDropCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
@@ -109,7 +108,7 @@ public class TeleOpR extends CommandOpMode {
         });
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new SkibidiBucketDropCommand(robot)
+                new CustomBucketDropCommand(robot)
         );
     }
 
@@ -206,7 +205,7 @@ public class TeleOpR extends CommandOpMode {
             }
             schedule(
                     new ParallelCommandGroup(
-                            new SkibidiOuttakeCommand(robot)
+                            new CustomOuttakeCommand(robot)
                     )
             );
         }
@@ -240,9 +239,8 @@ public class TeleOpR extends CommandOpMode {
         }
 
         if (swethaController.right_trigger > 0.5) {
-            schedule(
-                    new HangUpCommand(robot.hangSubsystem, -1, 5000)
-            );
+            robot.leftHang.setPower(-1);
+            robot.rightHang.setPower(-1);
         }
 
         //Overrides:

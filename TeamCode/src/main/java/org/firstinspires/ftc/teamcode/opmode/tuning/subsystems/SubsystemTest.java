@@ -68,7 +68,6 @@ public class SubsystemTest extends CommandOpMode {
             }
             isCloseAndTransfer = !isCloseAndTransfer;
         }
-        ;
 
         if (gamepad1.cross) {
             if (robot.extendoMotor.getCurrentPosition() < 200) {

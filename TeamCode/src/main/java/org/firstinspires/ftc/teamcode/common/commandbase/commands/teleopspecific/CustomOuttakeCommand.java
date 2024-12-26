@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.slides.Deposit
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class SkibidiOuttakeCommand extends SequentialCommandGroup {
+public class CustomOuttakeCommand extends SequentialCommandGroup {
 
-    public SkibidiOuttakeCommand(RobotHardware robot) {
+    public CustomOuttakeCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
                         new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_HIGH_POS),

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake;
+package org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific;
 
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.Outtak
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class SkibidiBucketDropCommand extends SequentialCommandGroup {
+public class CustomBucketDropCommand extends SequentialCommandGroup {
 
-    public SkibidiBucketDropCommand(RobotHardware robot) {
+    public CustomBucketDropCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN),

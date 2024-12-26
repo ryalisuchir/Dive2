@@ -86,7 +86,7 @@ public class RedBucketSide1Specimen3Sample extends OpMode {
                 .splineToLinearHeading(new Pose2d(35.96, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00))
                 .splineToLinearHeading(
                         new Pose2d(21.00, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00),
-                        new TranslationalVelConstraint((double) 15)
+                        new TranslationalVelConstraint(15)
                 );
 
         movement1A = movement1.build();

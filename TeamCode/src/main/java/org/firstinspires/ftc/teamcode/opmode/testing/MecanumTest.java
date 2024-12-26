@@ -18,7 +18,7 @@ import java.util.Collections;
 @Disabled
 public class MecanumTest extends OpMode {
 
-    private DriveRobotHardware robot = DriveRobotHardware.getInstance();
+    private final DriveRobotHardware robot = DriveRobotHardware.getInstance();
     private ElapsedTime time_since_start;
     private double loop;
 
