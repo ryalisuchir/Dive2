@@ -53,6 +53,11 @@ public class Intake4BarCommand extends CommandBase {
                 intake4BarSubsystem.intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
                 intake4BarSubsystem.intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
                 break;
+            case CAMERA_READING:
+                setPosition = Globals.INTAKE_FOURBAR_CAMERA_READING;
+                intake4BarSubsystem.intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_CAMERA_READING);
+                intake4BarSubsystem.intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_CAMERA_READING);
+                break;
         }
         Log.i("Intake4Bar Value: ", String.valueOf(intake4BarSubsystem.intake4BarRight.getPosition()));
     }

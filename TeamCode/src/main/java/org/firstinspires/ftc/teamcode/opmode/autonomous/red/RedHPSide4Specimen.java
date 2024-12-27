@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
 
-import android.util.Log;
-
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -21,7 +19,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -163,7 +161,7 @@ public class RedHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement2A, Collections.emptySet()),
                                         new SequentialCommandGroup(
@@ -181,7 +179,7 @@ public class RedHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new WaitCommand(100),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement4A, Collections.emptySet()),
@@ -200,7 +198,7 @@ public class RedHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement6A, Collections.emptySet()),
                                         new SequentialCommandGroup(
@@ -218,7 +216,7 @@ public class RedHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement8A, Collections.emptySet()),
                                         new OuttakeTransferReadyCommand(robot)
@@ -251,13 +249,7 @@ public class RedHPSide4Specimen extends OpMode {
         telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
         telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
 
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
-            Log.i("Extendo Failed:", "FAILED_EXTENSION");
-        }
 
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
-            Log.i("Extendo Failed:", "FAILED_RETRACTION");
-        }
 
         loop = time;
         telemetry.update();

@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeC
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -123,7 +123,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
                                                 new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                                         )
                                 ),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 //First Intake:
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement2A, Collections.emptySet()),

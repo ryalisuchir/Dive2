@@ -54,11 +54,14 @@ public class Globals {
     public static double INTAKE_FOURBAR_TRANSFER = 0.77;
     public static double INTAKE_FOURBAR_BETWEEN = 0.64;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
+    public static double INTAKE_FOURBAR_CAMERA_READING = 0.675;
 
     public static double INTAKE_COAXIAL_RESTING = 0.8;
     public static double INTAKE_COAXIAL_INTAKE = 0.01;
     public static double INTAKE_COAXIAL_TRANSFER = 0.83;
     public static double INTAKE_COAXIAL_BETWEEN = 0.85;
+    public static double INTAKE_COAXIAL_CAMERA_READING = 0.4;
+
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270));
@@ -104,7 +107,8 @@ public class Globals {
         TRANSFER,
         SPECIMEN,
         INTAKE,
-        BETWEEN
+        BETWEEN,
+        CAMERA_READING
     }
 
     public enum FourBarState {
@@ -115,7 +119,7 @@ public class Globals {
         TRANSFER,
         RESTING,
         BETWEEN,
-        SPECIMEN
+        CAMERA_READING
     }
 
     //Outtake States:

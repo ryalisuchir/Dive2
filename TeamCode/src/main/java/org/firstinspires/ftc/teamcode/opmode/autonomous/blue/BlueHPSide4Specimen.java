@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -166,7 +166,7 @@ public class BlueHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement2A, Collections.emptySet()),
                                         new SequentialCommandGroup(
@@ -184,7 +184,7 @@ public class BlueHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new WaitCommand(100),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement4A, Collections.emptySet()),
@@ -203,7 +203,7 @@ public class BlueHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement6A, Collections.emptySet()),
                                         new SequentialCommandGroup(
@@ -221,7 +221,7 @@ public class BlueHPSide4Specimen extends OpMode {
                                         )
                                 ),
                                 new WaitCommand(100),
-                                new SecondarySpecimenClipCommand(robot),
+                                new SpecimenClipCommand(robot),
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement8A, Collections.emptySet()),
                                         new OuttakeTransferReadyCommand(robot)

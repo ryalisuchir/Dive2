@@ -42,6 +42,10 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
                 coaxialRight.setPosition(Globals.INTAKE_COAXIAL_INTAKE);
                 break;
+            case CAMERA_READING:
+                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_CAMERA_READING);
+                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_CAMERA_READING);
+                break;
         }
     }
 

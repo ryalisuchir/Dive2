@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.Uninterruptabl
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomBucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomOuttakeCommand;
@@ -76,7 +76,7 @@ public class TeleOpR extends CommandOpMode {
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> depositManualControl = false),
-                                new SecondarySpecimenClipCommand(robot), //NEW - TEST //TODO: TEST TEST TEST
+                                new SpecimenClipCommand(robot),
                                 new WaitCommand(300),
                                 new SpecimenReadyCommand(robot)
                         )
@@ -144,13 +144,13 @@ public class TeleOpR extends CommandOpMode {
         telemetry.update();
 
         if (ahnafController.cross) {
-            if (robot.extendoMotor.getCurrentPosition() > Globals.EXTENDO_MAX_EXTENSION / 2) {
+            if (robot.extendoMotor.getCurrentPosition() > (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
                         new UninterruptableCommand(new LigmaTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }
-            if (robot.extendoMotor.getCurrentPosition() < Globals.EXTENDO_MAX_EXTENSION / 2) {
+            if (robot.extendoMotor.getCurrentPosition() < (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
                         new UninterruptableCommand(new RetractedCloseAndTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
@@ -172,12 +172,12 @@ public class TeleOpR extends CommandOpMode {
 
         if (swethaController.triangle) {
             schedule(
-                    new ScanningCommand(robot, 0.5, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
+                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
             );
         }
         if (swethaController.cross) {
             schedule(
-                    new ScanningCommand(robot, 0.5, Globals.EXTENDO_MAX_RETRACTION)
+                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
             );
         }
 

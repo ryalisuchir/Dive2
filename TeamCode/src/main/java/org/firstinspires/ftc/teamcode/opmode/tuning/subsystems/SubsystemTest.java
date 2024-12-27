@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SecondarySpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
@@ -122,7 +122,7 @@ public class SubsystemTest extends CommandOpMode {
 
         if (gamepad1.dpad_down) {
             schedule(
-                    new SecondarySpecimenClipCommand(robot)
+                    new SpecimenClipCommand(robot)
             );
         }
 

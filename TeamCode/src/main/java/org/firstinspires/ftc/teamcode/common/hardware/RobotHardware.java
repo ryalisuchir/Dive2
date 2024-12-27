@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.common.hardware;
 
+import android.util.Log;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -10,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.HangSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.intake.Intake4BarSubsystem;
@@ -60,7 +63,6 @@ public class RobotHardware {
         leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
         rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
         extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
-
         //Reversing motors:
         rightRear.setDirection(DcMotorEx.Direction.FORWARD);
         rightFront.setDirection(DcMotorEx.Direction.FORWARD);
@@ -148,6 +150,36 @@ public class RobotHardware {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
+    }
+
+    public void systemLoop(Telemetry telemetryInput) {
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+        CommandScheduler.getInstance().run();
+        extendoSubsystem.extendoSlidesLoop();
+        depositSubsystem.outtakeSlidesLoop();
+        extendoSubsystem.currentLoop();
+        driveSubsystem.updatePoseEstimate();
+        telemetryInput.addData("Robot Position: ", pinpointDrive.pose.position);
+        telemetryInput.addData("Extendo State: ", Globals.extendoState);
+        telemetryInput.addData("Outtake State: ", Globals.outtakeState);
+        telemetryInput.addData("Intake Rotation State: ", Globals.intakeRotationState);
+        telemetryInput.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
+        telemetryInput.addData("Intake Claw State: ", Globals.intakeClawState);
+        telemetryInput.addData("FourBar State: ", Globals.fourBarState);
+        telemetryInput.addData("Outtake Arm State: ", Globals.outtakeArmState);
+        telemetryInput.addData("Outtake Claw State: ", Globals.outtakeClawState);
+
+        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
+            Log.i("Extendo Failed:", "FAILED_EXTENSION");
+        }
+
+        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
+            Log.i("Extendo Failed:", "FAILED_RETRACTION");
+        }
+
+        telemetryInput.update();
     }
 
 }
