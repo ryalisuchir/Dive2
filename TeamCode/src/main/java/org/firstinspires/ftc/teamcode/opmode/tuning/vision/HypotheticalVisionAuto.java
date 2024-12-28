@@ -25,6 +25,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.RunLaterCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
@@ -48,7 +49,6 @@ import java.util.Collections;
 import java.util.function.BooleanSupplier;
 @Autonomous
 public class HypotheticalVisionAuto extends OpMode {
-    Action correctionMovement;
     private RobotHardware robot;
 
     OpenCvWebcam webcam;
@@ -62,7 +62,6 @@ public class HypotheticalVisionAuto extends OpMode {
     KalmanFilter kalmanFilter;
 
     boolean isScanning = false;
-    BooleanSupplier pointFoundBoolean;
 
     @Override
     public void init() {
@@ -118,12 +117,17 @@ public class HypotheticalVisionAuto extends OpMode {
                         new InstantCommand(() -> {
                             isScanning = true;
                         }),
-                        new WaitUntilCommand(() -> pointFoundBoolean.getAsBoolean()),
+                        new WaitUntilCommand(() -> !isScanning),
                                         new ParallelCommandGroup(
                                                 new ScanningCommand(robot, mapSampleToServo(angle), Globals.EXTENDO_MAX_EXTENSION),
                                                 new SequentialCommandGroup(
                                                         new WaitCommand(1500),
-                                                        new ActionCommand(correctionMovement, Collections.emptySet())
+                                                        new RunLaterCommand(
+                                                                robot,
+                                                                robot.driveSubsystem.getPoseEstimate(),
+                                                                robot.driveSubsystem.getPoseEstimate().position.x + xTravel,
+                                                                robot.driveSubsystem.getPoseEstimate().position.y + yTravel
+                                                        )
                                                 )
                                 )
                 )
@@ -142,26 +146,16 @@ public class HypotheticalVisionAuto extends OpMode {
             double greenAngle = sampleDetection.getAngleOfGreenSample();
             Point greenPoint = sampleDetection.getGreenSampleCoordinates();
 
-            // Set the boolean supplier for detecting the sample
-            pointFoundBoolean = () -> !Double.isNaN(greenAngle);
-
             if (!Double.isNaN(greenAngle)) {
                 // Smooth the detected angle using Kalman filter
                 angle = kalmanFilter.estimate((greenAngle % 170) / 180);
 
-                // Calculate travel
                 xTravel = (greenPoint.x);
                 yTravel = (greenPoint.y);
 
-                correctionMovement = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(robot.pinpointDrive.pose.position.x, robot.pinpointDrive.pose.position.y, robot.pinpointDrive.pose.heading.toDouble()))
-                        .strafeToConstantHeading(new Vector2d(
-                                robot.pinpointDrive.pose.position.x + xTravel,
-                                robot.pinpointDrive.pose.position.y + yTravel
-                        )).build();
-
-                // Stop scanning
                 isScanning = false;
             }
+
         }
 
         telemetry.update();
