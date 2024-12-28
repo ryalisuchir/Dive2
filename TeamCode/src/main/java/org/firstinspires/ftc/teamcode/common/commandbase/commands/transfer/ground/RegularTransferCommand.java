@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.groun
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class LigmaTransferCommand extends SequentialCommandGroup {
-    public LigmaTransferCommand(RobotHardware robot) {
+public class RegularTransferCommand extends SequentialCommandGroup {
+    public RegularTransferCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new OuttakeTransferReadyCommand(robot),

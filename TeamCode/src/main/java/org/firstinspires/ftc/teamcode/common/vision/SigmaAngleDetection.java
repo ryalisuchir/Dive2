@@ -10,6 +10,7 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
+import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -19,27 +20,30 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YellowAngleDetection extends OpenCvPipeline
+public class SigmaAngleDetection extends OpenCvPipeline
 {
 
     Mat ycrcbMat = new Mat();
     Mat cbMat = new Mat();
     Mat hsvMat = new Mat();
-    Mat yellowThresholdMat = new Mat();
 
-    Mat morphedYellowThreshold = new Mat();
+    Mat blueThresholdMat = new Mat();
 
-    Mat contoursOnPlainImageMat = new Mat();
     static final Scalar YELLOW_LOWER_BOUND = new Scalar(20, 100, 100); // Adjust the lower bound for yellow
     static final Scalar YELLOW_UPPER_BOUND = new Scalar(30, 255, 255); // Adjust the upper bound for yellow
 
-    static final int YELLOW_MASK_THRESHOLD = 150;
+    Mat morphedBlueThreshold = new Mat();
+
+    Mat contoursOnPlainImageMat = new Mat();
+
+    static final int BLUE_MASK_THRESHOLD = 150;
     public double AREA_THRESHOLD = 4000;
 
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
 
-    static final Scalar YELLOW = new Scalar(0, 0, 255);
+    static final Scalar BLUE = new Scalar(0, 0, 255);
+    double cameraHeight = 45.72;
 
     static class AnalyzedStone
     {
@@ -71,7 +75,7 @@ public class YellowAngleDetection extends OpenCvPipeline
 
     int stageNum = 0;
 
-    public YellowAngleDetection()
+    public SigmaAngleDetection()
     {
         double fx = 800;
         double fy = 800;
@@ -122,14 +126,14 @@ public class YellowAngleDetection extends OpenCvPipeline
             case MASKS:
             {
                 Mat masks = new Mat();
-                Core.addWeighted(masks, 1.0, yellowThresholdMat, 1.0, 0.0, masks);
+                Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
                 return masks;
             }
 
             case MASKS_NR:
             {
                 Mat masksNR = new Mat();
-                Core.addWeighted(masksNR, 1.0, morphedYellowThreshold, 1.0, 0.0, masksNR);
+                Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
                 return masksNR;
             }
 
@@ -158,37 +162,36 @@ public class YellowAngleDetection extends OpenCvPipeline
     }
 
     void findContours(Mat input) {
-        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV); // Convert the input to HSV
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        // Apply the yellow color threshold
-        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, yellowThresholdMat);
+        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, blueThresholdMat);
 
-        // Apply morphological operations to reduce noise
-        morphMask(yellowThresholdMat, morphedYellowThreshold);
+        morphMask(blueThresholdMat, morphedBlueThreshold);
 
-        // Find contours in the thresholded image
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
-        Imgproc.findContours(morphedYellowThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+        Imgproc.findContours(morphedBlueThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         if (!yellowContoursList.isEmpty()) {
             double lowestY = Double.MIN_VALUE;
-            MatOfPoint contourClosestToBottom = null;
+            MatOfPoint bottommostContour = null;
 
             for (MatOfPoint contour : yellowContoursList) {
-                // Calculate the contour area
                 double contourArea = Imgproc.contourArea(contour);
-
-                // Iterate through the points of the contour to find the one closest to the bottom
-                for (Point point : contour.toArray()) {
-                    if (point.y > lowestY && contourArea > AREA_THRESHOLD) {
-                        lowestY = point.y;
-                        contourClosestToBottom = contour;
+                if (contourArea > AREA_THRESHOLD) {
+                    Rect boundingRect = Imgproc.boundingRect(contour);
+                    if (boundingRect.y + boundingRect.height > lowestY) {
+                        lowestY = boundingRect.y + boundingRect.height;
+                        bottommostContour = contour;
                     }
                 }
             }
 
-            if (contourClosestToBottom != null) {
-                analyzeContour(contourClosestToBottom, input, "Yellow");
+            for (MatOfPoint contour : yellowContoursList) {
+                if (contour.equals(bottommostContour)) {
+                    analyzeContour(contour, input, "Green");
+                } else {
+                    analyzeContour(contour, input, "Yellow");
+                }
             }
         }
     }
@@ -413,7 +416,7 @@ public class YellowAngleDetection extends OpenCvPipeline
         if (color.equals("Green")) {
             return new Scalar(0, 255, 0); // Green color
         }
-        return YELLOW;
+        return BLUE;
     }
 
     public double getAngleOfGreenSample() {

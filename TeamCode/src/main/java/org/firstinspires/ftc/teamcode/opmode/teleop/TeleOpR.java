@@ -24,8 +24,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specim
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomBucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomOuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedCloseAndTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -146,13 +146,13 @@ public class TeleOpR extends CommandOpMode {
         if (ahnafController.cross) {
             if (robot.extendoMotor.getCurrentPosition() > (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
-                        new UninterruptableCommand(new LigmaTransferCommand(robot)),
+                        new UninterruptableCommand(new RegularTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }
             if (robot.extendoMotor.getCurrentPosition() < (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
-                        new UninterruptableCommand(new RetractedCloseAndTransferCommand(robot)),
+                        new UninterruptableCommand(new RetractedTransferCommand(robot)),
                         new InstantCommand(() -> isCloseAndTransfer = true)
                 );
             }

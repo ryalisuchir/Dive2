@@ -24,14 +24,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class AngleDetectionOpMode extends OpMode {
     RobotHardware robot;
     OpenCvWebcam webcam;
-    public static double xClawPosition = 320;
-    public static double yClawPosition = 300;
-
-    public static double xAxisLengthInInches = 12;
-    public static double yAxisLengthInInches = 12;
-
-    double xAxisBooster = xAxisLengthInInches / 640;
-    double yAxisBooster = yAxisLengthInInches / 360;
 
     Servo claw;
 
@@ -101,8 +93,8 @@ public class AngleDetectionOpMode extends OpMode {
                 angle = kalmanFilter.estimate(greenAngle % 180);
 
                 // Calculate travel
-                xTravel = (greenPoint.x - xClawPosition) * xAxisBooster;
-                yTravel = -(greenPoint.y - yClawPosition) * yAxisBooster;
+                xTravel = (greenPoint.x);
+                yTravel = -(greenPoint.y);
 
                 // Stop scanning
                 isScanning = false;

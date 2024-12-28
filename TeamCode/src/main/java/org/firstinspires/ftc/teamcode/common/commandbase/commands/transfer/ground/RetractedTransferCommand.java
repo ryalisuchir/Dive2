@@ -5,19 +5,17 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.ClawTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class CloseAndTransferCommand extends SequentialCommandGroup {
-    public CloseAndTransferCommand(RobotHardware robot) {
+public class RetractedTransferCommand extends SequentialCommandGroup {
+    public RetractedTransferCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
                         new OuttakeTransferReadyCommand(robot),
-                        new IntakePeckerCommand(robot),
-                        new WaitCommand(10),
+                        new WaitCommand(350),
                         new TransferCommand(robot),
-                        new WaitCommand(450),
+                        new WaitCommand(1500),
                         new ClawTransferCommand(robot)
                 )
         );

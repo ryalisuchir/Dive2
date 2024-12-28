@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Bucket
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.LigmaTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -137,7 +137,7 @@ public class RedBucketSide1Specimen3Sample extends OpMode {
                                 new WaitCommand(150),
                                 new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new LigmaTransferCommand(robot),
+                                        new RegularTransferCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(130),
                                                 new ActionCommand(movement3A, Collections.emptySet())
@@ -157,7 +157,7 @@ public class RedBucketSide1Specimen3Sample extends OpMode {
                                 new WaitCommand(150),
                                 new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new LigmaTransferCommand(robot),
+                                        new RegularTransferCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 new ActionCommand(movement5A, Collections.emptySet())
@@ -175,7 +175,7 @@ public class RedBucketSide1Specimen3Sample extends OpMode {
                                 new WaitCommand(150),
                                 new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new LigmaTransferCommand(robot),
+                                        new RegularTransferCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 new ActionCommand(movement7A, Collections.emptySet())

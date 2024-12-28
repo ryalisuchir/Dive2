@@ -20,7 +20,7 @@ public class Globals {
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
     public static int LIFT_SPECIMEN_POS = 825;
-    public static int LIFT_SPECIMEN_DROP = 160;
+    public static int LIFT_SPECIMEN_DROP = 135;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 10;
 
@@ -51,16 +51,16 @@ public class Globals {
     public static double INTAKE_FOURBAR_INTAKE = 0.535;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.77;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.64;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.8;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.72;
     public static double INTAKE_FOURBAR_RESTING = 0.675;
-    public static double INTAKE_FOURBAR_CAMERA_READING = 0.675;
+    public static double INTAKE_FOURBAR_CAMERA_READING = 0.7;
 
     public static double INTAKE_COAXIAL_RESTING = 0.8;
     public static double INTAKE_COAXIAL_INTAKE = 0.01;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.83;
-    public static double INTAKE_COAXIAL_BETWEEN = 0.85;
-    public static double INTAKE_COAXIAL_CAMERA_READING = 0.4;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.82;
+    public static double INTAKE_COAXIAL_BETWEEN = 0.75;
+    public static double INTAKE_COAXIAL_CAMERA_READING = 0.29;
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
