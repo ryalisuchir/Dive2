@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
@@ -18,13 +17,12 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
 public class SecondaryAngleDetectionOpMode extends OpMode {
-    private VisionPortal visionPortal;
     OpenCvWebcam webcam;
     double lastDetectedBlue = 0;
     double lastDetectedArea = 0;
-    Point lastDetectedPoint = new Point(0,0);
-
+    Point lastDetectedPoint = new Point(0, 0);
     SigmaAngleDetection sampleDetection;
+    private VisionPortal visionPortal;
 
     @Override
     public void init() {
@@ -32,17 +30,14 @@ public class SecondaryAngleDetectionOpMode extends OpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.setPipeline(sampleDetection = new org.firstinspires.ftc.teamcode.common.vision.SigmaAngleDetection());
 
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
+            public void onOpened() {
                 webcam.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
                  */
@@ -85,7 +80,7 @@ public class SecondaryAngleDetectionOpMode extends OpMode {
         double Q = 10; // High values put more emphasis on the sensor.
         double R = 2; // High Values put more emphasis on regression.
         int N = 3; // The number of estimates in the past we perform regression on.
-        KalmanFilter filter = new KalmanFilter(Q,R,N);
+        KalmanFilter filter = new KalmanFilter(Q, R, N);
         double currentValue = clawAngle;  // imaginary, noisy sensor
         estimate = filter.estimate(currentValue); // smoothed sensor
 

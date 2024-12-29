@@ -1,16 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning.vision;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -18,27 +11,19 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.RunLaterCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
 import org.firstinspires.ftc.teamcode.common.vision.SigmaAngleDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowAngleDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -46,22 +31,38 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.Collections;
-import java.util.function.BooleanSupplier;
+
 @Autonomous
 public class HypotheticalVisionAuto extends OpMode {
-    private RobotHardware robot;
-
+    private static final double[] SAMPLE_POSITIONS = {0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
+    private static final double[] SERVO_POSITIONS = {0.65, 0.55, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};
     OpenCvWebcam webcam;
-
     SigmaAngleDetection sampleDetection;
-
     double xTravel = 0;
     double yTravel = 0;
     double angle = 0;
-
     KalmanFilter kalmanFilter;
-
     boolean isScanning = false;
+    private RobotHardware robot;
+
+    public static double mapSampleToServo(double samplePosition) {
+        // Check bounds
+        if (samplePosition <= SAMPLE_POSITIONS[0]) {
+            return SERVO_POSITIONS[0];
+        }
+        if (samplePosition >= SAMPLE_POSITIONS[SAMPLE_POSITIONS.length - 1]) {
+            return SERVO_POSITIONS[SERVO_POSITIONS.length - 1];
+        }
+
+        for (int i = 0; i < SAMPLE_POSITIONS.length - 1; i++) {
+            if (samplePosition >= SAMPLE_POSITIONS[i] && samplePosition <= SAMPLE_POSITIONS[i + 1]) {
+                double t = (samplePosition - SAMPLE_POSITIONS[i]) / (SAMPLE_POSITIONS[i + 1] - SAMPLE_POSITIONS[i]);
+                return SERVO_POSITIONS[i] + t * (SERVO_POSITIONS[i + 1] - SERVO_POSITIONS[i]);
+            }
+        }
+
+        return -1;
+    }
 
     @Override
     public void init() {
@@ -113,23 +114,42 @@ public class HypotheticalVisionAuto extends OpMode {
     public void start() {
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION),
+                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION / 2),
+                        new WaitCommand(1000),
                         new InstantCommand(() -> {
                             isScanning = true;
                         }),
                         new WaitUntilCommand(() -> !isScanning),
-                                        new ParallelCommandGroup(
-                                                new ScanningCommand(robot, mapSampleToServo(angle), Globals.EXTENDO_MAX_EXTENSION),
-                                                new SequentialCommandGroup(
-                                                        new WaitCommand(1500),
-                                                        new RunLaterCommand(
-                                                                robot,
-                                                                robot.driveSubsystem.getPoseEstimate(),
-                                                                robot.driveSubsystem.getPoseEstimate().position.x + xTravel,
-                                                                robot.driveSubsystem.getPoseEstimate().position.y + yTravel
-                                                        )
-                                                )
-                                )
+                        new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new ActionCommand(
+                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                        .strafeToConstantHeading(new Vector2d(
+                                                                robot.driveSubsystem.getPoseEstimate().position.x + yTravel,
+                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                        )).build()
+                                                , Collections.emptySet())
+                                        , robot.driveSubsystem)
+                        ),
+                        new InstantCommand(() -> {
+                            isScanning = true;
+                        }),
+                        new WaitUntilCommand(() -> !isScanning),
+                        new ParallelCommandGroup(
+                                new ScanningCommand(robot, mapSampleToServo(angle), (double) Globals.EXTENDO_MAX_EXTENSION / 2),
+                                new DeferredCommand(() ->
+                                        new ActionCommand(
+                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                        .strafeToConstantHeading(new Vector2d(
+                                                                robot.driveSubsystem.getPoseEstimate().position.x + yTravel,
+                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                        )).build()
+                                                , Collections.emptySet())
+                                        , robot.driveSubsystem)
+                        ),
+                        new IntakePeckerCommand(robot),
+                        new WaitCommand(100),
+                        new RegularTransferCommand(robot)
                 )
         );
     }
@@ -142,16 +162,21 @@ public class HypotheticalVisionAuto extends OpMode {
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
 
+        telemetry.addData("xTravel: ", xTravel);
+        telemetry.addData("yTravel: ", yTravel);
+        telemetry.addData("Angle of Sample Detected: ", angle);
+
+
         if (isScanning) {
             double greenAngle = sampleDetection.getAngleOfGreenSample();
             Point greenPoint = sampleDetection.getGreenSampleCoordinates();
 
             if (!Double.isNaN(greenAngle)) {
                 // Smooth the detected angle using Kalman filter
-                angle = kalmanFilter.estimate((greenAngle % 170) / 180);
+                angle = kalmanFilter.estimate((greenAngle % 180) / 180);
 
-                xTravel = (greenPoint.x);
-                yTravel = (greenPoint.y);
+                xTravel = (greenPoint.x) - 1;
+                yTravel = -(greenPoint.y) - 1;
 
                 isScanning = false;
             }
@@ -167,27 +192,5 @@ public class HypotheticalVisionAuto extends OpMode {
         telemetry.addLine("Ended OpMode.");
         telemetry.update();
         CommandScheduler.getInstance().reset();
-    }
-
-    private static final double[] SAMPLE_POSITIONS = {0.1834, 0.04, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037};
-    private static final double[] SERVO_POSITIONS = {0.65, 0.53, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52};
-
-    public static double mapSampleToServo(double samplePosition) {
-        // Check bounds
-        if (samplePosition <= SAMPLE_POSITIONS[0]) {
-            return SERVO_POSITIONS[0];
-        }
-        if (samplePosition >= SAMPLE_POSITIONS[SAMPLE_POSITIONS.length - 1]) {
-            return SERVO_POSITIONS[SERVO_POSITIONS.length - 1];
-        }
-
-        for (int i = 0; i < SAMPLE_POSITIONS.length - 1; i++) {
-            if (samplePosition >= SAMPLE_POSITIONS[i] && samplePosition <= SAMPLE_POSITIONS[i + 1]) {
-                double t = (samplePosition - SAMPLE_POSITIONS[i]) / (SAMPLE_POSITIONS[i + 1] - SAMPLE_POSITIONS[i]);
-                return SERVO_POSITIONS[i] + t * (SERVO_POSITIONS[i + 1] - SERVO_POSITIONS[i]);
-            }
-        }
-
-        return -1;
     }
 }

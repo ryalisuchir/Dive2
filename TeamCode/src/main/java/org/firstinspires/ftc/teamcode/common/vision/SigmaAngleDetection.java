@@ -20,63 +20,32 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SigmaAngleDetection extends OpenCvPipeline
-{
-
-    Mat ycrcbMat = new Mat();
-    Mat cbMat = new Mat();
-    Mat hsvMat = new Mat();
-
-    Mat blueThresholdMat = new Mat();
+public class SigmaAngleDetection extends OpenCvPipeline {
 
     static final Scalar YELLOW_LOWER_BOUND = new Scalar(20, 100, 100); // Adjust the lower bound for yellow
     static final Scalar YELLOW_UPPER_BOUND = new Scalar(30, 255, 255); // Adjust the upper bound for yellow
-
-    Mat morphedBlueThreshold = new Mat();
-
-    Mat contoursOnPlainImageMat = new Mat();
-
     static final int BLUE_MASK_THRESHOLD = 150;
+    static final Scalar BLUE = new Scalar(0, 0, 255);
     public double AREA_THRESHOLD = 4000;
-
+    public MatOfPoint3f axisPoints;
+    Mat ycrcbMat = new Mat();
+    Mat cbMat = new Mat();
+    Mat hsvMat = new Mat();
+    Mat blueThresholdMat = new Mat();
+    Mat morphedBlueThreshold = new Mat();
+    Mat contoursOnPlainImageMat = new Mat();
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
-
-    static final Scalar BLUE = new Scalar(0, 0, 255);
     double cameraHeight = 45.72;
-
-    static class AnalyzedStone
-    {
-        double angle;
-        String color;
-        Mat rvec;
-        Mat tvec;
-        double x;
-        double y;
-        MatOfPoint contour; // Add a field to store the contour of the stone
-    }
-
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
     volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
 
     Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
     MatOfDouble distCoeffs = new MatOfDouble();
-
-    enum Stage
-    {
-        FINAL,
-        YCrCb,
-        MASKS,
-        MASKS_NR,
-        CONTOURS;
-    }
-
     Stage[] stages = Stage.values();
-
     int stageNum = 0;
 
-    public SigmaAngleDetection()
-    {
+    public SigmaAngleDetection() {
         double fx = 800;
         double fy = 800;
         double cx = 320;
@@ -90,13 +59,96 @@ public class SigmaAngleDetection extends OpenCvPipeline
         distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
     }
 
+    static Point[] orderPoints(Point[] pts) {
+        Point[] orderedPts = new Point[4];
+
+        double[] sum = new double[4];
+        double[] diff = new double[4];
+
+        for (int i = 0; i < 4; i++) {
+            sum[i] = pts[i].x + pts[i].y;
+            diff[i] = pts[i].y - pts[i].x;
+        }
+
+        int tlIndex = indexOfMin(sum);
+        orderedPts[0] = pts[tlIndex];
+
+        int brIndex = indexOfMax(sum);
+        orderedPts[2] = pts[brIndex];
+
+        int trIndex = indexOfMin(diff);
+        orderedPts[1] = pts[trIndex];
+
+        int blIndex = indexOfMax(diff);
+        orderedPts[3] = pts[blIndex];
+
+        return orderedPts;
+    }
+
+    static int indexOfMin(double[] array) {
+        int index = 0;
+        double min = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
+                min = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static int indexOfMax(double[] array) {
+        int index = 0;
+        double max = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
+        Scalar colorScalar = getColorScalar(color);
+
+        Imgproc.putText(
+                mat,
+                text,
+                new Point(
+                        rect.center.x - 50,
+                        rect.center.y + 25),
+                Imgproc.FONT_HERSHEY_PLAIN,
+                1,
+                colorScalar,
+                1);
+    }
+
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
+        Point[] points = new Point[4];
+        rect.points(points);
+
+        Scalar colorScalar = getColorScalar(color);
+
+        for (int i = 0; i < 4; ++i) {
+            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
+        }
+    }
+
+    static Scalar getColorScalar(String color) {
+        if (color.equals("Green")) {
+            return new Scalar(0, 255, 0); // Green color
+        }
+        return BLUE;
+    }
+
     @Override
-    public void onViewportTapped()
-    {
+    public void onViewportTapped() {
         int nextStageNum = stageNum + 1;
 
-        if(nextStageNum >= stages.length)
-        {
+        if (nextStageNum >= stages.length) {
             nextStageNum = 0;
         }
 
@@ -104,41 +156,34 @@ public class SigmaAngleDetection extends OpenCvPipeline
     }
 
     @Override
-    public Mat processFrame(Mat input)
-    {
+    public Mat processFrame(Mat input) {
         internalStoneList.clear();
         findContours(input);
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
-        switch (stages[stageNum])
-        {
-            case YCrCb:
-            {
+        switch (stages[stageNum]) {
+            case YCrCb: {
                 return ycrcbMat;
             }
 
-            case FINAL:
-            {
+            case FINAL: {
                 return input;
             }
 
-            case MASKS:
-            {
+            case MASKS: {
                 Mat masks = new Mat();
                 Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
                 return masks;
             }
 
-            case MASKS_NR:
-            {
+            case MASKS_NR: {
                 Mat masksNR = new Mat();
                 Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
                 return masksNR;
             }
 
-            case CONTOURS:
-            {
+            case CONTOURS: {
                 return contoursOnPlainImageMat;
             }
         }
@@ -146,14 +191,11 @@ public class SigmaAngleDetection extends OpenCvPipeline
         return input;
     }
 
-    public ArrayList<AnalyzedStone> getDetectedStones()
-    {
+    public ArrayList<AnalyzedStone> getDetectedStones() {
         return clientStoneList;
     }
 
-
-    void morphMask(Mat input, Mat output)
-    {
+    void morphMask(Mat input, Mat output) {
         Imgproc.erode(input, output, erodeElement);
         Imgproc.erode(output, output, erodeElement);
 
@@ -195,7 +237,6 @@ public class SigmaAngleDetection extends OpenCvPipeline
             }
         }
     }
-
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
@@ -255,10 +296,7 @@ public class SigmaAngleDetection extends OpenCvPipeline
         }
     }
 
-
-    public MatOfPoint3f axisPoints;
-    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         double axisLength = 5.0;
 
         axisPoints = new MatOfPoint3f(
@@ -303,8 +341,7 @@ public class SigmaAngleDetection extends OpenCvPipeline
         }
     }
 
-    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs)
-    {
+    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
         double axisLength = 5.0;
 
         MatOfPoint3f axisPoints = new MatOfPoint3f(
@@ -320,103 +357,6 @@ public class SigmaAngleDetection extends OpenCvPipeline
         Point[] imgPts = imagePoints.toArray();
 
         Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
-    }
-
-    static Point[] orderPoints(Point[] pts)
-    {
-        Point[] orderedPts = new Point[4];
-
-        double[] sum = new double[4];
-        double[] diff = new double[4];
-
-        for (int i = 0; i < 4; i++)
-        {
-            sum[i] = pts[i].x + pts[i].y;
-            diff[i] = pts[i].y - pts[i].x;
-        }
-
-        int tlIndex = indexOfMin(sum);
-        orderedPts[0] = pts[tlIndex];
-
-        int brIndex = indexOfMax(sum);
-        orderedPts[2] = pts[brIndex];
-
-        int trIndex = indexOfMin(diff);
-        orderedPts[1] = pts[trIndex];
-
-        int blIndex = indexOfMax(diff);
-        orderedPts[3] = pts[blIndex];
-
-        return orderedPts;
-    }
-
-    static int indexOfMin(double[] array)
-    {
-        int index = 0;
-        double min = array[0];
-
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] < min)
-            {
-                min = array[i];
-                index = i;
-            }
-        }
-        return index;
-    }
-
-    static int indexOfMax(double[] array)
-    {
-        int index = 0;
-        double max = array[0];
-
-        for (int i = 1; i < array.length; i++)
-        {
-            if (array[i] > max)
-            {
-                max = array[i];
-                index = i;
-            }
-        }
-        return index;
-    }
-
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color)
-    {
-        Scalar colorScalar = getColorScalar(color);
-
-        Imgproc.putText(
-                mat,
-                text,
-                new Point(
-                        rect.center.x - 50,
-                        rect.center.y + 25),
-                Imgproc.FONT_HERSHEY_PLAIN,
-                1,
-                colorScalar,
-                1);
-    }
-
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color)
-    {
-        Point[] points = new Point[4];
-        rect.points(points);
-
-        Scalar colorScalar = getColorScalar(color);
-
-        for (int i = 0; i < 4; ++i)
-        {
-            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
-        }
-    }
-
-    static Scalar getColorScalar(String color)
-    {
-        if (color.equals("Green")) {
-            return new Scalar(0, 255, 0); // Green color
-        }
-        return BLUE;
     }
 
     public double getAngleOfGreenSample() {
@@ -444,8 +384,6 @@ public class SigmaAngleDetection extends OpenCvPipeline
         }
     }
 
-
-
     public double getGreenSampleArea() {
         AnalyzedStone greenSample = null;
         double highestYCoordinate = Double.MAX_VALUE;
@@ -470,7 +408,6 @@ public class SigmaAngleDetection extends OpenCvPipeline
             return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
-
 
     public Point getGreenSampleCoordinates() {
         AnalyzedStone greenSample = null;
@@ -508,5 +445,24 @@ public class SigmaAngleDetection extends OpenCvPipeline
         } else {
             return null; // No green sample found
         }
+    }
+
+
+    enum Stage {
+        FINAL,
+        YCrCb,
+        MASKS,
+        MASKS_NR,
+        CONTOURS;
+    }
+
+    static class AnalyzedStone {
+        double angle;
+        String color;
+        Mat rvec;
+        Mat tvec;
+        double x;
+        double y;
+        MatOfPoint contour; // Add a field to store the contour of the stone
     }
 }

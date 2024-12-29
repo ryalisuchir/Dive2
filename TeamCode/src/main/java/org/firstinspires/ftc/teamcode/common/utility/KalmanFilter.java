@@ -13,6 +13,7 @@ public class KalmanFilter implements Filter {
 
     /**
      * A kalman filter that uses a least squares regression as it's model.
+     *
      * @param Q Sensor Covariance
      * @param R Model Covariance
      * @param N Number of elements we can hold in our stack.
@@ -28,26 +29,22 @@ public class KalmanFilter implements Filter {
         findK();
     }
 
-
-
-
+    public double getX() {
+        return x;
+    }
 
     /**
      * set the state estimate.
+     *
      * @param x state estimate
      */
     public void setX(double x) {
         this.x = x;
     }
 
-    public double getX() {
-        return x;
-    }
-
-
-
     /**
      * update the kalman filter for traditional; continuous values.
+     *
      * @param measurement the current measurement
      * @return the optimal state estimate.
      */
@@ -60,7 +57,6 @@ public class KalmanFilter implements Filter {
         regression = new LinearRegression(stackToDoubleArray());
         return x;
     }
-
 
 
     /**
@@ -76,7 +72,7 @@ public class KalmanFilter implements Filter {
     public void solveDARE() {
         P = P + Q;
         K = P / (P + R);
-        P = (1-K) * P;
+        P = (1 - K) * P;
     }
 
     /**
@@ -90,6 +86,7 @@ public class KalmanFilter implements Filter {
 
     /**
      * convert the stack to an array of doubles
+     *
      * @return an array of doubles.
      */
     protected double[] stackToDoubleArray() {
@@ -97,7 +94,7 @@ public class KalmanFilter implements Filter {
         for (int i = 0; i < estimates.size(); ++i) {
             newValues[i] = estimates.get(i);
         }
-        return  newValues;
+        return newValues;
     }
 
 

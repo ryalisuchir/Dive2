@@ -250,7 +250,6 @@ public class RedHPSide4Specimen extends OpMode {
         telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
 
 
-
         loop = time;
         telemetry.update();
         robot.clearCache();
