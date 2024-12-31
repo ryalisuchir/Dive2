@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
@@ -50,7 +51,7 @@ public class SubsystemTest extends CommandOpMode {
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
         robot.depositSubsystem.outtakeSlidesLoop();
-
+        telemetry.addData("Deposit Current: ", robot.rightLift.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Extendo:", robot.extendoMotor.getCurrentPosition());
         telemetry.update();
 

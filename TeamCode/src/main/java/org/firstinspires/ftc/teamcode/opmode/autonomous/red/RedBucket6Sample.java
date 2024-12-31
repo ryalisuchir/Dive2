@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
 
 import android.util.Log;
 
@@ -34,9 +34,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.groun
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
-import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
 import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
-import org.firstinspires.ftc.teamcode.opmode.tuning.vision.BlueYellowAngleDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -46,7 +44,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
-public class BlueBucket6Sample extends OpMode {
+public class RedBucket6Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -54,7 +52,7 @@ public class BlueBucket6Sample extends OpMode {
 
     //Vision Initialization:
     OpenCvWebcam webcam;
-    YellowBlueDetection sampleDetection;
+    YellowRedDetection sampleDetection;
     double xTravel = 0;
     double yTravel = 0;
     double angle = 0;
@@ -74,13 +72,13 @@ public class BlueBucket6Sample extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_SIDEWAYS_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
-                .splineToLinearHeading(new Pose2d(60, 59, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(new Pose2d(58, 56, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(53.5, 58, Math.toRadians(90)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(53.5, 55.5, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(55.5, 58, Math.toRadians(90)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(5.5, 54, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -90,7 +88,7 @@ public class BlueBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64.5, 52, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(65.5, 52, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -100,11 +98,11 @@ public class BlueBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()   //edit this one goddamn it suchir
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(58, 51, Math.toRadians(140)), Math.toRadians(40));
+                        new Pose2d(60, 51, Math.toRadians(140)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(62, 53, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(new Pose2d(64, 58, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
@@ -115,7 +113,7 @@ public class BlueBucket6Sample extends OpMode {
 
         TrajectoryActionBuilder movement9 = movement8.endTrajectory().fresh()
                 .splineToSplineHeading(new Pose2d(34.56, 8.97, Math.toRadians(0.00)), Math.toRadians(0.00))
-                .splineToLinearHeading(new Pose2d(60, 51, Math.toRadians(45.00)), Math.toRadians(45.00));
+                .splineToLinearHeading(new Pose2d(60, 55, Math.toRadians(45.00)), Math.toRadians(45.00));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -128,7 +126,7 @@ public class BlueBucket6Sample extends OpMode {
         movement9A = movement9.build();
 
         //Vision Initialization:
-        sampleDetection = new YellowBlueDetection();
+        sampleDetection = new YellowRedDetection();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.setPipeline(sampleDetection);
@@ -148,6 +146,12 @@ public class BlueBucket6Sample extends OpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(webcam, 60);
+
+        // Initialize Kalman filter with sample parameters
+        double Q = 10; // Process noise covariance
+        double R = 2;  // Measurement noise covariance
+        int N = 3;     // Number of historical estimates
+        kalmanFilter = new KalmanFilter(Q, R, N);
     }
 
     @Override
@@ -227,7 +231,7 @@ public class BlueBucket6Sample extends OpMode {
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(750),
-                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.61)
+                                                new IntakeCommand(robot, 0.4, Globals.EXTENDO_MAX_EXTENSION*0.62)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -298,8 +302,7 @@ public class BlueBucket6Sample extends OpMode {
                                         )
                                 ),
                                 new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                                new BucketDropCommand(robot),
-                                new OuttakeTransferReadyCommand(robot)
+                                new BucketDropCommand(robot)
                         )
                 )
         );

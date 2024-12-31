@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.slides.ExtendoSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomBucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
@@ -40,6 +41,7 @@ public class TeleOpR extends CommandOpMode {
     private boolean depositManualControl;
     private boolean driverControlUnlocked;
     private boolean isCloseAndTransfer = true; // Track toggle state
+    boolean extendoBoolean = true;
 
     private int currentIndex = 0; //for rotation
 
@@ -140,7 +142,9 @@ public class TeleOpR extends CommandOpMode {
 
         //Swetha's Controls:
         //Extendo Slides Stuff:
-        robot.extendoSubsystem.extendoSlidesLoop();
+        if (extendoBoolean) {
+            robot.extendoSubsystem.extendoSlidesLoop();
+        }
         telemetry.update();
 
         if (ahnafController.cross) {
@@ -192,6 +196,7 @@ public class TeleOpR extends CommandOpMode {
         if (swethaController.right_stick_y > 0) {
             depositManualControl = true;
         }
+
         if (swethaController.dpad_left || swethaController.dpad_right || swethaController.dpad_up || swethaController.dpad_down) {
             robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -199,9 +204,13 @@ public class TeleOpR extends CommandOpMode {
         }
 
         if (swethaController.dpad_up) {
-            if (robot.extendoMotor.getCurrentPosition() < 50) {
+            extendoBoolean = false;
+            if (robot.extendoMotor.getCurrentPosition() < 100) {
+                robot.extendoMotor.setPower(-1);
                 robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.extendoMotor.setPower(0);
+                extendoBoolean = true;
             }
             schedule(
                     new ParallelCommandGroup(

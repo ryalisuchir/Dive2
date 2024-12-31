@@ -18,12 +18,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemIniti
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
-import org.firstinspires.ftc.teamcode.common.vision.SigmaAngleDetection;
+import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -34,19 +33,19 @@ import java.util.Collections;
 
 @Autonomous
 public class HypotheticalVisionAuto extends OpMode {
-    private static final double[] SAMPLE_POSITIONS = {0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
-    private static final double[] SERVO_POSITIONS = {0.65, 0.55, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};
+    private static final double[] SAMPLE_POSITIONS = {0.103756179039542, 0.15639977, 0.21710249534, 0.28348386, 0.34781, 0.458282, 0.560, 0.645733, 0.6942, 0.770252, 0.8092031, 0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
+    private static final double[] SERVO_POSITIONS = {0.61, 0.64, 0.69, 0.72, 0.77, 0.84, 0.92, 0.42, 0.46, 0.50, 0.52, 0.65, 0.57, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};
     OpenCvWebcam webcam;
-    SigmaAngleDetection sampleDetection;
+    YellowRedDetection sampleDetection;
     double xTravel = 0;
     double yTravel = 0;
-    double angle = 0;
+    double estimate = 0;
+    private double lastEstimate = 0; // Preserved last valid estimate
     KalmanFilter kalmanFilter;
     boolean isScanning = false;
     private RobotHardware robot;
 
     public static double mapSampleToServo(double samplePosition) {
-        // Check bounds
         if (samplePosition <= SAMPLE_POSITIONS[0]) {
             return SERVO_POSITIONS[0];
         }
@@ -60,7 +59,6 @@ public class HypotheticalVisionAuto extends OpMode {
                 return SERVO_POSITIONS[i] + t * (SERVO_POSITIONS[i + 1] - SERVO_POSITIONS[i]);
             }
         }
-
         return -1;
     }
 
@@ -72,7 +70,7 @@ public class HypotheticalVisionAuto extends OpMode {
         telemetry.addData("Ready: ", "Initialized subsystems.");
         telemetry.update();
 
-        sampleDetection = new SigmaAngleDetection();
+        sampleDetection = new YellowRedDetection();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.setPipeline(sampleDetection);
@@ -95,11 +93,6 @@ public class HypotheticalVisionAuto extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(webcam, 60);
 
-        // Initialize Kalman filter with sample parameters
-        double Q = 10; // Process noise covariance
-        double R = 2;  // Measurement noise covariance
-        int N = 3;     // Number of historical estimates
-        kalmanFilter = new KalmanFilter(Q, R, N);
         telemetry.addLine("Finished setting up auto.");
     }
 
@@ -120,23 +113,25 @@ public class HypotheticalVisionAuto extends OpMode {
                             isScanning = true;
                         }),
                         new WaitUntilCommand(() -> !isScanning),
-                        new ParallelCommandGroup(
-                                new DeferredCommand(() ->
-                                        new ActionCommand(
-                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                        .strafeToConstantHeading(new Vector2d(
-                                                                robot.driveSubsystem.getPoseEstimate().position.x + yTravel,
-                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                        )).build()
-                                                , Collections.emptySet())
-                                        , robot.driveSubsystem)
-                        ),
+                        new DeferredCommand(() ->
+                                new ActionCommand(
+                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                .strafeToConstantHeading(new Vector2d(
+                                                        robot.driveSubsystem.getPoseEstimate().position.x + yTravel,
+                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                )).build()
+                                        , Collections.emptySet())
+                                , robot.driveSubsystem),
+                        new WaitCommand(500),
                         new InstantCommand(() -> {
                             isScanning = true;
                         }),
                         new WaitUntilCommand(() -> !isScanning),
                         new ParallelCommandGroup(
-                                new ScanningCommand(robot, mapSampleToServo(angle), (double) Globals.EXTENDO_MAX_EXTENSION / 2),
+                                new DeferredCommand(() ->
+                                        new ScanningCommand(robot, lastEstimate, (double) Globals.EXTENDO_MAX_EXTENSION / 2),
+                                        robot.extendoSubsystem
+                                ),
                                 new DeferredCommand(() ->
                                         new ActionCommand(
                                                 robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
@@ -147,9 +142,7 @@ public class HypotheticalVisionAuto extends OpMode {
                                                 , Collections.emptySet())
                                         , robot.driveSubsystem)
                         ),
-                        new IntakePeckerCommand(robot),
-                        new WaitCommand(100),
-                        new RegularTransferCommand(robot)
+                        new IntakePeckerCommand(robot)
                 )
         );
     }
@@ -164,28 +157,44 @@ public class HypotheticalVisionAuto extends OpMode {
 
         telemetry.addData("xTravel: ", xTravel);
         telemetry.addData("yTravel: ", yTravel);
-        telemetry.addData("Angle of Sample Detected: ", angle);
+        telemetry.addData("Angle of Sample Detected: ", estimate);
 
-
+        // Ensure consistent scanning behavior
         if (isScanning) {
             double greenAngle = sampleDetection.getAngleOfGreenSample();
             Point greenPoint = sampleDetection.getGreenSampleCoordinates();
 
             if (!Double.isNaN(greenAngle)) {
-                // Smooth the detected angle using Kalman filter
-                angle = kalmanFilter.estimate((greenAngle % 180) / 180);
 
-                xTravel = (greenPoint.x) - 1;
-                yTravel = -(greenPoint.y) - 1;
+                // Update travel points based on the detected point
 
+
+                xTravel = greenPoint.x;
+                yTravel = greenPoint.y;
+
+                // Calculate the new estimate
+                estimate = (greenAngle % 180) / 180; // Claw angle between 0 and 1
+
+                // Update lastEstimate with the new valid estimate
+                lastEstimate = estimate;
+
+                // Mark scanning as complete
                 isScanning = false;
+            } else {
+                // Fallback to the last valid estimate and previous travel points
+                estimate = lastEstimate;
             }
-
         }
+
+        telemetry.addData("Final Estimate: ", lastEstimate);
+        telemetry.addData("Mapped Servo Position: ", lastEstimate);
+        telemetry.addData("Last Detected Green Point: ", lastEstimate);
 
         telemetry.update();
         robot.clearCache();
     }
+
+
 
     @Override
     public void stop() {

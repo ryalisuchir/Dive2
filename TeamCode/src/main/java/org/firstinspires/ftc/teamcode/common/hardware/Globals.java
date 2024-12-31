@@ -3,9 +3,15 @@ package org.firstinspires.ftc.teamcode.common.hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 
+import org.opencv.core.Point;
+
 @Config
 public class Globals {
     public static double extendoStaticMax = 15;
+
+    public static double visionOffset = -0.8;
+    public static Point cameraCenter = new Point(320, 180);
+
     public static Globals.ExtendoFailState extendoFailState = ExtendoFailState.GOOD;
     public static Globals.ExtendoState extendoState = ExtendoState.REST;
     public static Globals.OuttakeState outtakeState = OuttakeState.REST;
@@ -19,13 +25,13 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1900;
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 825;
-    public static int LIFT_SPECIMEN_DROP = 135;
+    public static int LIFT_SPECIMEN_POS = 790;
+    public static int LIFT_SPECIMEN_DROP = 200;
     public static int LIFT_RETRACT_POS = 0;
-    public static double LIFT_MAX_TOLERANCE = 10;
+    public static double LIFT_MAX_TOLERANCE = 15;
 
     //Extendo Subsystem Constants
-    public static int EXTENDO_MAX_EXTENSION = 480;
+    public static int EXTENDO_MAX_EXTENSION = 472;
     public static int EXTENDO_MAX_RETRACTION = 0;
     public static double EXTENDO_MAX_TOLERANCE = 10;
     //Outtake Subsystem Constants
@@ -37,7 +43,8 @@ public class Globals {
     public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
     public static double OUTTAKE_ARM_INTAKE = 0.8;
-    public static double OUTTAKE_ARM_SPECIMEN = 0.8;
+
+    public static double OUTTAKE_ARM_SPECIMEN = 0.75;
     public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.85;
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
@@ -45,20 +52,20 @@ public class Globals {
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0.13;
 
-    public static double INTAKE_ROTATION_REST = 0.83;
-    public static double INTAKE_ROTATION_TRANSFER = 0.83;
+    public static double INTAKE_ROTATION_REST = 0.52;
+    public static double INTAKE_ROTATION_TRANSFER = 0.52;
 
     public static double INTAKE_FOURBAR_INTAKE = 0.535;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
     public static double INTAKE_FOURBAR_TRANSFER = 0.8;
     public static double INTAKE_FOURBAR_BETWEEN = 0.72;
-    public static double INTAKE_FOURBAR_RESTING = 0.675;
-    public static double INTAKE_FOURBAR_CAMERA_READING = 0.7;
+    public static double INTAKE_FOURBAR_RESTING = 0.83;
+    public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 
-    public static double INTAKE_COAXIAL_RESTING = 0.8;
+    public static double INTAKE_COAXIAL_RESTING = 0.5;
     public static double INTAKE_COAXIAL_INTAKE = 0.01;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.82;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.80;
     public static double INTAKE_COAXIAL_BETWEEN = 0.75;
     public static double INTAKE_COAXIAL_CAMERA_READING = 0.29;
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.vision;
 
+import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -20,23 +21,24 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SigmaAngleDetection extends OpenCvPipeline {
+public class YellowBlueDetection extends OpenCvPipeline {
 
     static final Scalar YELLOW_LOWER_BOUND = new Scalar(20, 100, 100); // Adjust the lower bound for yellow
     static final Scalar YELLOW_UPPER_BOUND = new Scalar(30, 255, 255); // Adjust the upper bound for yellow
-    static final int BLUE_MASK_THRESHOLD = 150;
+
+    static final Scalar BLUE_LOWER_BOUND = new Scalar(100, 150, 100); // Adjust the lower bound for blue
+    static final Scalar BLUE_UPPER_BOUND = new Scalar(130, 255, 255); // Adjust the upper bound for blue
+
     static final Scalar BLUE = new Scalar(0, 0, 255);
     public double AREA_THRESHOLD = 4000;
     public MatOfPoint3f axisPoints;
     Mat ycrcbMat = new Mat();
-    Mat cbMat = new Mat();
     Mat hsvMat = new Mat();
     Mat blueThresholdMat = new Mat();
     Mat morphedBlueThreshold = new Mat();
     Mat contoursOnPlainImageMat = new Mat();
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
-    double cameraHeight = 45.72;
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
     volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
 
@@ -45,7 +47,7 @@ public class SigmaAngleDetection extends OpenCvPipeline {
     Stage[] stages = Stage.values();
     int stageNum = 0;
 
-    public SigmaAngleDetection() {
+    public YellowBlueDetection() {
         double fx = 800;
         double fy = 800;
         double cx = 320;
@@ -158,37 +160,44 @@ public class SigmaAngleDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         internalStoneList.clear();
-        findContours(input);
+
+        // Ensure input is not null and valid before processing
+        if (input.empty()) {
+            return input;
+        }
+
+        // Reuse existing Mats to avoid memory leaks
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
+
+        // Process yellow and blue masks
+        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, ycrcbMat);
+        morphMask(ycrcbMat, blueThresholdMat); // Reusing `blueThresholdMat` for morphed yellow mask
+
+        ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
+        Imgproc.findContours(blueThresholdMat, yellowContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        processContours(yellowContoursList, input, "Yellow");
+
+        Core.inRange(hsvMat, BLUE_LOWER_BOUND, BLUE_UPPER_BOUND, blueThresholdMat);
+        morphMask(blueThresholdMat, morphedBlueThreshold);
+
+        ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
+        Imgproc.findContours(morphedBlueThreshold, blueContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        processContours(blueContoursList, input, "Blue");
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
         switch (stages[stageNum]) {
-            case YCrCb: {
+            case YCrCb:
                 return ycrcbMat;
-            }
-
-            case FINAL: {
-                return input;
-            }
-
-            case MASKS: {
-                Mat masks = new Mat();
-                Core.addWeighted(masks, 1.0, blueThresholdMat, 1.0, 0.0, masks);
-                return masks;
-            }
-
-            case MASKS_NR: {
-                Mat masksNR = new Mat();
-                Core.addWeighted(masksNR, 1.0, morphedBlueThreshold, 1.0, 0.0, masksNR);
-                return masksNR;
-            }
-
-            case CONTOURS: {
+            case MASKS:
+                return blueThresholdMat; // Reusing the Mat object
+            case MASKS_NR:
+                return morphedBlueThreshold;
+            case CONTOURS:
                 return contoursOnPlainImageMat;
-            }
+            default:
+                return input;
         }
-
-        return input;
     }
 
     public ArrayList<AnalyzedStone> getDetectedStones() {
@@ -203,40 +212,46 @@ public class SigmaAngleDetection extends OpenCvPipeline {
         Imgproc.dilate(output, output, dilateElement);
     }
 
-    void findContours(Mat input) {
-        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, blueThresholdMat);
+    void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
+        if (!contoursList.isEmpty()) {
+            double smallestDistance = Double.MAX_VALUE;
+            MatOfPoint closestContour = null;
 
-        morphMask(blueThresholdMat, morphedBlueThreshold);
+            Point fovCenter = Globals.cameraCenter;
 
-        ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
-        Imgproc.findContours(morphedBlueThreshold, yellowContoursList, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        if (!yellowContoursList.isEmpty()) {
-            double lowestY = Double.MIN_VALUE;
-            MatOfPoint bottommostContour = null;
-
-            for (MatOfPoint contour : yellowContoursList) {
+            for (MatOfPoint contour : contoursList) {
                 double contourArea = Imgproc.contourArea(contour);
                 if (contourArea > AREA_THRESHOLD) {
                     Rect boundingRect = Imgproc.boundingRect(contour);
-                    if (boundingRect.y + boundingRect.height > lowestY) {
-                        lowestY = boundingRect.y + boundingRect.height;
-                        bottommostContour = contour;
+                    Point contourCenter = new Point(
+                            boundingRect.x + boundingRect.width / 2.0,
+                            boundingRect.y + boundingRect.height / 2.0
+                    );
+
+                    // Calculate the distance to the center of the FOV
+                    double distance = Math.sqrt(
+                            Math.pow(contourCenter.x - fovCenter.x, 2) +
+                                    Math.pow(contourCenter.y - fovCenter.y, 2)
+                    );
+
+                    if (distance < smallestDistance) {
+                        smallestDistance = distance;
+                        closestContour = contour;
                     }
                 }
             }
 
-            for (MatOfPoint contour : yellowContoursList) {
-                if (contour.equals(bottommostContour)) {
-                    analyzeContour(contour, input, "Green");
+            for (MatOfPoint contour : contoursList) {
+                if (contour.equals(closestContour)) {
+                    analyzeContour(contour, input, "Green"); // Mark the closest as green
                 } else {
-                    analyzeContour(contour, input, "Yellow");
+                    analyzeContour(contour, input, color);
                 }
             }
         }
     }
+
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
@@ -433,15 +448,15 @@ public class SigmaAngleDetection extends OpenCvPipeline {
 
             // Convert to inches (assuming the original unit is centimeters)
 
-            x = Math.round((x / 2.54) * 10.0) / 10.0;
-            y = -Math.round((y / 2.54) * 10.0) / 10.0;
+            x = -(Math.round((x / 2.54) * 10.0) / 10.0) + 1;
+            y = (Math.round((y / 2.54) * 10.0) / 10.0);
 
             // Store these coordinates in the sample and return as a point
             greenSample.x = x;
             greenSample.y = y;
 
             // Calculate center point if needed (currently just returning the translated point)
-            return new Point(greenSample.x, greenSample.y);
+            return new Point(greenSample.x + Globals.visionOffset, -greenSample.y + Globals.visionOffset);
         } else {
             return null; // No green sample found
         }
