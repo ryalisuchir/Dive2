@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -6,28 +6,23 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.HPDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -35,7 +30,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class Trial2RedHPSide5Specimen extends OpMode {
+@Disabled
+public class RedHPSide5Specimen extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A, movement11A, movement12A, movement13A, movement14A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -57,10 +53,11 @@ public class Trial2RedHPSide5Specimen extends OpMode {
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-25, 48, Math.toRadians(50)), Math.toRadians(50));
+                .splineToLinearHeading(new Pose2d(-38.5, 56, Math.toRadians(90.00)), Math.toRadians(90.00));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
-                .turnTo(Math.toRadians(-15));
+                .strafeToSplineHeading(new Vector2d(-52, 56), Math.toRadians(89.5))
+                .turnTo(Math.toRadians(90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
@@ -162,14 +159,107 @@ public class Trial2RedHPSide5Specimen extends OpMode {
                         new WaitCommand(100),
                         new SpecimenClipCommand(robot),
                         new ActionCommand(movement2A, Collections.emptySet()),
-                        new ScanningCommand(robot, 0.28, Globals.EXTENDO_MAX_EXTENSION * 0.9),
+                        new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION*0.82),
                         new WaitCommand(100),
                         new IntakePeckerCommand(robot),
                         new ParallelCommandGroup(
-                                new ActionCommand(movement3A, Collections.emptySet()),
-                                new NoClawScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
+                                new RegularTransferCommand(robot),
+                                new ActionCommand(movement3A, Collections.emptySet())
                         ),
-                        new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN))
+                        new ParallelCommandGroup(
+                                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION*0.82),
+                                new HPDropCommand(robot)
+                        ),
+                        new WaitCommand(100),
+                        new IntakePeckerCommand(robot),
+                        new RegularTransferCommand(robot),
+                        new ParallelCommandGroup(
+                                new HPDropCommand(robot),
+                                new ActionCommand(movement4A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(800),
+                                        new ScanningCommand(robot, 0.21, Globals.EXTENDO_MAX_EXTENSION*0.95)
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new IntakePeckerCommand(robot),
+                        new ParallelCommandGroup(
+                                new SequentialCommandGroup(
+                                        new RegularTransferCommand(robot),
+                                        new HPDropCommand(robot)
+                                ),
+                                new ActionCommand(movement5A, Collections.emptySet())
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenIntakeCommand(robot),
+                                new ActionCommand(movement6A, Collections.emptySet())
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(250),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement7A, Collections.emptySet())
+                                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement8A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(250),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement9A, Collections.emptySet())
+                                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement10A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(250),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement11A, Collections.emptySet())
+                                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement12A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(250),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement13A, Collections.emptySet())
+                                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ActionCommand(movement14A, Collections.emptySet())
                 )
         );
 

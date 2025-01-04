@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Specime
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.slides.ExtendoSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomBucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific.CustomOuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
@@ -33,8 +32,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-public class TeleOpR extends CommandOpMode {
-    public static final double[] intakeRotationPositions = {0.83, 0.6925, 0.555, 0.4175, 0.28};
+public class TeleOpps extends CommandOpMode {
+    public static final double[] intakeRotationPositions = {0, 0.25, 0.52, 0.75, 1};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
     private RobotHardware robot;
@@ -43,7 +42,7 @@ public class TeleOpR extends CommandOpMode {
     private boolean isCloseAndTransfer = true; // Track toggle state
     boolean extendoBoolean = true;
 
-    private int currentIndex = 0; //for rotation
+    private int currentIndex = 2; //for rotation
 
     @Override
     public void initialize() {
@@ -100,7 +99,7 @@ public class TeleOpR extends CommandOpMode {
         );
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
-            currentIndex = 0;
+            currentIndex = 2;
             if (isCloseAndTransfer) {
                 new IntakePeckerCommand(robot).schedule();
             } else {

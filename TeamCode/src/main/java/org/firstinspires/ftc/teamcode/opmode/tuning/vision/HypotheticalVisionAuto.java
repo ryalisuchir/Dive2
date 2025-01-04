@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -32,6 +33,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class HypotheticalVisionAuto extends OpMode {
     private static final double[] SAMPLE_POSITIONS = {0.103756179039542, 0.15639977, 0.21710249534, 0.28348386, 0.34781, 0.458282, 0.560, 0.645733, 0.6942, 0.770252, 0.8092031, 0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
     private static final double[] SERVO_POSITIONS = {0.61, 0.64, 0.69, 0.72, 0.77, 0.84, 0.92, 0.42, 0.46, 0.50, 0.52, 0.65, 0.57, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};

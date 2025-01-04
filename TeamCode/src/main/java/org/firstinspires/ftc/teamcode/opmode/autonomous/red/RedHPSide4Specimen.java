@@ -150,7 +150,7 @@ public class RedHPSide4Specimen extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new ParallelCommandGroup(
-                        new HangUpCommand(robot.hangSubsystem, 1, 1230),
+                        new HangUpCommand(robot.hangSubsystem, 1, 900),
                         new SequentialCommandGroup(
                                 //First Drop:
                                 new ParallelCommandGroup(

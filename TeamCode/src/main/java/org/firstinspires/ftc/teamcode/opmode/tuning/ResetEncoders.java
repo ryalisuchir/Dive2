@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.tuning;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 
 @Autonomous
+@Disabled
 public class ResetEncoders extends OpMode {
 
     private RobotHardware robot;

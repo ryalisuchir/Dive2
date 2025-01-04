@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
 
 import android.util.Log;
 
@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
 
+@Disabled
 @Autonomous
 public class BlueBucketSide1Specimen3Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;

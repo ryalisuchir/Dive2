@@ -12,6 +12,8 @@ public class Globals {
     public static double visionOffset = -0.8;
     public static Point cameraCenter = new Point(320, 180);
 
+    public static double EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES = 472 / 21.26;
+
     public static Globals.ExtendoFailState extendoFailState = ExtendoFailState.GOOD;
     public static Globals.ExtendoState extendoState = ExtendoState.REST;
     public static Globals.OuttakeState outtakeState = OuttakeState.REST;
@@ -25,7 +27,7 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1900;
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 790;
+    public static int LIFT_SPECIMEN_POS = 765;
     public static int LIFT_SPECIMEN_DROP = 200;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 15;
