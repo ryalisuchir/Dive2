@@ -203,13 +203,9 @@ public class TeleOpps extends CommandOpMode {
         }
 
         if (swethaController.dpad_up) {
-            extendoBoolean = false;
-            if (robot.extendoMotor.getCurrentPosition() < 100) {
-                robot.extendoMotor.setPower(-1);
+            if (robot.extendoMotor.getCurrentPosition() < 50) {
                 robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.extendoMotor.setPower(0);
-                extendoBoolean = true;
             }
             schedule(
                     new ParallelCommandGroup(
@@ -258,6 +254,12 @@ public class TeleOpps extends CommandOpMode {
             schedule(
                     new AllSystemInitializeCommand(robot)
             );
+            robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
         telemetry.addData("Extendo State: ", Globals.extendoState);

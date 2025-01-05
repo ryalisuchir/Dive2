@@ -61,7 +61,7 @@ public class Globals {
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
     public static double INTAKE_FOURBAR_TRANSFER = 0.8;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.72;
+    public static double INTAKE_FOURBAR_BETWEEN = 0.63;
     public static double INTAKE_FOURBAR_RESTING = 0.83;
     public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 

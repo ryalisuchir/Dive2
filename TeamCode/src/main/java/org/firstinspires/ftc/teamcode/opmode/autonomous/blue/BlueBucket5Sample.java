@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
@@ -175,7 +176,7 @@ public class BlueBucket5Sample extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new ParallelCommandGroup(
-                        new HangUpCommand(robot.hangSubsystem, 1, 900),
+//                        new HangUpCommand(robot.hangSubsystem, 1, 900),
                         new SequentialCommandGroup(
                                 //First Drop:
                                 new ParallelCommandGroup(
@@ -183,7 +184,8 @@ public class BlueBucket5Sample extends OpMode {
                                         new SequentialCommandGroup(
                                                 new WaitCommand(300),
                                                 new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                        )
+                                        ),
+                                        new SetIntakeDownCommand(robot)
                                 ),
                                 new BucketDropCommand(robot),
                                 //First Intake:

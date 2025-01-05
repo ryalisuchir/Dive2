@@ -45,7 +45,7 @@ public class RedHPSide4Specimen extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-7, 36.5, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
@@ -71,22 +71,22 @@ public class RedHPSide4Specimen extends OpMode {
                 )
                 //here
                 .strafeToConstantHeading(
-                        new Vector2d(-35, 17),
+                        new Vector2d(-35, 12),
                         new TranslationalVelConstraint(60)
                 )
                 .strafeToConstantHeading(
-                        new Vector2d(-50, 17),
+                        new Vector2d(-45, 16),
                         new TranslationalVelConstraint(45)
                 )
                 .strafeToConstantHeading(
-                        new Vector2d(-50, 60),
+                        new Vector2d(-45, 60),
                         new TranslationalVelConstraint(60)
                 )
                 .strafeToLinearHeading(new Vector2d(-28, 60), Math.toRadians(90))
 
                 .strafeToLinearHeading(
-                        new Vector2d(-28, 65), Math.toRadians(90),
-                        new TranslationalVelConstraint(12)
+                        new Vector2d(-28, 67), Math.toRadians(90),
+                        new TranslationalVelConstraint(8)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
@@ -98,8 +98,8 @@ public class RedHPSide4Specimen extends OpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-29, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-29, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-29, 68, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(8)
                 );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
@@ -111,8 +111,8 @@ public class RedHPSide4Specimen extends OpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-30, 60, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-30, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-30, 68, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(8)
                 );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
@@ -149,8 +149,6 @@ public class RedHPSide4Specimen extends OpMode {
         time_since_start = new ElapsedTime();
 
         CommandScheduler.getInstance().schedule(
-                new ParallelCommandGroup(
-                        new HangUpCommand(robot.hangSubsystem, 1, 900),
                         new SequentialCommandGroup(
                                 //First Drop:
                                 new ParallelCommandGroup(
@@ -169,10 +167,11 @@ public class RedHPSide4Specimen extends OpMode {
                                                 new SpecimenIntakeCommand(robot)
                                         )
                                 ),
+                                new WaitCommand(500),
                                 new ParallelCommandGroup(
                                         new SpecimenGrabAndTransferAndLiftCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(250),
+                                                new WaitCommand(500),
                                                 new ParallelCommandGroup(
                                                         new ActionCommand(movement3A, Collections.emptySet())
                                                 )
@@ -188,10 +187,11 @@ public class RedHPSide4Specimen extends OpMode {
                                                 new SpecimenIntakeCommand(robot)
                                         )
                                 ),
+                                new WaitCommand(500),
                                 new ParallelCommandGroup(
                                         new SpecimenGrabAndTransferAndLiftCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(250),
+                                                new WaitCommand(500),
                                                 new ParallelCommandGroup(
                                                         new ActionCommand(movement5A, Collections.emptySet())
                                                 )
@@ -206,10 +206,11 @@ public class RedHPSide4Specimen extends OpMode {
                                                 new SpecimenIntakeCommand(robot)
                                         )
                                 ),
+                                new WaitCommand(500),
                                 new ParallelCommandGroup(
                                         new SpecimenGrabAndTransferAndLiftCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(250),
+                                                new WaitCommand(500),
                                                 new ParallelCommandGroup(
                                                         new ActionCommand(movement7A, Collections.emptySet())
                                                 )
@@ -217,12 +218,8 @@ public class RedHPSide4Specimen extends OpMode {
                                 ),
                                 new WaitCommand(100),
                                 new SpecimenClipCommand(robot),
-                                new ParallelCommandGroup(
-                                        new ActionCommand(movement8A, Collections.emptySet()),
-                                        new OuttakeTransferReadyCommand(robot)
-                                )
+                                new OuttakeTransferReadyCommand(robot)
                         )
-                )
         );
 
     }
