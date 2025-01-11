@@ -28,7 +28,7 @@ public class Globals {
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
     public static int LIFT_SPECIMEN_POS = 765;
-    public static int LIFT_SPECIMEN_DROP = 200;
+    public static int LIFT_SPECIMEN_DROP = 220;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 15;
 
@@ -40,7 +40,8 @@ public class Globals {
     public static double OUTTAKE_CLAW_OPEN = 0.7;
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
-    public static double OUTTAKE_ARM_TRANSFER = 0.08;
+
+    public static double OUTTAKE_ARM_TRANSFER = 0.23; //0.08
     public static double OUTTAKE_ARM_RAISING = 0.46;
     public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
@@ -50,25 +51,25 @@ public class Globals {
     public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.85;
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
-    public static double INTAKE_CLAW_TRANSFER = 0.6;
+    public static double INTAKE_CLAW_TRANSFER = 0.18;
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0.13;
 
     public static double INTAKE_ROTATION_REST = 0.52;
     public static double INTAKE_ROTATION_TRANSFER = 0.52;
 
-    public static double INTAKE_FOURBAR_INTAKE = 0.535;
+    public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.8;
-    public static double INTAKE_FOURBAR_BETWEEN = 0.63;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.89; //0.8
+    public static double INTAKE_FOURBAR_BETWEEN = 0.89; //0.63
     public static double INTAKE_FOURBAR_RESTING = 0.83;
     public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 
     public static double INTAKE_COAXIAL_RESTING = 0.5;
-    public static double INTAKE_COAXIAL_INTAKE = 0.01;
-    public static double INTAKE_COAXIAL_TRANSFER = 0.80;
-    public static double INTAKE_COAXIAL_BETWEEN = 0.75;
+    public static double INTAKE_COAXIAL_INTAKE = 0; //0.01
+    public static double INTAKE_COAXIAL_TRANSFER = 0.66; //0.8
+    public static double INTAKE_COAXIAL_BETWEEN = 0.66; //0.75
     public static double INTAKE_COAXIAL_CAMERA_READING = 0.29;
 
     //Auto Positions:
@@ -76,6 +77,8 @@ public class Globals {
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270));
     public static Pose2d BLUE_SIDEWAYS_START_POSE = new Pose2d(17, 64, Math.toRadians(0));
     public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
+    public static Pose2d BLUE_FAR_START_POSE_REVERSED = new Pose2d(-18, 66.43, Math.toRadians(90));
+
 
     //Slide States:
     public enum ExtendoFailState { // This will be used to track current on extendo motors.

@@ -18,8 +18,11 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
     public static double intakeRotationPosition = 0.52;
     public static double intakeClawPosition = 0.5;
 
-    public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
+    public static double armPositionGeneral = 0.76;
+    public static double outtakeClawPosition = 0.4;
 
+    public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
+    public Servo leftOuttakeArm, rightOuttakeArm, outtakeClaw;
     @Override
     public void init() {
         intakeRotation = hardwareMap.get(Servo.class, "intakeRotation");
@@ -28,10 +31,16 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
+
+        leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
+        rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
+        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         intake4BarRight.setDirection(Servo.Direction.REVERSE);
         intakeCoaxialRight.setDirection(Servo.Direction.REVERSE);
+        rightOuttakeArm.setDirection(Servo.Direction.REVERSE);
 
     }
 
@@ -43,5 +52,8 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         intakeCoaxialRight.setPosition(coaxialPositionGeneral);
         intake4BarLeft.setPosition(fourBarPositionGeneral);
         intake4BarRight.setPosition(fourBarPositionGeneral);
+        leftOuttakeArm.setPosition(armPositionGeneral);
+        rightOuttakeArm.setPosition(armPositionGeneral);
+        outtakeClaw.setPosition(outtakeClawPosition);
     }
 }

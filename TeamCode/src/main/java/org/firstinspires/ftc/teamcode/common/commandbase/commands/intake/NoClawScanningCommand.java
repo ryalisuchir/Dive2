@@ -15,7 +15,7 @@ public class NoClawScanningCommand extends SequentialCommandGroup {
         super(
                 new ParallelCommandGroup(
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.SCANNING),
-                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.INTAKE)),
+                        new InstantCommand(() -> robot.intakeCoaxialSubsystem.update(Globals.IntakeCoaxialState.CAMERA_READING)),
                         new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, intakeRotation)),
                         //Prevents intake stuff from getting stuck:
                         new SequentialCommandGroup(

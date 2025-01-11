@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
@@ -33,7 +34,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
 public class TeleOpps extends CommandOpMode {
-    public static final double[] intakeRotationPositions = {0, 0.25, 0.52, 0.75, 1};
+    public static final double[] intakeRotationPositions = { 0, 0.25, 0.52, 0.75, 1 };
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
     private RobotHardware robot;
@@ -180,7 +181,7 @@ public class TeleOpps extends CommandOpMode {
         }
         if (swethaController.cross) {
             schedule(
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
+                    new NoClawScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
             );
         }
 

@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Bucket
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.NewTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
@@ -75,7 +76,7 @@ public class SubsystemTest extends CommandOpMode {
         if (gamepad1.cross) {
             if (robot.extendoMotor.getCurrentPosition() < 200) {
                 schedule(
-                        new RetractedTransferCommand(robot)
+                        new RegularTransferCommand(robot)
                 );
             } else {
                 schedule(

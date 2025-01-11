@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
 
 import androidx.annotation.NonNull;
 
@@ -18,13 +18,13 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
@@ -36,7 +36,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
-public class RedHPSide4Specimen extends OpMode {
+@Disabled
+public class SkibidiSpecimen extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -80,7 +81,7 @@ public class RedHPSide4Specimen extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToConstantHeading(
-                        new Vector2d(-40, 50), Math.toRadians(90.00),
+                        new Vector2d(-40, 60), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 )
@@ -95,7 +96,7 @@ public class RedHPSide4Specimen extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .strafeToConstantHeading(
-                        new Vector2d(-49, 50),
+                        new Vector2d(-49, 55),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
@@ -140,10 +141,7 @@ public class RedHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-15, 58, Math.toRadians(0)), Math.toRadians(180),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                );
+                        new Pose2d(-35, 58, Math.toRadians(0)), Math.toRadians(180));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -160,7 +158,7 @@ public class RedHPSide4Specimen extends OpMode {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Far");
-        telemetry.addData("Description: ", "4 Specimen - Lightning McQueen Ahh Speed, Park");
+        telemetry.addData("Description: ", "4 Specimen - Slow, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -237,11 +235,7 @@ public class RedHPSide4Specimen extends OpMode {
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement8A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(700),
-                                        new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
-                                )
+                                new ActionCommand(movement8A, Collections.emptySet())
                         )
                 )
         );

@@ -33,6 +33,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Bucket
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -76,23 +77,23 @@ public class BlueBucket5Sample extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_SIDEWAYS_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
-                .splineToLinearHeading(new Pose2d(60, 58, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(new Pose2d(56, 58, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(53.75, 58, Math.toRadians(90)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(53.75, 55.5, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(54, 58, Math.toRadians(90)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(53.5, 54, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
                 .splineToLinearHeading(
-                        new Pose2d(60, 59, Math.toRadians(45)), Math.toRadians(45));
+                        new Pose2d(59, 58, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64.6, 52, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(64, 50, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -102,11 +103,11 @@ public class BlueBucket5Sample extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(60, 47.5, Math.toRadians(135)), Math.toRadians(40));
+                        new Pose2d(61, 46.5, Math.toRadians(135)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(64, 57, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(new Pose2d(60, 55, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
@@ -116,14 +117,14 @@ public class BlueBucket5Sample extends OpMode {
                 );
 
         TrajectoryActionBuilder movement9 = movement8.endTrajectory().fresh()
-                .splineToSplineHeading(new Pose2d(34.56, 8.97, Math.toRadians(0.00)), Math.toRadians(0.00))
-                .splineToLinearHeading(new Pose2d(58, 55.5, Math.toRadians(45.00)), Math.toRadians(45.00));
+                .splineToSplineHeading(new Pose2d(34.56, 7, Math.toRadians(0.00)), Math.toRadians(0.00))
+                .splineToLinearHeading(new Pose2d(58, 55.5, Math.toRadians(45.00)), Math.toRadians(15));
 
         TrajectoryActionBuilder movement10 = movement9.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(35.96, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00))
-                .splineToLinearHeading(
-                        new Pose2d(21.00, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00),
+                .splineToSplineHeading(
+                        new Pose2d(19, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00),
                         new TranslationalVelConstraint(15)
                 );
 
@@ -155,10 +156,6 @@ public class BlueBucket5Sample extends OpMode {
                 telemetry.addData("Camera Error: ", errorCode);
             }
         });
-
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
-        FtcDashboard.getInstance().startCameraStream(webcam, 60);
     }
 
     @Override
@@ -192,7 +189,7 @@ public class BlueBucket5Sample extends OpMode {
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement2A, Collections.emptySet()),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
+                                                new WaitCommand(1300),
                                                 new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.65)
                                         ),
                                         new SequentialCommandGroup(
@@ -217,8 +214,8 @@ public class BlueBucket5Sample extends OpMode {
                                         new ActionCommand(movement4A, Collections.emptySet()),
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(500),
-                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.57)
+                                                new WaitCommand(750),
+                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.55)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -245,7 +242,7 @@ public class BlueBucket5Sample extends OpMode {
                                 new WaitCommand(150),
                                 new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new RegularTransferCommand(robot),
+                                        new RetractedTransferCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 new ActionCommand(movement7A, Collections.emptySet())
@@ -259,7 +256,7 @@ public class BlueBucket5Sample extends OpMode {
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1900),
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.45)
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
                                 //Vision stuff:
@@ -286,6 +283,9 @@ public class BlueBucket5Sample extends OpMode {
                                         ),
                                         new WaitCommand(500),
                                         new InstantCommand(() -> {
+                                            xTravel = 0;
+                                            yTravel = 0;
+                                            lastEstimate = 0;
                                             isScanning = true;
                                         }),
                                         new WaitUntilCommand(() -> !isScanning),

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground;
 
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
@@ -12,10 +13,14 @@ public class RetractedTransferCommand extends SequentialCommandGroup {
     public RetractedTransferCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
-                        new OuttakeTransferReadyCommand(robot),
-                        new WaitCommand(350),
-                        new TransferCommand(robot),
-                        new WaitCommand(1500),
+                        new ParallelCommandGroup(
+                                new OuttakeTransferReadyCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new TransferCommand(robot)
+                                )
+                        ),
+                        new WaitCommand(600),
                         new ClawTransferCommand(robot)
                 )
         );

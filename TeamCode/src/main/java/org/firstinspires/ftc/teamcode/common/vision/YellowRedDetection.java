@@ -454,7 +454,7 @@ public class YellowRedDetection extends OpenCvPipeline {
 
             // Convert to inches (assuming the original unit is centimeters)
 
-            x = (-Math.round((x / 2.54) * 10.0) / 10.0);
+            x = -(Math.round((x / 2.54) * 10.0) / 10.0) + 1;
             y = (Math.round((y / 2.54) * 10.0) / 10.0);
 
             // Store these coordinates in the sample and return as a point

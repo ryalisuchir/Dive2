@@ -31,6 +31,10 @@ public class RedYellowAngleDetection extends OpMode {
 
     private double estimate = 0; // Current estimate
     private double lastEstimate = 0; // Preserved last valid estimate
+    double x = 0;
+    double y = 0;
+    double lastX = 0;
+    double lastY = 0;
 
 
     @Override
@@ -68,13 +72,27 @@ public class RedYellowAngleDetection extends OpMode {
             if (!Double.isNaN(greenAngle)) {
                 estimate = (greenAngle % 180) / 180;
                 lastEstimate = estimate;
+                try {
+                x = sampleDetection.getGreenSampleCoordinates().x;
+                y = sampleDetection.getGreenSampleCoordinates().y;
+            } catch (RuntimeException e) {
+                    telemetry.addLine("Error");
+                }
+
+                lastX = x;
+                lastY = y;
             } else {
                 estimate = lastEstimate;
+                x = lastX;
+                y = lastY;
             }
         }
 
         telemetry.addData("Claw Angle: ", lastEstimate);
         telemetry.addData("Rotation Position: ", lastEstimate);
+
+        telemetry.addData("X: ", lastX);
+        telemetry.addData("Y: ", lastY);
 
         if (scanning) {
             CommandScheduler.getInstance().schedule(new ScanningCommand(robot, lastEstimate + offset, Globals.EXTENDO_MAX_RETRACTION));

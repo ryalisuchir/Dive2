@@ -266,7 +266,7 @@ public class YellowBlueDetection extends OpenCvPipeline {
         }
 
         double angle = -(rotRectAngle - 180);
-        drawTagText(rotatedRectFitToContour, Integer.toString((int) Math.round(angle)) + " deg", input, color);
+        drawTagText(rotatedRectFitToContour, (int) Math.round(angle) + " deg", input, color);
 
         double objectWidth = 10.0;
         double objectHeight = 5.0;
@@ -468,7 +468,7 @@ public class YellowBlueDetection extends OpenCvPipeline {
         YCrCb,
         MASKS,
         MASKS_NR,
-        CONTOURS;
+        CONTOURS
     }
 
     static class AnalyzedStone {
