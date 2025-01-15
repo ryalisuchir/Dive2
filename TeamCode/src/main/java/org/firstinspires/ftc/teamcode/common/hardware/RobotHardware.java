@@ -125,7 +125,7 @@ public class RobotHardware {
         pinpointDrive = new PinpointDrive(hardwareMap, initialPose);
         driveSubsystem = new DriveSubsystem(pinpointDrive, false);
 
-        //Registering all subsystems:
+        //Registering all subsystems: //test to make sure push went through
         CommandScheduler.getInstance().registerSubsystem(
                 //Intakes:
                 intake4BarSubsystem,
