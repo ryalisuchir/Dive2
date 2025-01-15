@@ -20,7 +20,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 @Autonomous
 @Config
-@Disabled
 public class RedYellowAngleDetection extends OpMode {
     public static boolean scanning = false;
     public static double offset = 0;

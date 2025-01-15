@@ -16,12 +16,14 @@ public class RetractedTransferCommand extends SequentialCommandGroup {
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(200),
+                                        new WaitCommand(50),
                                         new TransferCommand(robot)
                                 )
                         ),
-                        new WaitCommand(600),
-                        new ClawTransferCommand(robot)
+                        new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new ClawTransferCommand(robot)
+                        )
                 )
         );
     }

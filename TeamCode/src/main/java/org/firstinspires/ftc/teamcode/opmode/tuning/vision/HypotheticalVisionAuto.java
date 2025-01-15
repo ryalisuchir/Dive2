@@ -10,7 +10,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -33,36 +32,35 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
-@Disabled
 public class HypotheticalVisionAuto extends OpMode {
-//    private static final double[] SAMPLE_POSITIONS = {0.103756179039542, 0.15639977, 0.21710249534, 0.28348386, 0.34781, 0.458282, 0.560, 0.645733, 0.6942, 0.770252, 0.8093256, 0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
-//    private static final double[] SERVO_POSITIONS = {0.61, 0.64, 0.69, 0.72, 0.77, 0.84, 0.92, 0.42, 0.46, 0.50, 0.52, 0.65, 0.57, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};
+    private static final double[] SAMPLE_POSITIONS = {0.103756179039542, 0.15639977, 0.21710249534, 0.28348386, 0.34781, 0.458282, 0.560, 0.645733, 0.6942, 0.770252, 0.8092031, 0.1834, 0, 0.205, 0.4271, 0.5531, 0.6958, 0.72, 0.8037, 1};
+    private static final double[] SERVO_POSITIONS = {0.61, 0.64, 0.69, 0.72, 0.77, 0.84, 0.92, 0.42, 0.46, 0.50, 0.52, 0.65, 0.57, 0.65, 0.83, 0.9, 1.0, 0.45, 0.52, 0.55};
     OpenCvWebcam webcam;
     YellowRedDetection sampleDetection;
     double xTravel = 0;
     double yTravel = 0;
     double estimate = 0;
-    private double lastEstimate = 0; // Preserved last valid estimate
     KalmanFilter kalmanFilter;
     boolean isScanning = false;
-    private RobotHardware robot;
+    private double lastEstimate = 0; // Preserved last valid estimate
+    private org.firstinspires.ftc.teamcode.common.hardware.RobotHardware robot;
 
-//    public static double mapSampleToServo(double samplePosition) {
-//        if (samplePosition <= SAMPLE_POSITIONS[0]) {
-//            return SERVO_POSITIONS[0];
-//        }
-//        if (samplePosition >= SAMPLE_POSITIONS[SAMPLE_POSITIONS.length - 1]) {
-//            return SERVO_POSITIONS[SERVO_POSITIONS.length - 1];
-//        }
-//
-//        for (int i = 0; i < SAMPLE_POSITIONS.length - 1; i++) {
-//            if (samplePosition >= SAMPLE_POSITIONS[i] && samplePosition <= SAMPLE_POSITIONS[i + 1]) {
-//                double t = (samplePosition - SAMPLE_POSITIONS[i]) / (SAMPLE_POSITIONS[i + 1] - SAMPLE_POSITIONS[i]);
-//                return SERVO_POSITIONS[i] + t * (SERVO_POSITIONS[i + 1] - SERVO_POSITIONS[i]);
-//            }
-//        }
-//        return -1;
-//    }
+    public static double mapSampleToServo(double samplePosition) {
+        if (samplePosition <= SAMPLE_POSITIONS[0]) {
+            return SERVO_POSITIONS[0];
+        }
+        if (samplePosition >= SAMPLE_POSITIONS[SAMPLE_POSITIONS.length - 1]) {
+            return SERVO_POSITIONS[SERVO_POSITIONS.length - 1];
+        }
+
+        for (int i = 0; i < SAMPLE_POSITIONS.length - 1; i++) {
+            if (samplePosition >= SAMPLE_POSITIONS[i] && samplePosition <= SAMPLE_POSITIONS[i + 1]) {
+                double t = (samplePosition - SAMPLE_POSITIONS[i]) / (SAMPLE_POSITIONS[i + 1] - SAMPLE_POSITIONS[i]);
+                return SERVO_POSITIONS[i] + t * (SERVO_POSITIONS[i + 1] - SERVO_POSITIONS[i]);
+            }
+        }
+        return -1;
+    }
 
     @Override
     public void init() {
@@ -110,26 +108,6 @@ public class HypotheticalVisionAuto extends OpMode {
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
                         new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION / 2),
-                        new WaitCommand(1000),
-                        new InstantCommand(() -> {
-                            isScanning = true;
-                        }),
-                        new WaitUntilCommand(() -> !isScanning),
-                        new ParallelCommandGroup(
-                                new DeferredCommand(() ->
-                                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() + (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                        robot.extendoSubsystem
-                                ),
-                        new DeferredCommand(() ->
-                                new ActionCommand(
-                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                .strafeToConstantHeading(new Vector2d(
-                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                )).build()
-                                        , Collections.emptySet())
-                                , robot.driveSubsystem)
-                                ),
                         new WaitCommand(500),
                         new InstantCommand(() -> {
                             isScanning = true;
@@ -137,7 +115,26 @@ public class HypotheticalVisionAuto extends OpMode {
                         new WaitUntilCommand(() -> !isScanning),
                         new ParallelCommandGroup(
                                 new DeferredCommand(() ->
-                                        new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() + (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION / 2 - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                        robot.extendoSubsystem),
+                                new DeferredCommand(() ->
+                                        new ActionCommand(
+                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                        .strafeToConstantHeading(new Vector2d(
+                                                                robot.driveSubsystem.getPoseEstimate().position.x,
+                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                        )).build()
+                                                , Collections.emptySet())
+                                        , robot.driveSubsystem)
+                        ),
+                        new WaitCommand(500),
+                        new InstantCommand(() -> {
+                            isScanning = true;
+                        }),
+                        new WaitUntilCommand(() -> !isScanning),
+                        new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                         robot.extendoSubsystem
                                 ),
                                 new DeferredCommand(() ->
@@ -199,9 +196,7 @@ public class HypotheticalVisionAuto extends OpMode {
         telemetry.addData("Last Detected Green Point: ", lastEstimate);
 
         telemetry.update();
-        robot.clearCache();
     }
-
 
 
     @Override

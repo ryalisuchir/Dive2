@@ -186,6 +186,8 @@ public class YellowBlueDetection extends OpenCvPipeline {
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
+        saveMatToDisk(hsvMat, "processed_frame.jpg");
+
         switch (stages[stageNum]) {
             case YCrCb:
                 return ycrcbMat;
@@ -198,10 +200,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
             default:
                 return input;
         }
-    }
-
-    public ArrayList<AnalyzedStone> getDetectedStones() {
-        return clientStoneList;
     }
 
     void morphMask(Mat input, Mat output) {
@@ -356,24 +354,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
         }
     }
 
-    void drawAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
-        double axisLength = 5.0;
-
-        MatOfPoint3f axisPoints = new MatOfPoint3f(
-                new Point3(0, 0, 0),
-                new Point3(axisLength, 0, 0),
-                new Point3(0, axisLength, 0),
-                new Point3(0, 0, -axisLength) // Z axis pointing away from the camera
-        );
-
-        MatOfPoint2f imagePoints = new MatOfPoint2f();
-        Calib3d.projectPoints(axisPoints, rvec, tvec, cameraMatrix, distCoeffs, imagePoints);
-
-        Point[] imgPts = imagePoints.toArray();
-
-        Imgproc.line(img, imgPts[0], imgPts[1], new Scalar(0, 0, 255), 2); // X axis in red
-    }
-
     public double getAngleOfGreenSample() {
         AnalyzedStone greenSample = null;
         double highestYCoordinate = Double.MAX_VALUE;
@@ -394,31 +374,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
 
         if (greenSample != null) {
             return greenSample.angle;
-        } else {
-            return Double.NaN;  // Indicate that no "green" sample was found
-        }
-    }
-
-    public double getGreenSampleArea() {
-        AnalyzedStone greenSample = null;
-        double highestYCoordinate = Double.MAX_VALUE;
-
-        List<AnalyzedStone> stonesCopy = new ArrayList<>(internalStoneList);
-        for (AnalyzedStone stone : stonesCopy) {
-            if (stone != null && "Green".equals(stone.color) && stone.tvec != null) {
-                double[] yValueArray = stone.tvec.get(1, 0);
-                if (yValueArray != null && yValueArray.length > 0) {
-                    double yValue = yValueArray[0]; // Extracting the y-coordinate of translation vector
-                    if (yValue < highestYCoordinate) {
-                        highestYCoordinate = yValue;
-                        greenSample = stone;
-                    }
-                }
-            }
-        }
-
-        if (greenSample != null) {
-            return Imgproc.contourArea(greenSample.contour);
         } else {
             return Double.NaN;  // Indicate that no "green" sample was found
         }
@@ -460,6 +415,13 @@ public class YellowBlueDetection extends OpenCvPipeline {
         } else {
             return null; // No green sample found
         }
+    }
+
+    private static final String defaultSavePath = "/sdcard/EasyOpenCV";
+
+    public void saveMatToDisk(Mat mat, final String filename)
+    {
+        saveMatToDiskFullPath(mat, String.format("%s/%s.png", defaultSavePath, filename));
     }
 
 

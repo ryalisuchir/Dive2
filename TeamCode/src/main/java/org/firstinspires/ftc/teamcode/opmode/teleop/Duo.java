@@ -28,12 +28,13 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.teleopspecific
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakeSliderResetterCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-public class TeleOpps extends CommandOpMode {
+public class Duo extends CommandOpMode {
     public static final double[] intakeRotationPositions = { 0, 0.25, 0.52, 0.75, 1 };
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
@@ -100,7 +101,6 @@ public class TeleOpps extends CommandOpMode {
         );
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
-            currentIndex = 2;
             if (isCloseAndTransfer) {
                 new IntakePeckerCommand(robot).schedule();
             } else {
@@ -110,7 +110,10 @@ public class TeleOpps extends CommandOpMode {
         });
 
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new CustomBucketDropCommand(robot)
+                new SequentialCommandGroup(
+                        new CustomBucketDropCommand(robot),
+                        new InstantCommand(() -> {extendoBoolean = true;})
+                )
         );
     }
 
@@ -145,9 +148,16 @@ public class TeleOpps extends CommandOpMode {
         if (extendoBoolean) {
             robot.extendoSubsystem.extendoSlidesLoop();
         }
+
+        if (swethaController.left_stick_x > 0.1) {
+            extendoBoolean = false;
+            robot.extendoMotor.setPower(-1);
+        } else { extendoBoolean = true; }
+
         telemetry.update();
 
         if (ahnafController.cross) {
+            currentIndex = 2;
             if (robot.extendoMotor.getCurrentPosition() > (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
                         new UninterruptableCommand(new RegularTransferCommand(robot)),
@@ -163,23 +173,28 @@ public class TeleOpps extends CommandOpMode {
         }
 
         if (swethaController.circle) {
+            extendoBoolean = true;
             schedule(
                     new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
             );
         }
 
         if (swethaController.square) {
+            extendoBoolean = true;
             schedule(
                     new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) Globals.EXTENDO_MAX_EXTENSION / 2))
             );
         }
 
         if (swethaController.triangle) {
+            extendoBoolean = true;
             schedule(
                     new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
             );
         }
         if (swethaController.cross) {
+            currentIndex = 2;
+            extendoBoolean = true;
             schedule(
                     new NoClawScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
             );
@@ -204,13 +219,12 @@ public class TeleOpps extends CommandOpMode {
         }
 
         if (swethaController.dpad_up) {
-            if (robot.extendoMotor.getCurrentPosition() < 50) {
-                robot.extendoMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.extendoMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            }
+            extendoBoolean = false;
             schedule(
                     new ParallelCommandGroup(
-                            new CustomOuttakeCommand(robot)
+                            new CustomOuttakeCommand(robot),
+                            new InstantCommand(() -> {extendoBoolean = false;}),
+                            new IntakeSliderResetterCommand(robot.extendoSubsystem)
                     )
             );
         }

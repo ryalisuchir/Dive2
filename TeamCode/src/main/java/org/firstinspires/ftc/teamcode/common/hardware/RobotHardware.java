@@ -34,7 +34,7 @@ public class RobotHardware {
     //1 is left
     //2 is right
     public ServoImplEx intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
-    public ServoImplEx outtakeRotation, outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
+    public ServoImplEx outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
     public CRServo leftHang, rightHang;
 
     public Intake4BarSubsystem intake4BarSubsystem;
@@ -102,7 +102,6 @@ public class RobotHardware {
         intake4BarRight = hardwareMap.get(ServoImplEx.class, "intake4Bar2");
         leftHang = hardwareMap.get(CRServo.class, "leftHang");
         rightHang = hardwareMap.get(CRServo.class, "rightHang");
-        outtakeRotation = hardwareMap.get(ServoImplEx.class, "outtakeRotation");
         outtakeArmLeft = hardwareMap.get(ServoImplEx.class, "leftOuttakeArm");
         outtakeArmRight = hardwareMap.get(ServoImplEx.class, "rightOuttakeArm");
         outtakeClaw = hardwareMap.get(ServoImplEx.class, "outtakeClaw");

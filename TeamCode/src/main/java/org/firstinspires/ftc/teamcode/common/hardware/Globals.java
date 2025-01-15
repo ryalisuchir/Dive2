@@ -24,13 +24,13 @@ public class Globals {
     public static Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
     public static Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
     // Lift Subsystem Constants
-    public static int LIFT_HIGH_POS = 1900;
+    public static int LIFT_HIGH_POS = 1850;
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 765;
+    public static int LIFT_SPECIMEN_POS = 755;
     public static int LIFT_SPECIMEN_DROP = 220;
     public static int LIFT_RETRACT_POS = 0;
-    public static double LIFT_MAX_TOLERANCE = 15;
+    public static double LIFT_MAX_TOLERANCE = 25;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
@@ -41,13 +41,13 @@ public class Globals {
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
-    public static double OUTTAKE_ARM_TRANSFER = 0.23; //0.08
+    public static double OUTTAKE_ARM_TRANSFER = 0.19; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
     public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
     public static double OUTTAKE_ARM_INTAKE = 0.8;
 
-    public static double OUTTAKE_ARM_SPECIMEN = 0.75;
+    public static double OUTTAKE_ARM_SPECIMEN = 0.7;
     public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.85;
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
@@ -61,16 +61,16 @@ public class Globals {
     public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
     public static double INTAKE_FOURBAR_LOW = 0.55;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.89; //0.8
-    public static double INTAKE_FOURBAR_BETWEEN = 0.89; //0.63
+    public static double INTAKE_FOURBAR_TRANSFER = 0.82; //0.8 //new was 0.89
+    public static double INTAKE_FOURBAR_BETWEEN = 0.82; //0.63 //new was .89
     public static double INTAKE_FOURBAR_RESTING = 0.83;
     public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 
     public static double INTAKE_COAXIAL_RESTING = 0.5;
     public static double INTAKE_COAXIAL_INTAKE = 0; //0.01
-    public static double INTAKE_COAXIAL_TRANSFER = 0.66; //0.8
-    public static double INTAKE_COAXIAL_BETWEEN = 0.66; //0.75
-    public static double INTAKE_COAXIAL_CAMERA_READING = 0.29;
+    public static double INTAKE_COAXIAL_TRANSFER = 0.66; //0.8 change to 0.66
+    public static double INTAKE_COAXIAL_BETWEEN = 0.66; //0.75 new was 0.66
+    public static double INTAKE_COAXIAL_CAMERA_READING = 0.29; //0.29
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));

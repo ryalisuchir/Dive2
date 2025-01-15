@@ -11,7 +11,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
-import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -221,36 +220,20 @@ public class YellowRedDetection extends OpenCvPipeline {
 
     void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
         if (!contoursList.isEmpty()) {
-            double smallestDistance = Double.MAX_VALUE;
-            MatOfPoint closestContour = null;
-
-            Point fovCenter = Globals.cameraCenter;
+            MatOfPoint selectedContour = null;
 
             for (MatOfPoint contour : contoursList) {
                 double contourArea = Imgproc.contourArea(contour);
-                if (contourArea > AREA_THRESHOLD) {
-                    Rect boundingRect = Imgproc.boundingRect(contour);
-                    Point contourCenter = new Point(
-                            boundingRect.x + boundingRect.width / 2.0,
-                            boundingRect.y + boundingRect.height / 2.0
-                    );
-
-                    // Calculate the distance to the center of the FOV
-                    double distance = Math.sqrt(
-                            Math.pow(contourCenter.x - fovCenter.x, 2) +
-                                    Math.pow(contourCenter.y - fovCenter.y, 2)
-                    );
-
-                    if (distance < smallestDistance) {
-                        smallestDistance = distance;
-                        closestContour = contour;
-                    }
+                if (contourArea >= 3000 && contourArea <= 3500) {
+                    // Select the first contour that falls within the area range
+                    selectedContour = contour;
+                    break;
                 }
             }
 
             for (MatOfPoint contour : contoursList) {
-                if (contour.equals(closestContour)) {
-                    analyzeContour(contour, input, "Green"); // Mark the closest as green
+                if (contour.equals(selectedContour)) {
+                    analyzeContour(contour, input, "Green"); // Mark the selected contour as green
                 } else {
                     analyzeContour(contour, input, color);
                 }

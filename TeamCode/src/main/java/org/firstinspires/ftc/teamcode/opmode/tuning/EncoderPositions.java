@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.opmode.tuning;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -11,14 +12,16 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 
 @Autonomous
-@Disabled
 public class EncoderPositions extends OpMode {
 
     private RobotHardware robot;
+    AnalogInput analogInput;
 
     @Override
     public void init() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, true);
+
+        analogInput = hardwareMap.get(AnalogInput.class, "clawInput");
 
         telemetry.addData("Ready: ", "Initialized robot.");
         telemetry.update();
@@ -32,6 +35,8 @@ public class EncoderPositions extends OpMode {
         telemetry.addData("leftLift: ", robot.leftLift.getCurrentPosition());
         telemetry.addData("rightLift: ", robot.rightLift.getCurrentPosition());
         telemetry.addData("extendoMotor: ", robot.extendoMotor.getCurrentPosition());
+
+        telemetry.addData("Claw Position: ", analogInput.getVoltage() / 3.3 * 360);
 
         telemetry.addLine("IMU:");
         telemetry.addData("Pitch (Degrees): ", robot.pinpointDrive.lazyImu.get().getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));

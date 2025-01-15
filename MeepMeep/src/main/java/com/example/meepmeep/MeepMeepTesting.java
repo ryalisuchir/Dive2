@@ -24,61 +24,13 @@ public class MeepMeepTesting {
                 .setConstraints(60, 80, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-18, 66.43, Math.toRadians(-90)))
-                .splineTo(
-                        new Vector2d(-35, 15), Math.toRadians(270.00),
+        myBot.runAction(myBot.getDrive().actionBuilder( new Pose2d(-7, 32.5, Math.toRadians(-90)))
+                        .setReversed(true)
+                .splineToLinearHeading(
+                        new Pose2d(-18, 41, Math.toRadians(-45)), Math.toRadians(90),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 )
-                .setReversed(true)
-                .setTangent(180)
-                .splineToConstantHeading(
-                        new Vector2d(-40, 30), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-40, 53), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                //pushing second one:
-                .splineToConstantHeading(
-                        new Vector2d(-40, 20), Math.toRadians(90),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .setTangent(180)
-                .splineToConstantHeading(
-                        new Vector2d(-50, 30), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-50, 53), Math.toRadians(90),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                //pushing third one:
-                .splineToConstantHeading(
-                        new Vector2d(-50, 20), Math.toRadians(90),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .setTangent(180)
-                .splineToConstantHeading(
-                        new Vector2d(-60, 30), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-60, 53), Math.toRadians(90),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-
-                //first dropoff
-                .splineToLinearHeading(new Pose2d(-7, 37, Math.toRadians(-90)), Math.toRadians(90))
                 .build());
 
         Image fieldBackground = null;

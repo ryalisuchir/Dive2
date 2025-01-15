@@ -18,7 +18,7 @@ public class SpecimenClipCommand extends SequentialCommandGroup {
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_OUTTAKE),
                                 new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS - (Globals.LIFT_SPECIMEN_DROP)),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(200),
+                                        new WaitCommand(75),
                                         new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN)
                                 )
                         ),

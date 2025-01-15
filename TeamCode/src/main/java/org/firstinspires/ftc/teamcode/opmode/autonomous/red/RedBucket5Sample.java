@@ -78,28 +78,29 @@ public class RedBucket5Sample extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_SIDEWAYS_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
+                .strafeTo(new Vector2d(17, 59))
                 .splineToLinearHeading(new Pose2d(59, 58, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
                 .splineToLinearHeading(new Pose2d(54, 58, Math.toRadians(90)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(53.5, 54, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(54, 55.2, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
                 .splineToLinearHeading(
-                        new Pose2d(62.5, 57, Math.toRadians(45)), Math.toRadians(45));
+                        new Pose2d(57, 53.5, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64, 50, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(64, 51.5, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
                 .splineToLinearHeading(
-                        new Pose2d(61, 58.5, Math.toRadians(45)), Math.toRadians(45));
+                        new Pose2d(59, 56, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
@@ -157,6 +158,10 @@ public class RedBucket5Sample extends OpMode {
                 telemetry.addData("Camera Error: ", errorCode);
             }
         });
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        FtcDashboard.getInstance().startCameraStream(webcam, 60);
     }
 
     @Override
@@ -180,7 +185,7 @@ public class RedBucket5Sample extends OpMode {
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement1A, Collections.emptySet()),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(300),
+                                                new WaitCommand(600),
                                                 new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                         ),
                                         new SetIntakeDownCommand(robot)
@@ -237,7 +242,7 @@ public class RedBucket5Sample extends OpMode {
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(750),
-                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.40)
+                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.4)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -262,6 +267,26 @@ public class RedBucket5Sample extends OpMode {
                                 ),
                                 //Vision stuff:
                                 new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> {
+                                            isScanning = true;
+                                        }),
+                                        new WaitUntilCommand(() -> !isScanning),
+                                        new ParallelCommandGroup(
+                                                new DeferredCommand(() ->
+                                                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                                        robot.extendoSubsystem
+                                                ),
+                                                new DeferredCommand(() ->
+                                                        new ActionCommand(
+                                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                                        .strafeToConstantHeading(new Vector2d(
+                                                                                robot.driveSubsystem.getPoseEstimate().position.x,
+                                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                                        )).build()
+                                                                , Collections.emptySet())
+                                                        , robot.driveSubsystem)
+                                        ),
                                         new WaitCommand(500),
                                         new InstantCommand(() -> {
                                             isScanning = true;
