@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.red;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -23,7 +23,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
@@ -32,7 +31,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Scannin
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.InsanelyFastTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
@@ -50,15 +49,15 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
-public class BlueBucket5Sample extends OpMode {
-    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A;
+public class RedBucket6Sample extends OpMode {
+    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
 
     //Vision Initialization:
     OpenCvWebcam webcam;
-    YellowBlueDetection sampleDetection;
+    YellowRedDetection sampleDetection;
     double xTravel = 0;
     double yTravel = 0;
     double angle = 0;
@@ -84,8 +83,7 @@ public class BlueBucket5Sample extends OpMode {
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(54, 58, Math.toRadians(90)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(53, 54, Math.toRadians(90)), Math.toRadians(90));
+                .splineToLinearHeading(new Pose2d(54.5, 48.5, Math.toRadians(90)), Math.toRadians(0));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -95,17 +93,17 @@ public class BlueBucket5Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64, 51.5, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(64, 45.5, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
                 .splineToLinearHeading(
-                        new Pose2d(59.5, 59, Math.toRadians(45)), Math.toRadians(45));
+                        new Pose2d(62, 59, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(61, 46, Math.toRadians(135)), Math.toRadians(40));
+                        new Pose2d(62.5, 46, Math.toRadians(135)), Math.toRadians(40));
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -113,22 +111,46 @@ public class BlueBucket5Sample extends OpMode {
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(35.96, 7, Math.toRadians(0)), Math.toRadians(180.00))
                 .splineToSplineHeading(
-                        new Pose2d(29, 7, Math.toRadians(0)), Math.toRadians(180.00)
+                        new Pose2d(31, 7, Math.toRadians(0)), Math.toRadians(180.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .splineToSplineHeading(
+                        new Pose2d(30, 7, Math.toRadians(0)), Math.toRadians(180.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
                 );
 
         TrajectoryActionBuilder movement9 = movement8.endTrajectory().fresh()
                 .setReversed(false)
-                .splineTo(new Vector2d(57.55, 55.5), Math.toRadians(45.00));
-
-        TrajectoryActionBuilder movement10 = movement9.endTrajectory().fresh()
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(35.96, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00))
-                .splineToSplineHeading(
-                        new Pose2d(19, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00),
-                        new TranslationalVelConstraint(15)
+                .splineTo(
+                        new Vector2d(58, 57), Math.toRadians(45.00)
                 );
+
+        TrajectoryActionBuilder movement82 = movement9.endTrajectory().fresh()
+                .setReversed(true)
+                .splineToSplineHeading(
+                        new Pose2d(31, 3, Math.toRadians(0)), Math.toRadians(180.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .splineToSplineHeading(
+                        new Pose2d(30, 3, Math.toRadians(0)), Math.toRadians(180.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                );
+
+        TrajectoryActionBuilder movement92 = movement82.endTrajectory().fresh()
+                .setReversed(false)
+                .splineTo(
+                        new Vector2d(58, 58), Math.toRadians(45.00)
+                );
+
+        TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
+                .setReversed(false)
+                .strafeToConstantHeading(new Vector2d(58,53), null, new ProfileAccelConstraint(-85, 85))
+                .strafeToConstantHeading(new Vector2d(60,60), null, new ProfileAccelConstraint(-85, 85));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -139,10 +161,12 @@ public class BlueBucket5Sample extends OpMode {
         movement7A = movement7.build();
         movement8A = movement8.build();
         movement9A = movement9.build();
+        movement8B = movement82.build();
+        movement9B = movement92.build();
         movement10A = movement10.build();
 
         //Vision Initialization:
-        sampleDetection = new YellowBlueDetection();
+        sampleDetection = new YellowRedDetection();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.setPipeline(sampleDetection);
@@ -169,7 +193,7 @@ public class BlueBucket5Sample extends OpMode {
         robot.clearCache();
         telemetry.addData("Ready: ", "All subsystems have been initialized!");
         telemetry.addData("Side: ", "Close");
-        telemetry.addData("Description: ", "1 Specimen, 3 Basket, Park");
+        telemetry.addData("Description: ", "6 Samples, Park");
         CommandScheduler.getInstance().run();
     }
 
@@ -190,79 +214,101 @@ public class BlueBucket5Sample extends OpMode {
                                         ),
                                         new SetIntakeDownCommand(robot)
                                 ),
-                                new BucketDropCommand(robot),
                                 //First Intake:
                                 new ParallelCommandGroup(
-                                        new ActionCommand(movement2A, Collections.emptySet()),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1100),
-                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.65)
+                                                new WaitCommand(0),
+                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.38)
                                         ),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(100),
+                                                new BucketDropCommand(robot),
                                                 new OuttakeTransferReadyCommand(robot)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(200),
+                                                new ActionCommand(movement2A, Collections.emptySet())
                                         )
                                 ),
                                 new WaitCommand(250),
-                                new IntakePeckerCommand(robot),
+                                new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new RegularTransferCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new InsanelyFastTransfer(robot),
+                                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                        ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(130),
                                                 new ActionCommand(movement3A, Collections.emptySet())
                                         )
                                 ),
                                 //Second Drop:
-                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                                new BucketDropCommand(robot),
                                 //Second Intake:
                                 new ParallelCommandGroup(
-                                        new ActionCommand(movement4A, Collections.emptySet()),
-                                        new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
-                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.6)
+                                                new WaitCommand(200),
+                                                new ActionCommand(movement4A, Collections.emptySet())
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new BucketDropCommand(robot),
+                                                new OuttakeTransferReadyCommand(robot)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(0),
+                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.28)
                                         )
                                 ),
                                 new WaitCommand(150),
-                                new IntakePeckerCommand(robot),
+                                new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new RegularTransferCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new InsanelyFastTransfer(robot),
+                                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                        ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 new ActionCommand(movement5A, Collections.emptySet())
                                         )
                                 ),
                                 //Third Drop:
-                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                                new BucketDropCommand(robot),
-                                new InstantCommand(() -> {isResetting = false;}),
                                 //Fourth Intake:
                                 new ParallelCommandGroup(
-                                        new ActionCommand(movement6A, Collections.emptySet()),
-                                        new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(750),
+                                                new WaitCommand(200),
+                                                new ActionCommand(movement6A, Collections.emptySet())
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new BucketDropCommand(robot),
+                                                new OuttakeTransferReadyCommand(robot)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(0),
                                                 new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.38)
                                         )
                                 ),
                                 new WaitCommand(150),
                                 new SlowIntakePeckerCommand(robot),
                                 new ParallelCommandGroup(
-                                        new RetractedTransferCommand(robot),
+                                        new SequentialCommandGroup(
+                                                new RetractedTransferCommand(robot),
+                                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                        ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(100),
                                                 new ActionCommand(movement7A, Collections.emptySet())
                                         )
                                 ),
                                 //Fourth Drop:
-                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
-                                new BucketDropCommand(robot),
                                 new ParallelCommandGroup(
-                                        new ActionCommand(movement8A, Collections.emptySet()),
-                                        new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1900),
+                                                new WaitCommand(200),
+                                                new ActionCommand(movement8A, Collections.emptySet())
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new BucketDropCommand(robot),
+                                                new OuttakeTransferReadyCommand(robot)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1400),
                                                 new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
@@ -295,6 +341,54 @@ public class BlueBucket5Sample extends OpMode {
                                         new WaitUntilCommand(() -> !isScanning),
                                         new ParallelCommandGroup(
                                                 new DeferredCommand(() ->
+                                                        new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                                        robot.extendoSubsystem
+                                                ),
+                                                new DeferredCommand(() ->
+                                                        new ActionCommand(
+                                                                robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
+                                                                        .strafeToConstantHeading(new Vector2d(
+                                                                                robot.driveSubsystem.getPoseEstimate().position.x,
+                                                                                robot.driveSubsystem.getPoseEstimate().position.y + xTravel
+                                                                        )).build()
+                                                                , Collections.emptySet())
+                                                        , robot.driveSubsystem)
+                                        ),
+                                        new IntakePeckerCommand(robot)
+                                ),
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new InsanelyFastTransfer(robot),
+                                                new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(500),
+                                                new ActionCommand(movement9A, Collections.emptySet())
+                                        )
+                                ),
+                                new ParallelCommandGroup(
+                                        new SequentialCommandGroup(
+                                                new BucketDropCommand(robot),
+                                                new OuttakeTransferReadyCommand(robot)
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(200),
+                                                new ActionCommand(movement8B, Collections.emptySet())
+                                        ),
+                                        new SequentialCommandGroup(
+                                                new WaitCommand(1400),
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
+                                        )
+                                ),
+                                //Vision stuff:
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new InstantCommand(() -> {
+                                            isScanning = true;
+                                        }),
+                                        new WaitUntilCommand(() -> !isScanning),
+                                        new ParallelCommandGroup(
+                                                new DeferredCommand(() ->
                                                         new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                                         robot.extendoSubsystem
                                                 ),
@@ -310,9 +404,6 @@ public class BlueBucket5Sample extends OpMode {
                                         ),
                                         new WaitCommand(500),
                                         new InstantCommand(() -> {
-                                            xTravel = 0;
-                                            yTravel = 0;
-                                            lastEstimate = 0;
                                             isScanning = true;
                                         }),
                                         new WaitUntilCommand(() -> !isScanning),
@@ -335,24 +426,26 @@ public class BlueBucket5Sample extends OpMode {
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new RegularTransferCommand(robot),
+                                                new InsanelyFastTransfer(robot),
                                                 new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(500),
-                                                new ActionCommand(movement9A, Collections.emptySet())
+                                                new ActionCommand(movement9B, Collections.emptySet())
                                         )
                                 ),
-                                new BucketDropCommand(robot),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(75),
-                                                new SlideParkCommand(robot)
+                                                new WaitCommand(100),
+                                                new ActionCommand(movement10A, Collections.emptySet())
                                         ),
-                                        new ActionCommand(movement10A, Collections.emptySet())
+                                        new SequentialCommandGroup(
+                                                new BucketDropCommand(robot),
+                                                new SlideParkCommand(robot)
+                                        )
                                 )
-            )
-        )
+                        )
+                )
         );
     }
 

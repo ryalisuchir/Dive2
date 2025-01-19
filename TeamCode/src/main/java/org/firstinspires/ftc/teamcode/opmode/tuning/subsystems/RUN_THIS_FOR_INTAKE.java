@@ -8,10 +8,12 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 @Autonomous
+@Disabled
 public class RUN_THIS_FOR_INTAKE extends OpMode {
     public static double fourBarPositionGeneral = 0.675;
     public static double coaxialPositionGeneral = 0;
@@ -20,6 +22,8 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
 
     public static double armPositionGeneral = 0.76;
     public static double outtakeClawPosition = 0.4;
+
+    AnalogInput analogInput;
 
     public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public Servo leftOuttakeArm, rightOuttakeArm, outtakeClaw;
@@ -31,6 +35,8 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         intakeCoaxialRight = hardwareMap.get(Servo.class, "intakeCoaxial2");
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
+
+        analogInput = hardwareMap.get(AnalogInput.class, "clawInput");
 
         leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
         rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
@@ -55,5 +61,7 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         leftOuttakeArm.setPosition(armPositionGeneral);
         rightOuttakeArm.setPosition(armPositionGeneral);
         outtakeClaw.setPosition(outtakeClawPosition);
+        telemetry.addData("Claw Position: ", analogInput.getVoltage() / 3.3 * 360);
+        telemetry.update();
     }
 }

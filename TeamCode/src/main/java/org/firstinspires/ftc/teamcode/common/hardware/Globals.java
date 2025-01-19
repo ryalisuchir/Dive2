@@ -35,13 +35,13 @@ public class Globals {
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
     public static int EXTENDO_MAX_RETRACTION = 0;
-    public static double EXTENDO_MAX_TOLERANCE = 10;
+    public static double EXTENDO_MAX_TOLERANCE = 15;
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
-    public static double OUTTAKE_ARM_TRANSFER = 0.19; //0.08, new was 0.19
+    public static double OUTTAKE_ARM_TRANSFER = 0.22; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
     public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
@@ -75,7 +75,7 @@ public class Globals {
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
     public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270));
-    public static Pose2d BLUE_SIDEWAYS_START_POSE = new Pose2d(17, 64, Math.toRadians(0));
+    public static Pose2d BLUE_SIDEWAYS_START_POSE = new Pose2d(41, 64, Math.toRadians(0));
     public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
     public static Pose2d BLUE_FAR_START_POSE_REVERSED = new Pose2d(-18, 66.43, Math.toRadians(90));
 

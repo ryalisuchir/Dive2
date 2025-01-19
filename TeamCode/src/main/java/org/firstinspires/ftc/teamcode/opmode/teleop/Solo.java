@@ -86,14 +86,14 @@ public class Solo extends CommandOpMode {
                 )
         );
 
-        swethaLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(() -> {
-                    currentIndex = (currentIndex + 1) % intakeRotationPositions.length;
+                    currentIndex = (currentIndex + 2) % intakeRotationPositions.length;
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        swethaLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex - 1 + intakeRotationPositions.length) % intakeRotationPositions.length; // Wrap to the end
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
