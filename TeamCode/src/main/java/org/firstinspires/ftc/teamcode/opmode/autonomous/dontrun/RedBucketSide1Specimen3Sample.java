@@ -114,7 +114,6 @@ public class RedBucketSide1Specimen3Sample extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new ParallelCommandGroup(
-                        new HangUpCommand(robot.hangSubsystem, 1, 1230),
                         new SequentialCommandGroup(
                                 //First Drop:
                                 new ParallelCommandGroup(

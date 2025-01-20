@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.Uninterruptabl
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.TeleOpSpecificIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenReadyCommand;
@@ -175,7 +176,7 @@ public class Duo extends CommandOpMode {
         if (swethaController.circle) {
             extendoBoolean = true;
             schedule(
-                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
+                    new TeleOpSpecificIntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
             );
         }
 
@@ -192,11 +193,19 @@ public class Duo extends CommandOpMode {
                     new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, ((double) Globals.EXTENDO_MAX_EXTENSION / 4))
             );
         }
-        if (swethaController.cross) {
+        if (ahnafController.triangle) {
             currentIndex = 2;
             extendoBoolean = true;
             schedule(
                     new NoClawScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
+            );
+        }
+
+        if (swethaController.cross) {
+            currentIndex = 2;
+            extendoBoolean = true;
+            schedule(
+                    new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
             );
         }
 

@@ -7,31 +7,33 @@ import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.HangSubsyste
 public class HangUpCommand extends CommandBase {
 
     private final HangSubsystem hangUpSubsystem;
-    private final double power;
-    private final long duration;
-    private long startTime;
+    private final double position;
 
-    public HangUpCommand(HangSubsystem hangUpSubsystem, double power, long duration) {
+    public HangUpCommand(HangSubsystem hangUpSubsystem, double position) {
         this.hangUpSubsystem = hangUpSubsystem;
-        this.power = power;
-        this.duration = duration;
+        this.position = position;
         addRequirements(hangUpSubsystem);
     }
 
     @Override
     public void initialize() {
-        startTime = System.currentTimeMillis();
-        hangUpSubsystem.setServoPower(power);
+        hangUpSubsystem.stopServos(); // Ensure servos are stopped initially
     }
 
     @Override
     public void execute() {
+        double currentPosition = hangUpSubsystem.getHangPosition();
 
+        if (currentPosition < position) {
+            hangUpSubsystem.setServoPower(1); // Move up
+        } else if (currentPosition > position) {
+            hangUpSubsystem.setServoPower(-1); // Move down
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime >= duration;
+        return Math.abs(hangUpSubsystem.getHangPosition() - position) < 5;
     }
 
     @Override

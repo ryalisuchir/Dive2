@@ -93,7 +93,7 @@ public class RedBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64, 45.5, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(64, 50, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -125,7 +125,7 @@ public class RedBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement9 = movement8.endTrajectory().fresh()
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(58, 57), Math.toRadians(45.00)
+                        new Vector2d(58, 55), Math.toRadians(45.00)
                 );
 
         TrajectoryActionBuilder movement82 = movement9.endTrajectory().fresh()
@@ -144,7 +144,7 @@ public class RedBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement92 = movement82.endTrajectory().fresh()
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(58, 58), Math.toRadians(45.00)
+                        new Vector2d(61, 58), Math.toRadians(45.00)
                 );
 
         TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
@@ -254,7 +254,7 @@ public class RedBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(0),
-                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.28)
+                                                new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.5)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -308,7 +308,7 @@ public class RedBucket6Sample extends OpMode {
                                                 new OuttakeTransferReadyCommand(robot)
                                         ),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1400),
+                                                new WaitCommand(1600),
                                                 new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
@@ -376,7 +376,7 @@ public class RedBucket6Sample extends OpMode {
                                                 new ActionCommand(movement8B, Collections.emptySet())
                                         ),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1400),
+                                                new WaitCommand(1600),
                                                 new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
@@ -441,7 +441,7 @@ public class RedBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new BucketDropCommand(robot),
-                                                new SlideParkCommand(robot)
+                                                new OuttakeTransferReadyCommand(robot)
                                         )
                                 )
                         )

@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 
 @Autonomous
-@Disabled
 public class EncoderPositions extends OpMode {
 
     private RobotHardware robot;

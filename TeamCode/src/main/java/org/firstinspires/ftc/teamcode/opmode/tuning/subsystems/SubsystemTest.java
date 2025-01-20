@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
@@ -93,6 +94,14 @@ public class SubsystemTest extends CommandOpMode {
             schedule(
                     new IntakeCommand(robot, 0.55, Globals.EXTENDO_MAX_EXTENSION)
             );
+        }
+
+        if (gamepad2.circle) {
+            new HangUpCommand(robot.hangSubsystem, 55.85454545454545);
+        }
+
+        if (gamepad2.square) {
+            new HangUpCommand(robot.hangSubsystem, 300);
         }
 
         if (gamepad1.square) {
