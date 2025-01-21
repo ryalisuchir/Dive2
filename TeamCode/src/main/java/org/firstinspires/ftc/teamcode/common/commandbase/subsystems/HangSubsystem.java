@@ -8,12 +8,10 @@ public class HangSubsystem extends SubsystemBase {
 
     private final CRServo leftHang;
     private final CRServo rightHang;
-    private final AnalogInput analogInput;
 
-    public HangSubsystem(CRServo leftHangInput, CRServo rightHangInput, AnalogInput hangInput) {
+    public HangSubsystem(CRServo leftHangInput, CRServo rightHangInput) {
         this.leftHang = leftHangInput;
         this.rightHang = rightHangInput;
-        this.analogInput = hangInput;
     }
 
     public void setServoPower(double power) {
@@ -24,9 +22,5 @@ public class HangSubsystem extends SubsystemBase {
     public void stopServos() {
         leftHang.setPower(0);
         rightHang.setPower(0);
-    }
-
-    public double getHangPosition() {
-        return analogInput.getVoltage() / 3.3 * 360;
     }
 }

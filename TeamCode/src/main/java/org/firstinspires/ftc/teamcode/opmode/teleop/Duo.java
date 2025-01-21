@@ -13,9 +13,11 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
@@ -34,6 +36,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
+import java.util.concurrent.TimeUnit;
+
 @TeleOp
 public class Duo extends CommandOpMode {
     public static final double[] intakeRotationPositions = { 0, 0.25, 0.52, 0.75, 1 };
@@ -45,10 +49,14 @@ public class Duo extends CommandOpMode {
     private boolean isCloseAndTransfer = true; // Track toggle state
     boolean extendoBoolean = true;
 
+    boolean hangHasGoneOut = false;
+    private ElapsedTime time_since_start;
+
     private int currentIndex = 2; //for rotation
 
     @Override
     public void initialize() {
+        time_since_start = new ElapsedTime();
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, false);
         ahnafController = gamepad1;
         swethaController = gamepad2;

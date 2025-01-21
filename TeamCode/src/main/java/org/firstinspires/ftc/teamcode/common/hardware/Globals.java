@@ -23,6 +23,7 @@ public class Globals {
     public static Globals.FourBarState fourBarState = FourBarState.RESTING;
     public static Globals.OuttakeClawState outtakeClawState = OuttakeClawState.OPEN;
     public static Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
+
     // Lift Subsystem Constants
     public static int LIFT_HIGH_POS = 1850;
     public static int LIFT_MID_POS = 980;
@@ -34,16 +35,16 @@ public class Globals {
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
-    public static int EXTENDO_MAX_RETRACTION = 0;
-    public static double EXTENDO_MAX_TOLERANCE = 15;
+    public static int EXTENDO_MAX_RETRACTION = -5;
+    public static double EXTENDO_MAX_TOLERANCE = 20;
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
     public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
-    public static double OUTTAKE_ARM_TRANSFER = 0.22; //0.08, new was 0.19
+    public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
-    public static double OUTTAKE_ARM_BUCKET = 0.66;
+    public static double OUTTAKE_ARM_BUCKET = 0.68;
     public static double OUTTAKE_ARM_DUNK = 0.76;
     public static double OUTTAKE_ARM_INTAKE = 0.8;
 
@@ -92,7 +93,6 @@ public class Globals {
         RETRACTING,
         REST
     }
-
     public enum OuttakeState {
         EXTENDING,
         RETRACTING,

@@ -128,7 +128,7 @@ public class RobotHardware {
         outtakeClawSubsystem = new OuttakeClawSubsystem(outtakeClaw);
         depositSubsystem = new DepositSubsystem(leftLift, rightLift);
         extendoSubsystem = new ExtendoSubsystem(extendoMotor);
-        hangSubsystem = new HangSubsystem(leftHang, rightHang, analogInput);
+        hangSubsystem = new HangSubsystem(leftHang, rightHang);
         pinpointDrive = new PinpointDrive(hardwareMap, initialPose);
         driveSubsystem = new DriveSubsystem(pinpointDrive, false);
 

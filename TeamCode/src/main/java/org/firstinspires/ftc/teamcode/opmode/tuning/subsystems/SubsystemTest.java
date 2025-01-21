@@ -52,6 +52,7 @@ public class SubsystemTest extends CommandOpMode {
         robot.driveSubsystem.updatePoseEstimate();
         robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
+
         robot.depositSubsystem.outtakeSlidesLoop();
         telemetry.addData("Deposit Current: ", robot.rightLift.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Extendo:", robot.extendoMotor.getCurrentPosition());
@@ -94,14 +95,6 @@ public class SubsystemTest extends CommandOpMode {
             schedule(
                     new IntakeCommand(robot, 0.55, Globals.EXTENDO_MAX_EXTENSION)
             );
-        }
-
-        if (gamepad2.circle) {
-            new HangUpCommand(robot.hangSubsystem, 55.85454545454545);
-        }
-
-        if (gamepad2.square) {
-            new HangUpCommand(robot.hangSubsystem, 300);
         }
 
         if (gamepad1.square) {

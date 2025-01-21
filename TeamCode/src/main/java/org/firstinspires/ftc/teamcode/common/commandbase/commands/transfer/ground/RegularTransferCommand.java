@@ -27,5 +27,4 @@ public class RegularTransferCommand extends SequentialCommandGroup {
                 )
         );
     }
-
 }

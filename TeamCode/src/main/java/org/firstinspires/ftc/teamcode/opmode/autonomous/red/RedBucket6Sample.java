@@ -33,7 +33,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.InsanelyFastTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -107,7 +106,7 @@ public class RedBucket6Sample extends OpMode {
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(60, 55, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(new Pose2d(61, 57, Math.toRadians(45)), Math.toRadians(45));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
@@ -144,7 +143,9 @@ public class RedBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement92 = movement82.endTrajectory().fresh()
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(61, 58), Math.toRadians(45.00)
+                        new Vector2d(55, 56), Math.toRadians(45.00),
+                        null,
+                        new ProfileAccelConstraint(-30, 85)
                 );
 
         TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
@@ -354,7 +355,7 @@ public class RedBucket6Sample extends OpMode {
                                                                 , Collections.emptySet())
                                                         , robot.driveSubsystem)
                                         ),
-                                        new IntakePeckerCommand(robot)
+                                        new SlowIntakePeckerCommand(robot)
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
@@ -422,7 +423,7 @@ public class RedBucket6Sample extends OpMode {
                                                                 , Collections.emptySet())
                                                         , robot.driveSubsystem)
                                         ),
-                                        new IntakePeckerCommand(robot)
+                                        new SlowIntakePeckerCommand(robot)
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
@@ -436,7 +437,7 @@ public class RedBucket6Sample extends OpMode {
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(100),
+                                                new WaitCommand(1000),
                                                 new ActionCommand(movement10A, Collections.emptySet())
                                         ),
                                         new SequentialCommandGroup(
@@ -455,10 +456,7 @@ public class RedBucket6Sample extends OpMode {
         robot.driveSubsystem.updatePoseEstimate();
         robot.depositSubsystem.outtakeSlidesLoop();
         robot.extendoSubsystem.currentLoop();
-
-        if (!isResetting) {
-            robot.extendoSubsystem.extendoSlidesLoop();
-        }
+        robot.extendoSubsystem.extendoSlidesLoop();
 
         telemetry.addLine("Currently running: 0+6 (0 Specimen 6 High Basket)");
         double time = System.currentTimeMillis();
