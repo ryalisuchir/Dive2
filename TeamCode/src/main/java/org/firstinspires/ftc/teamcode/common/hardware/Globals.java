@@ -44,7 +44,7 @@ public class Globals {
 
     public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
-    public static double OUTTAKE_ARM_BUCKET = 0.68;
+    public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
     public static double OUTTAKE_ARM_INTAKE = 0.8;
 
