@@ -5,9 +5,11 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -33,6 +35,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.InsanelyFastTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -77,7 +80,11 @@ public class RedBucket6Sample extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_SIDEWAYS_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
-                .splineToLinearHeading(new Pose2d(59, 58, Math.toRadians(45)), Math.toRadians(45));
+                .splineToLinearHeading(
+                        new Pose2d(59, 58, Math.toRadians(45)), Math.toRadians(45),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                );
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
@@ -143,14 +150,14 @@ public class RedBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement92 = movement82.endTrajectory().fresh()
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(55, 56), Math.toRadians(45.00),
+                        new Vector2d(57, 60), Math.toRadians(45.00),
                         null,
                         new ProfileAccelConstraint(-30, 85)
                 );
 
         TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
                 .setReversed(false)
-                .strafeToConstantHeading(new Vector2d(58,53), null, new ProfileAccelConstraint(-85, 85))
+                .strafeToConstantHeading(new Vector2d(54,50), null, new ProfileAccelConstraint(-85, 85))
                 .strafeToConstantHeading(new Vector2d(60,60), null, new ProfileAccelConstraint(-85, 85));
 
         movement1A = movement1.build();
@@ -310,7 +317,7 @@ public class RedBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1600),
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.7)
                                         )
                                 ),
                                 //Vision stuff:
@@ -355,7 +362,7 @@ public class RedBucket6Sample extends OpMode {
                                                                 , Collections.emptySet())
                                                         , robot.driveSubsystem)
                                         ),
-                                        new SlowIntakePeckerCommand(robot)
+                                        new IntakePeckerCommand(robot)
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
@@ -378,7 +385,7 @@ public class RedBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1600),
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.7)
                                         )
                                 ),
                                 //Vision stuff:
@@ -423,7 +430,7 @@ public class RedBucket6Sample extends OpMode {
                                                                 , Collections.emptySet())
                                                         , robot.driveSubsystem)
                                         ),
-                                        new SlowIntakePeckerCommand(robot)
+                                        new IntakePeckerCommand(robot)
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(

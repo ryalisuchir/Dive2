@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
+import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,6 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
@@ -40,9 +42,9 @@ import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class Duo extends CommandOpMode {
-    public static final double[] intakeRotationPositions = { 0, 0.25, 0.52, 0.75, 1 };
+    public static final double[] intakeRotationPositions = { 0, 0.25, 0.55, 0.75, 1 };
     Gamepad ahnafController, swethaController;
-    GamepadEx ahnafLigmaController, swethaLigmaController;
+    GamepadEx ahnafButtonController, swethaButtonController;
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean driverControlUnlocked;
@@ -50,6 +52,7 @@ public class Duo extends CommandOpMode {
     boolean extendoBoolean = true;
 
     boolean hangHasGoneOut = false;
+    boolean hangIsGoingOut = false;
     private ElapsedTime time_since_start;
 
     private int currentIndex = 2; //for rotation
@@ -63,28 +66,28 @@ public class Duo extends CommandOpMode {
 
         robot.leftLift.setCurrentAlert(9.0, CurrentUnit.AMPS);
 
-        ahnafLigmaController = new GamepadEx(gamepad1);
-        swethaLigmaController = new GamepadEx(gamepad2);
+        ahnafButtonController = new GamepadEx(gamepad1);
+        swethaButtonController = new GamepadEx(gamepad2);
 
         driverControlUnlocked = true;
         depositManualControl = true;
         isCloseAndTransfer = true; // Track toggle state
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+        ahnafButtonController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> depositManualControl = false),
                         new SpecimenIntakeCommand(robot)
                 )
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+        ahnafButtonController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new ParallelCommandGroup(
                         new SpecimenGrabAndTransferAndLiftCommand(robot),
                         new InstantCommand(() -> depositManualControl = false)
                 )
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+        ahnafButtonController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> depositManualControl = false),
@@ -95,21 +98,21 @@ public class Duo extends CommandOpMode {
                 )
         );
 
-        swethaLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+        swethaButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex + 1) % intakeRotationPositions.length;
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        swethaLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+        swethaButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex - 1 + intakeRotationPositions.length) % intakeRotationPositions.length; // Wrap to the end
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+        ahnafButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
             if (isCloseAndTransfer) {
                 new IntakePeckerCommand(robot).schedule();
             } else {
@@ -118,12 +121,20 @@ public class Duo extends CommandOpMode {
             isCloseAndTransfer = !isCloseAndTransfer;
         });
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+        ahnafButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new SequentialCommandGroup(
                         new CustomBucketDropCommand(robot),
                         new InstantCommand(() -> {extendoBoolean = true;})
                 )
         );
+
+        new Trigger(() -> time_since_start.time(TimeUnit.SECONDS) > 108)
+                .whenActive(
+                        new ParallelCommandGroup(
+                                new HangUpCommand(robot.hangSubsystem, -1, 2220),
+                                new InstantCommand(() -> {ahnafController.rumble(1000); swethaController.rumble(1000);})
+                        ), false); // last param is for interruptibility
+
     }
 
     @Override
@@ -269,7 +280,7 @@ public class Duo extends CommandOpMode {
             robot.rightHang.setPower(1);
         }
 
-        if (swethaController.left_trigger < 0.5) {
+        if (swethaController.left_trigger < 0.5 && !hangIsGoingOut) {
             robot.leftHang.setPower(0);
             robot.rightHang.setPower(0);
         }

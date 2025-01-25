@@ -35,7 +35,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
 public class Solo extends CommandOpMode {
-    public static final double[] intakeRotationPositions = { 0, 0.25, 0.52, 0.75, 1 };
+    public static final double[] intakeRotationPositions = { 0, 0.25, 0.55, 0.75, 1 };
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
     private RobotHardware robot;

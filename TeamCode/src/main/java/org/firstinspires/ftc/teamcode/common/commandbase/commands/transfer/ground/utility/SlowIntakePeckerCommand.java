@@ -12,8 +12,8 @@ public class SlowIntakePeckerCommand extends SequentialCommandGroup {
     public SlowIntakePeckerCommand(RobotHardware robot) {
         super(
                 new SequentialCommandGroup(
-                        new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.INTAKE),
-                        new WaitCommand(350),
+                        new InstantCommand(() -> robot.intake4BarSubsystem.intake4BarCustom(0.55)),
+                        new WaitCommand(200),
                         new InstantCommand(() -> robot.intakeClawSubsystem.intakeClawClosed()),
                         new WaitCommand(100),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.SCANNING)

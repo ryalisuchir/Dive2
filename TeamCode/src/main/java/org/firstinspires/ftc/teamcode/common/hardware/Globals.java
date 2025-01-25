@@ -28,7 +28,7 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1850;
     public static int LIFT_MID_POS = 980;
     public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 755;
+    public static int LIFT_SPECIMEN_POS = 742;
     public static int LIFT_SPECIMEN_DROP = 220;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 25;
@@ -56,8 +56,8 @@ public class Globals {
     public static double INTAKE_CLAW_SPECIMEN = 0.6;
     public static double INTAKE_CLAW_CLOSED = 0.13;
 
-    public static double INTAKE_ROTATION_REST = 0.52;
-    public static double INTAKE_ROTATION_TRANSFER = 0.52;
+    public static double INTAKE_ROTATION_REST = 0.55;
+    public static double INTAKE_ROTATION_TRANSFER = 0.55;
 
     public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
