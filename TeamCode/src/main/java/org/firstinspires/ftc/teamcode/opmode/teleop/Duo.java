@@ -128,12 +128,12 @@ public class Duo extends CommandOpMode {
                 )
         );
 
-        new Trigger(() -> time_since_start.time(TimeUnit.SECONDS) > 108)
-                .whenActive(
-                        new ParallelCommandGroup(
-                                new HangUpCommand(robot.hangSubsystem, -1, 2220),
-                                new InstantCommand(() -> {ahnafController.rumble(1000); swethaController.rumble(1000);})
-                        ), false); // last param is for interruptibility
+//        new Trigger(() -> time_since_start.time(TimeUnit.SECONDS) > 108)
+//                .whenActive(
+//                        new ParallelCommandGroup(
+//                                new HangUpCommand(robot.hangSubsystem, -1, 2220),
+//                                new InstantCommand(() -> {ahnafController.rumble(1000); swethaController.rumble(1000);})
+//                        ), false); // last param is for interruptibility
 
     }
 
@@ -280,7 +280,7 @@ public class Duo extends CommandOpMode {
             robot.rightHang.setPower(1);
         }
 
-        if (swethaController.left_trigger < 0.5 && !hangIsGoingOut) {
+        if (swethaController.left_trigger < 0.5) {
             robot.leftHang.setPower(0);
             robot.rightHang.setPower(0);
         }
