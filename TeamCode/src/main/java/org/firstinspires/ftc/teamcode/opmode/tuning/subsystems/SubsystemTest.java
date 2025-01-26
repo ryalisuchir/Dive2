@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
+@Disabled
 public class SubsystemTest extends CommandOpMode {
     private RobotHardware robot;
     private boolean isCloseAndTransfer = true; // Track toggle state

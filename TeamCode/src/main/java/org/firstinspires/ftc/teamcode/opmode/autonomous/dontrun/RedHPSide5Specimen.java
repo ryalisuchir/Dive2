@@ -34,6 +34,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class RedHPSide5Specimen extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A, movement11A, movement12A, movement13A, movement14A;
     private RobotHardware robot;
