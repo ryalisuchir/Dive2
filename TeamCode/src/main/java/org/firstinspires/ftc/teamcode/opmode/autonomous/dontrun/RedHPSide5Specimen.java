@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
 
-import android.media.audiofx.BassBoost;
-
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
@@ -21,10 +18,8 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.HPDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.SigmaSigmaBoySigmaBoySigmaBoy;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
@@ -183,7 +178,7 @@ public class RedHPSide5Specimen extends OpMode {
                                         new ActionCommand(movement2A, Collections.emptySet())
                                 )
                         ),
-                        new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION*0.82),
+                        new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.82),
                         new WaitCommand(100),
                         new IntakePeckerCommand(robot),
                         new ParallelCommandGroup(
@@ -191,7 +186,7 @@ public class RedHPSide5Specimen extends OpMode {
                                 new ActionCommand(movement3A, Collections.emptySet())
                         ),
                         new ParallelCommandGroup(
-                                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION*0.82)
+                                new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.82)
                         ),
                         new WaitCommand(100),
                         new IntakePeckerCommand(robot),
@@ -200,7 +195,7 @@ public class RedHPSide5Specimen extends OpMode {
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new SequentialCommandGroup(
                                         new WaitCommand(800),
-                                        new ScanningCommand(robot, 0.21, Globals.EXTENDO_MAX_EXTENSION*0.95)
+                                        new ScanningCommand(robot, 0.21, Globals.EXTENDO_MAX_EXTENSION * 0.95)
                                 )
                         ),
                         new WaitCommand(100),

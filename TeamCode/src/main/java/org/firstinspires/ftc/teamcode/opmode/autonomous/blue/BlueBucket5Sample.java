@@ -24,7 +24,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
@@ -41,7 +40,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -54,10 +52,6 @@ import java.util.Collections;
 @Disabled
 public class BlueBucket5Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A;
-    private RobotHardware robot;
-    private ElapsedTime time_since_start;
-    private double loop;
-
     //Vision Initialization:
     OpenCvWebcam webcam;
     YellowBlueDetection sampleDetection;
@@ -68,6 +62,9 @@ public class BlueBucket5Sample extends OpMode {
     KalmanFilter kalmanFilter;
     boolean isScanning = false;
     boolean isResetting = false;
+    private RobotHardware robot;
+    private ElapsedTime time_since_start;
+    private double loop;
 
     @Override
     public void init() {
@@ -238,14 +235,16 @@ public class BlueBucket5Sample extends OpMode {
                                 //Third Drop:
                                 new OuttakeCommand(robot, Globals.LIFT_HIGH_POS),
                                 new BucketDropCommand(robot),
-                                new InstantCommand(() -> {isResetting = false;}),
+                                new InstantCommand(() -> {
+                                    isResetting = false;
+                                }),
                                 //Fourth Intake:
                                 new ParallelCommandGroup(
                                         new ActionCommand(movement6A, Collections.emptySet()),
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(750),
-                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.38)
+                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION * 0.38)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -353,8 +352,8 @@ public class BlueBucket5Sample extends OpMode {
                                         ),
                                         new ActionCommand(movement10A, Collections.emptySet())
                                 )
-            )
-        )
+                        )
+                )
         );
     }
 

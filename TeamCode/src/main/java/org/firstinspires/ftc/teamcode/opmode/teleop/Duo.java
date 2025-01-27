@@ -8,7 +8,6 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -18,8 +17,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.UninterruptableCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
@@ -38,21 +35,18 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-import java.util.concurrent.TimeUnit;
-
 @TeleOp
 public class Duo extends CommandOpMode {
-    public static final double[] intakeRotationPositions = { 0, 0.25, 0.55, 0.75, 1 };
+    public static final double[] intakeRotationPositions = {0, 0.25, 0.55, 0.75, 1};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafButtonController, swethaButtonController;
+    boolean extendoBoolean = true;
+    boolean hangHasGoneOut = false;
+    boolean hangIsGoingOut = false;
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean driverControlUnlocked;
     private boolean isCloseAndTransfer = true; // Track toggle state
-    boolean extendoBoolean = true;
-
-    boolean hangHasGoneOut = false;
-    boolean hangIsGoingOut = false;
     private ElapsedTime time_since_start;
 
     private int currentIndex = 2; //for rotation
@@ -124,7 +118,9 @@ public class Duo extends CommandOpMode {
         ahnafButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new SequentialCommandGroup(
                         new CustomBucketDropCommand(robot),
-                        new InstantCommand(() -> {extendoBoolean = true;})
+                        new InstantCommand(() -> {
+                            extendoBoolean = true;
+                        })
                 )
         );
 
@@ -172,7 +168,9 @@ public class Duo extends CommandOpMode {
         if (swethaController.left_stick_x > 0.1) {
             extendoBoolean = false;
             robot.extendoMotor.setPower(-1);
-        } else { extendoBoolean = true; }
+        } else {
+            extendoBoolean = true;
+        }
 
         telemetry.update();
 
@@ -251,7 +249,9 @@ public class Duo extends CommandOpMode {
             schedule(
                     new ParallelCommandGroup(
                             new CustomOuttakeCommand(robot),
-                            new InstantCommand(() -> {extendoBoolean = false;}),
+                            new InstantCommand(() -> {
+                                extendoBoolean = false;
+                            }),
                             new IntakeSliderResetterCommand(robot.extendoSubsystem)
                     )
             );

@@ -24,7 +24,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
@@ -40,7 +39,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.groun
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
-import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
 import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -54,10 +52,6 @@ import java.util.Collections;
 @Disabled
 public class RedBucket5Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A;
-    private RobotHardware robot;
-    private ElapsedTime time_since_start;
-    private double loop;
-
     //Vision Initialization:
     OpenCvWebcam webcam;
     YellowRedDetection sampleDetection;
@@ -67,6 +61,9 @@ public class RedBucket5Sample extends OpMode {
     double lastEstimate;
     KalmanFilter kalmanFilter;
     boolean isScanning = false;
+    private RobotHardware robot;
+    private ElapsedTime time_since_start;
+    private double loop;
 
     @Override
     public void init() {
@@ -244,7 +241,7 @@ public class RedBucket5Sample extends OpMode {
                                         new OuttakeTransferReadyCommand(robot),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(750),
-                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.4)
+                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION * 0.4)
                                         )
                                 ),
                                 new WaitCommand(150),

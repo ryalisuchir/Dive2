@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 
-import androidx.core.view.WindowInsetsAnimationCompat;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -26,12 +24,10 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
     public static double outtakeClawPosition = 0.4;
 
     public static double hangPower = 0;
-
-    AnalogInput analogInput;
-
     public Servo intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public Servo leftOuttakeArm, rightOuttakeArm, outtakeClaw;
     public CRServo leftHang, rightHang;
+    AnalogInput analogInput;
 
     @Override
     public void init() {
@@ -42,7 +38,7 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         intake4BarLeft = hardwareMap.get(Servo.class, "intake4Bar1");
         intake4BarRight = hardwareMap.get(Servo.class, "intake4Bar2");
 
-        analogInput = hardwareMap.get(AnalogInput.class, "clawInput");
+        analogInput = hardwareMap.get(AnalogInput.class, "hangLeftInput");
 
         leftOuttakeArm = hardwareMap.get(Servo.class, "leftOuttakeArm");
         rightOuttakeArm = hardwareMap.get(Servo.class, "rightOuttakeArm");
@@ -73,7 +69,7 @@ public class RUN_THIS_FOR_INTAKE extends OpMode {
         outtakeClaw.setPosition(outtakeClawPosition);
 
         rightHang.setPower(hangPower);
-        leftHang.setPower(hangPower);
+//        leftHang.setPower(hangPower);
 
         telemetry.addData("Hang Position: ", analogInput.getVoltage() / 3.3 * 360);
         telemetry.update();

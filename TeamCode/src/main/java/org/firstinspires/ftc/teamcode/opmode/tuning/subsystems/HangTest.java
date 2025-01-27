@@ -1,59 +1,29 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.HangUpCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RegularTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
-import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
-import org.opencv.core.Point;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
-
-import java.util.Collections;
 
 @Autonomous
+@Config
 @Disabled
 public class HangTest extends OpMode {
     private RobotHardware robot;
+    AnalogInput rightInput, leftInput;
+    public static double target = 120;
+    public static double p = 0.02;
+
+    boolean isDoneGoingOut = false;
 
     @Override
     public void init() {
@@ -65,6 +35,10 @@ public class HangTest extends OpMode {
 
         CommandScheduler.getInstance().schedule(new AllSystemInitializeCommand(robot));
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_SIDEWAYS_START_POSE);
+
+        rightInput = hardwareMap.get(AnalogInput.class, "hangRightInput");
+        leftInput = hardwareMap.get(AnalogInput.class, "hangLeftInput");
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
@@ -78,14 +52,25 @@ public class HangTest extends OpMode {
 
     @Override
     public void start() {
-        CommandScheduler.getInstance().schedule(
-                new HangUpCommand(robot.hangSubsystem, -1, 2220)
-        );
+        CommandScheduler.getInstance().schedule(new HangUpCommand(robot.hangSubsystem, -1, 2200).whenFinished(() -> {isDoneGoingOut = true;}));
     }
 
     @Override
     public void loop() {
-        telemetry.addData("Current Hang Position", robot.getClawPosition());
+
+        if (isDoneGoingOut) {
+            double error = target - rightInput.getVoltage() / 3.3 * 360;
+            double error2 = target - leftInput.getVoltage() / 3.3 * 360;
+
+            robot.rightHang.setPower(error * p);
+//            robot.leftHang.setPower(error2 * p);
+
+            if (error < 5 && error2 < 5) {
+                isDoneGoingOut = false; //exit the loop
+            }
+
+        }
+
         CommandScheduler.getInstance().run();
         robot.clearCache();
     }

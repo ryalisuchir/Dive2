@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Disabled
 public class EncoderPositions extends OpMode {
 
-    private RobotHardware robot;
     AnalogInput analogInput;
+    private RobotHardware robot;
 
     @Override
     public void init() {

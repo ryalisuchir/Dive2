@@ -5,11 +5,9 @@ import android.util.Log;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -26,7 +24,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.SlideParkCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
@@ -41,7 +38,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -53,10 +49,6 @@ import java.util.Collections;
 @Autonomous
 public class BlueBucket6Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
-    private RobotHardware robot;
-    private ElapsedTime time_since_start;
-    private double loop;
-
     //Vision Initialization:
     OpenCvWebcam webcam;
     YellowBlueDetection sampleDetection;
@@ -67,6 +59,9 @@ public class BlueBucket6Sample extends OpMode {
     KalmanFilter kalmanFilter;
     boolean isScanning = false;
     boolean isResetting = false;
+    private RobotHardware robot;
+    private ElapsedTime time_since_start;
+    private double loop;
 
     @Override
     public void init() {
@@ -157,8 +152,8 @@ public class BlueBucket6Sample extends OpMode {
 
         TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
                 .setReversed(false)
-                .strafeToConstantHeading(new Vector2d(54,50), null, new ProfileAccelConstraint(-85, 85))
-                .strafeToConstantHeading(new Vector2d(60,60), null, new ProfileAccelConstraint(-85, 85));
+                .strafeToConstantHeading(new Vector2d(54, 50), null, new ProfileAccelConstraint(-85, 85))
+                .strafeToConstantHeading(new Vector2d(60, 60), null, new ProfileAccelConstraint(-85, 85));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -290,7 +285,7 @@ public class BlueBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(0),
-                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION*0.38)
+                                                new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION * 0.38)
                                         )
                                 ),
                                 new WaitCommand(150),
@@ -317,7 +312,7 @@ public class BlueBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1600),
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.7)
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
                                 //Vision stuff:
@@ -385,7 +380,7 @@ public class BlueBucket6Sample extends OpMode {
                                         ),
                                         new SequentialCommandGroup(
                                                 new WaitCommand(1600),
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.7)
+                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * 0.6)
                                         )
                                 ),
                                 //Vision stuff:

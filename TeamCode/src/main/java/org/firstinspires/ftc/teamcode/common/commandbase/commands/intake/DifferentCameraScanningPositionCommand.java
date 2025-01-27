@@ -17,12 +17,12 @@ public class DifferentCameraScanningPositionCommand extends SequentialCommandGro
                         new InstantCommand(() -> robot.intakeClawSubsystem.update(Globals.IntakeClawState.OPEN)),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.CAMERA_READING),
                         new InstantCommand(() -> robot.intakeCoaxialSubsystem.intakeCoaxialCustom(0.35))),
-                        new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, Globals.INTAKE_ROTATION_TRANSFER)),
-                        //Prevents intake stuff from getting stuck:
-                        new SequentialCommandGroup(
-                                new WaitCommand(150),
-                                new ExtendoSlidesCommand(robot.extendoSubsystem, extendoPosition)
-                        )
+                new InstantCommand(() -> robot.intakeRotationSubsystem.update(Globals.IntakeRotationState.CUSTOM, Globals.INTAKE_ROTATION_TRANSFER)),
+                //Prevents intake stuff from getting stuck:
+                new SequentialCommandGroup(
+                        new WaitCommand(150),
+                        new ExtendoSlidesCommand(robot.extendoSubsystem, extendoPosition)
+                )
         );
     }
 }

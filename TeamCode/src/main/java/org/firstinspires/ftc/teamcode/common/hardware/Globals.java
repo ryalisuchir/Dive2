@@ -93,6 +93,7 @@ public class Globals {
         RETRACTING,
         REST
     }
+
     public enum OuttakeState {
         EXTENDING,
         RETRACTING,

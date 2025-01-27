@@ -150,77 +150,77 @@ public class OldRedHPSide4Specimen extends OpMode {
         time_since_start = new ElapsedTime();
 
         CommandScheduler.getInstance().schedule(
-                        new SequentialCommandGroup(
-                                //First Drop:
-                                new ParallelCommandGroup(
-                                        new ActionCommand(movement1A, Collections.emptySet()),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(300),
-                                                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+                new SequentialCommandGroup(
+                        //First Drop:
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement1A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(300),
+                                        new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement2A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement3A, Collections.emptySet())
                                         )
-                                ),
-                                new WaitCommand(100),
-                                new SpecimenClipCommand(robot),
-                                new ParallelCommandGroup(
-                                        new ActionCommand(movement2A, Collections.emptySet()),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(200),
-                                                new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new WaitCommand(100),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement4A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement5A, Collections.emptySet())
                                         )
-                                ),
-                                new WaitCommand(500),
-                                new ParallelCommandGroup(
-                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(500),
-                                                new ParallelCommandGroup(
-                                                        new ActionCommand(movement3A, Collections.emptySet())
-                                                )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement6A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new WaitCommand(500),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement7A, Collections.emptySet())
                                         )
-                                ),
-                                new WaitCommand(100),
-                                new SpecimenClipCommand(robot),
-                                new WaitCommand(100),
-                                new ParallelCommandGroup(
-                                        new ActionCommand(movement4A, Collections.emptySet()),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(200),
-                                                new SpecimenIntakeCommand(robot)
-                                        )
-                                ),
-                                new WaitCommand(500),
-                                new ParallelCommandGroup(
-                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(500),
-                                                new ParallelCommandGroup(
-                                                        new ActionCommand(movement5A, Collections.emptySet())
-                                                )
-                                        )
-                                ),
-                                new WaitCommand(100),
-                                new SpecimenClipCommand(robot),
-                                new ParallelCommandGroup(
-                                        new ActionCommand(movement6A, Collections.emptySet()),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(200),
-                                                new SpecimenIntakeCommand(robot)
-                                        )
-                                ),
-                                new WaitCommand(500),
-                                new ParallelCommandGroup(
-                                        new SpecimenGrabAndTransferAndLiftCommand(robot),
-                                        new SequentialCommandGroup(
-                                                new WaitCommand(500),
-                                                new ParallelCommandGroup(
-                                                        new ActionCommand(movement7A, Collections.emptySet())
-                                                )
-                                        )
-                                ),
-                                new WaitCommand(100),
-                                new SpecimenClipCommand(robot),
-                                new OuttakeTransferReadyCommand(robot)
-                        )
+                                )
+                        ),
+                        new WaitCommand(100),
+                        new SpecimenClipCommand(robot),
+                        new OuttakeTransferReadyCommand(robot)
+                )
         );
 
     }

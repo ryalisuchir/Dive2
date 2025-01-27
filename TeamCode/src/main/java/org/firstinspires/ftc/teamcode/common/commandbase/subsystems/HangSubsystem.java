@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 
 public class HangSubsystem extends SubsystemBase {

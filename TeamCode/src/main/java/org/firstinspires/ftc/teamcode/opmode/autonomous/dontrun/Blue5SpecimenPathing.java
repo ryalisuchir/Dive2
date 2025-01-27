@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
 
-import com.acmerobotics.roadrunner.AccelConstraint;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
@@ -8,7 +7,6 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -19,12 +17,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.NoClawScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.SpecimenIntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.specimen.SpecimenClipCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
@@ -127,11 +121,11 @@ public class Blue5SpecimenPathing extends OpMode {
 
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
-                new ActionCommand(movement1A, Collections.emptySet()),
-                new ParallelCommandGroup(
-                        new ActionCommand(movement2A, Collections.emptySet()),
-                        new SpecimenIntakeCommand(robot)
-                ),
+                        new ActionCommand(movement1A, Collections.emptySet()),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement2A, Collections.emptySet()),
+                                new SpecimenIntakeCommand(robot)
+                        ),
                         new ParallelCommandGroup(
                                 new SpecimenGrabAndTransferAndLiftCommand(robot),
                                 new SequentialCommandGroup(

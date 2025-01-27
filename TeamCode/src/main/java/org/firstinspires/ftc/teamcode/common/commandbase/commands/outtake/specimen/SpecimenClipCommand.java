@@ -23,11 +23,11 @@ public class SpecimenClipCommand extends SequentialCommandGroup {
                                 )
                         ),
                         new WaitCommand(75),
-                                        new ParallelCommandGroup(
-                                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
-                                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS)
-                                )
+                        new ParallelCommandGroup(
+                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
+                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS)
                         )
+                )
         );
     }
 }

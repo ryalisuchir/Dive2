@@ -14,11 +14,11 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.Scannin
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
+
 @Autonomous
 @Config
 @Disabled
@@ -32,6 +32,9 @@ public class BlueYellowAngleDetection extends OpMode {
 
     private double estimate = 0; // Current estimate
     private double lastEstimate = 0; // Preserved last valid estimate
+
+    private final double area = 0;
+    private final double lastArea = 0;
 
 
     @Override

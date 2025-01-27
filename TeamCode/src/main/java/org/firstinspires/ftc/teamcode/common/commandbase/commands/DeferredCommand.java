@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common.commandbase.commands;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.Subsystem;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -15,9 +16,7 @@ public class DeferredCommand implements Command {
     public DeferredCommand(Supplier<Command> commandSupplier, Subsystem... requirements) {
         this.commandSupplier = commandSupplier;
         this.requirements = new HashSet<>();
-        for (Subsystem subsystem : requirements) {
-            this.requirements.add(subsystem);
-        }
+        Collections.addAll(this.requirements, requirements);
     }
 
     @Override

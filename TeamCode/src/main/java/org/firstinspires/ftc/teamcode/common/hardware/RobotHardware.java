@@ -12,8 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
-import com.qualcomm.robotcore.hardware.configuration.DeviceConfiguration;
-import com.qualcomm.robotcore.hardware.configuration.ServoHubConfiguration;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.HangSubsystem;
@@ -31,7 +29,6 @@ import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
 import java.util.List;
 
 public class RobotHardware {
-    AnalogInput analogInput;
     public DcMotorEx leftFront, rightFront, leftRear, rightRear; //Drivetrain motors
     public DcMotorEx leftLift, rightLift; //Outtake lift motors
     public DcMotorEx extendoMotor; //Intake extension motor
@@ -40,7 +37,6 @@ public class RobotHardware {
     public ServoImplEx intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public ServoImplEx outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
     public CRServo leftHang, rightHang;
-
     public Intake4BarSubsystem intake4BarSubsystem;
     public IntakeClawSubsystem intakeClawSubsystem;
     public IntakeCoaxialSubsystem intakeCoaxialSubsystem;
@@ -59,7 +55,6 @@ public class RobotHardware {
         //Optimizing Loop Times:
         allHubs = hardwareMap.getAll(LynxModule.class);
 
-        analogInput = hardwareMap.get(AnalogInput.class, "clawInput");
         //Configuration of all motors:
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -118,7 +113,6 @@ public class RobotHardware {
         rightHang.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-
         //Initializing all subsystems:
         intake4BarSubsystem = new Intake4BarSubsystem(intake4BarLeft, intake4BarRight);
         intakeClawSubsystem = new IntakeClawSubsystem(intakeClaw);
@@ -156,10 +150,6 @@ public class RobotHardware {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
-    }
-
-    public double getClawPosition() {
-        return analogInput.getVoltage() / 3.3 * 360;
     }
 
     public void systemLoop(Telemetry telemetryInput) {

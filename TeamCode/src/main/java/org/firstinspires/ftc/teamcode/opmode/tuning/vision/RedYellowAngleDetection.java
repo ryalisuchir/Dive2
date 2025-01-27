@@ -18,6 +18,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
+
 @Autonomous
 @Config
 @Disabled
@@ -28,14 +29,12 @@ public class RedYellowAngleDetection extends OpMode {
     RobotHardware robot;
     OpenCvWebcam webcam;
     YellowRedDetection sampleDetection;
-
-    private double estimate = 0; // Current estimate
-    private double lastEstimate = 0; // Preserved last valid estimate
     double x = 0;
     double y = 0;
     double lastX = 0;
     double lastY = 0;
-
+    private double estimate = 0; // Current estimate
+    private double lastEstimate = 0; // Preserved last valid estimate
 
     @Override
     public void init() {
@@ -73,9 +72,9 @@ public class RedYellowAngleDetection extends OpMode {
                 estimate = (greenAngle % 180) / 180;
                 lastEstimate = estimate;
                 try {
-                x = sampleDetection.getGreenSampleCoordinates().x;
-                y = sampleDetection.getGreenSampleCoordinates().y;
-            } catch (RuntimeException e) {
+                    x = sampleDetection.getGreenSampleCoordinates().x;
+                    y = sampleDetection.getGreenSampleCoordinates().y;
+                } catch (RuntimeException e) {
                     telemetry.addLine("Error");
                 }
 

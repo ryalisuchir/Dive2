@@ -35,15 +35,14 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
 public class Solo extends CommandOpMode {
-    public static final double[] intakeRotationPositions = { 0, 0.25, 0.55, 0.75, 1 };
+    public static final double[] intakeRotationPositions = {0, 0.25, 0.55, 0.75, 1};
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafLigmaController, swethaLigmaController;
+    boolean extendoBoolean = true;
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean driverControlUnlocked;
     private boolean isCloseAndTransfer = true; // Track toggle state
-    boolean extendoBoolean = true;
-
     private int currentIndex = 2; //for rotation
 
     @Override
@@ -112,7 +111,9 @@ public class Solo extends CommandOpMode {
         ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new SequentialCommandGroup(
                         new CustomBucketDropCommand(robot),
-                        new InstantCommand(() -> {extendoBoolean = true;})
+                        new InstantCommand(() -> {
+                            extendoBoolean = true;
+                        })
                 )
         );
     }
@@ -152,7 +153,9 @@ public class Solo extends CommandOpMode {
         if (swethaController.left_stick_x > 0.1) {
             extendoBoolean = false;
             robot.extendoMotor.setPower(-1);
-        } else { extendoBoolean = true; }
+        } else {
+            extendoBoolean = true;
+        }
 
         telemetry.update();
 
@@ -211,7 +214,9 @@ public class Solo extends CommandOpMode {
             schedule(
                     new ParallelCommandGroup(
                             new CustomOuttakeCommand(robot),
-                            new InstantCommand(() -> {extendoBoolean = false;}),
+                            new InstantCommand(() -> {
+                                extendoBoolean = false;
+                            }),
                             new IntakeSliderResetterCommand(robot.extendoSubsystem)
                     )
             );

@@ -31,6 +31,7 @@ public class YellowRedDetection extends OpenCvPipeline {
     static final Scalar RED_UPPER_BOUND = new Scalar(10, 255, 255); // Adjust the upper bound for red
 
     static final Scalar RED = new Scalar(0, 0, 255); // Use red for visualization
+    private static final String defaultSavePath = "/sdcard/EasyOpenCV";
     public double AREA_THRESHOLD = 4000;
     public MatOfPoint3f axisPoints;
     Mat ycrcbMat = new Mat();
@@ -42,7 +43,6 @@ public class YellowRedDetection extends OpenCvPipeline {
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
     volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
-
     Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
     MatOfDouble distCoeffs = new MatOfDouble();
     Stage[] stages = Stage.values();
@@ -60,6 +60,91 @@ public class YellowRedDetection extends OpenCvPipeline {
                 0, 0, 1);
 
         distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
+    }
+
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
+        Point[] points = new Point[4];
+        rect.points(points);
+
+        Scalar colorScalar = getColorScalar(color);
+
+        for (int i = 0; i < 4; ++i) {
+            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
+        }
+    }
+
+    static Scalar getColorScalar(String color) {
+        if (color.equals("Green")) {
+            return new Scalar(0, 255, 0); // Green color
+        }
+        return RED;
+    }
+
+    static Point[] orderPoints(Point[] pts) {
+        Point[] orderedPts = new Point[4];
+
+        double[] sum = new double[4];
+        double[] diff = new double[4];
+
+        for (int i = 0; i < 4; i++) {
+            sum[i] = pts[i].x + pts[i].y;
+            diff[i] = pts[i].y - pts[i].x;
+        }
+
+        int tlIndex = indexOfMin(sum);
+        orderedPts[0] = pts[tlIndex];
+
+        int brIndex = indexOfMax(sum);
+        orderedPts[2] = pts[brIndex];
+
+        int trIndex = indexOfMin(diff);
+        orderedPts[1] = pts[trIndex];
+
+        int blIndex = indexOfMax(diff);
+        orderedPts[3] = pts[blIndex];
+
+        return orderedPts;
+    }
+
+    static int indexOfMin(double[] array) {
+        int index = 0;
+        double min = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < min) {
+                min = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static int indexOfMax(double[] array) {
+        int index = 0;
+        double max = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
+        Scalar colorScalar = getColorScalar(color);
+
+        Imgproc.putText(
+                mat,
+                text,
+                new Point(
+                        rect.center.x - 50,
+                        rect.center.y + 25),
+                Imgproc.FONT_HERSHEY_PLAIN,
+                1,
+                colorScalar,
+                1);
     }
 
     @Override
@@ -154,22 +239,6 @@ public class YellowRedDetection extends OpenCvPipeline {
             }
         }
     }
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
-        Point[] points = new Point[4];
-        rect.points(points);
-
-        Scalar colorScalar = getColorScalar(color);
-
-        for (int i = 0; i < 4; ++i) {
-            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
-        }
-    }
-    static Scalar getColorScalar(String color) {
-        if (color.equals("Green")) {
-            return new Scalar(0, 255, 0); // Green color
-        }
-        return RED;
-    }
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
@@ -227,73 +296,6 @@ public class YellowRedDetection extends OpenCvPipeline {
             analyzedStone.y = -1;
             internalStoneList.add(analyzedStone);
         }
-    }
-
-    static Point[] orderPoints(Point[] pts) {
-        Point[] orderedPts = new Point[4];
-
-        double[] sum = new double[4];
-        double[] diff = new double[4];
-
-        for (int i = 0; i < 4; i++) {
-            sum[i] = pts[i].x + pts[i].y;
-            diff[i] = pts[i].y - pts[i].x;
-        }
-
-        int tlIndex = indexOfMin(sum);
-        orderedPts[0] = pts[tlIndex];
-
-        int brIndex = indexOfMax(sum);
-        orderedPts[2] = pts[brIndex];
-
-        int trIndex = indexOfMin(diff);
-        orderedPts[1] = pts[trIndex];
-
-        int blIndex = indexOfMax(diff);
-        orderedPts[3] = pts[blIndex];
-
-        return orderedPts;
-    }
-
-    static int indexOfMin(double[] array) {
-        int index = 0;
-        double min = array[0];
-
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] < min) {
-                min = array[i];
-                index = i;
-            }
-        }
-        return index;
-    }
-
-    static int indexOfMax(double[] array) {
-        int index = 0;
-        double max = array[0];
-
-        for (int i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
-                index = i;
-            }
-        }
-        return index;
-    }
-
-    static void drawTagText(RotatedRect rect, String text, Mat mat, String color) {
-        Scalar colorScalar = getColorScalar(color);
-
-        Imgproc.putText(
-                mat,
-                text,
-                new Point(
-                        rect.center.x - 50,
-                        rect.center.y + 25),
-                Imgproc.FONT_HERSHEY_PLAIN,
-                1,
-                colorScalar,
-                1);
     }
 
     void drawLargestAreaAxis(Mat img, Mat rvec, Mat tvec, Mat cameraMatrix, MatOfDouble distCoeffs) {
@@ -404,10 +406,7 @@ public class YellowRedDetection extends OpenCvPipeline {
         }
     }
 
-    private static final String defaultSavePath = "/sdcard/EasyOpenCV";
-
-    public void saveMatToDisk(Mat mat, final String filename)
-    {
+    public void saveMatToDisk(Mat mat, final String filename) {
         saveMatToDiskFullPath(mat, String.format("%s/%s.png", defaultSavePath, filename));
     }
 

@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.Intake4BarCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.regular.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;

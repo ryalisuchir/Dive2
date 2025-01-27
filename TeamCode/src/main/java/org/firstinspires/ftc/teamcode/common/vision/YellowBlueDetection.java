@@ -30,6 +30,7 @@ public class YellowBlueDetection extends OpenCvPipeline {
     static final Scalar BLUE_UPPER_BOUND = new Scalar(130, 255, 255); // Adjust the upper bound for blue
 
     static final Scalar BLUE = new Scalar(0, 0, 255);
+    private static final String defaultSavePath = "/sdcard/EasyOpenCV";
     public double AREA_THRESHOLD = 4000;
     public MatOfPoint3f axisPoints;
     Mat ycrcbMat = new Mat();
@@ -41,7 +42,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
     volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
-
     Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
     MatOfDouble distCoeffs = new MatOfDouble();
     Stage[] stages = Stage.values();
@@ -210,7 +210,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
         Imgproc.dilate(output, output, dilateElement);
     }
 
-
     void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
         if (!contoursList.isEmpty()) {
             double smallestDistance = Double.MAX_VALUE;
@@ -249,7 +248,6 @@ public class YellowBlueDetection extends OpenCvPipeline {
             }
         }
     }
-
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();
@@ -417,10 +415,7 @@ public class YellowBlueDetection extends OpenCvPipeline {
         }
     }
 
-    private static final String defaultSavePath = "/sdcard/EasyOpenCV";
-
-    public void saveMatToDisk(Mat mat, final String filename)
-    {
+    public void saveMatToDisk(Mat mat, final String filename) {
         saveMatToDiskFullPath(mat, String.format("%s/%s.png", defaultSavePath, filename));
     }
 
