@@ -56,9 +56,7 @@ public class BlueBucket6Sample extends OpMode {
     double yTravel = 0;
     double angle = 0;
     double lastEstimate;
-    KalmanFilter kalmanFilter;
     boolean isScanning = false;
-    boolean isResetting = false;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
@@ -118,7 +116,7 @@ public class BlueBucket6Sample extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToSplineHeading(
-                        new Pose2d(30, 7, Math.toRadians(0)), Math.toRadians(180.00),
+                        new Pose2d(25, 7, Math.toRadians(0)), Math.toRadians(180.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -137,7 +135,7 @@ public class BlueBucket6Sample extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToSplineHeading(
-                        new Pose2d(30, 3, Math.toRadians(0)), Math.toRadians(180.00),
+                        new Pose2d(25, 3, Math.toRadians(0)), Math.toRadians(180.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -145,15 +143,14 @@ public class BlueBucket6Sample extends OpMode {
         TrajectoryActionBuilder movement92 = movement82.endTrajectory().fresh()
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(57, 60), Math.toRadians(45.00),
+                        new Vector2d(59, 58), Math.toRadians(45.00),
                         null,
                         new ProfileAccelConstraint(-30, 85)
                 );
 
         TrajectoryActionBuilder movement10 = movement92.endTrajectory().fresh()
                 .setReversed(false)
-                .strafeToConstantHeading(new Vector2d(54, 50), null, new ProfileAccelConstraint(-85, 85))
-                .strafeToConstantHeading(new Vector2d(60, 60), null, new ProfileAccelConstraint(-85, 85));
+                .strafeToConstantHeading(new Vector2d(54, 50), null, new ProfileAccelConstraint(-85, 85));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -439,7 +436,7 @@ public class BlueBucket6Sample extends OpMode {
                                 ),
                                 new ParallelCommandGroup(
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1000),
+                                                new WaitCommand(300),
                                                 new ActionCommand(movement10A, Collections.emptySet())
                                         ),
                                         new SequentialCommandGroup(
@@ -487,26 +484,16 @@ public class BlueBucket6Sample extends OpMode {
             Point greenPoint = sampleDetection.getGreenSampleCoordinates();
 
             if (!Double.isNaN(greenAngle)) {
-
-                // Update travel points based on the detected point
                 xTravel = greenPoint.x;
                 yTravel = greenPoint.y;
-
-                // Calculate the new estimate
-                double angle = (greenAngle % 180) / 180; // Claw angle between 0 and 1
-
-                // Update lastEstimate with the new valid estimate
+                double angle = (greenAngle % 180) / 180;
                 lastEstimate = angle;
-
-                // Mark scanning as complete
+                Log.i("Successful Scan (Blue 0+6):", "xTravel: " + xTravel + "yTravel: " + yTravel);
                 isScanning = false;
             } else {
-                // Fallback to the last valid estimate and previous travel points
                 angle = lastEstimate;
             }
         }
-
-        telemetry.addData("Right Lift Pos: ", robot.rightLift.getCurrentPosition());
 
         loop = time;
         telemetry.update();

@@ -20,7 +20,7 @@ public class RegularTransferCommand extends SequentialCommandGroup {
                                         new TransferCommand(robot)
                                 )
                         ),
-                        new WaitCommand(500),
+                        new WaitCommand(300),
                         new ParallelCommandGroup(
                                 new ClawTransferCommand(robot)
                         )
