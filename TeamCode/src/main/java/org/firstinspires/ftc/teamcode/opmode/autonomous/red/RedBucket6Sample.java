@@ -117,7 +117,7 @@ public class RedBucket6Sample extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToSplineHeading(
-                        new Pose2d(25, 7, Math.toRadians(0)), Math.toRadians(180.00),
+                        new Pose2d(27, 7, Math.toRadians(0)), Math.toRadians(180.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -136,7 +136,7 @@ public class RedBucket6Sample extends OpMode {
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToSplineHeading(
-                        new Pose2d(25, 3, Math.toRadians(0)), Math.toRadians(180.00),
+                        new Pose2d(27, 3, Math.toRadians(0)), Math.toRadians(180.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );

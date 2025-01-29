@@ -36,8 +36,8 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @TeleOp
 public class Solo extends CommandOpMode {
     public static final double[] intakeRotationPositions = {0, 0.25, 0.55, 0.75, 1};
-    Gamepad ahnafController, swethaController;
-    GamepadEx ahnafLigmaController, swethaLigmaController;
+    Gamepad soloController;
+    GamepadEx soloButtonController;
     boolean extendoBoolean = true;
     private RobotHardware robot;
     private boolean depositManualControl;
@@ -48,33 +48,31 @@ public class Solo extends CommandOpMode {
     @Override
     public void initialize() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, false);
-        ahnafController = gamepad1;
-        swethaController = gamepad2;
+        soloController = gamepad1;
 
         robot.leftLift.setCurrentAlert(9.0, CurrentUnit.AMPS);
 
-        ahnafLigmaController = new GamepadEx(gamepad1);
-        swethaLigmaController = new GamepadEx(gamepad2);
+        soloButtonController = new GamepadEx(gamepad1);
 
         driverControlUnlocked = true;
         depositManualControl = true;
         isCloseAndTransfer = true; // Track toggle state
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> depositManualControl = false),
                         new SpecimenIntakeCommand(robot)
                 )
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
                 new ParallelCommandGroup(
                         new SpecimenGrabAndTransferAndLiftCommand(robot),
                         new InstantCommand(() -> depositManualControl = false)
                 )
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new UninterruptableCommand(
                         new SequentialCommandGroup(
                                 new InstantCommand(() -> depositManualControl = false),
@@ -85,21 +83,21 @@ public class Solo extends CommandOpMode {
                 )
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex + 2) % intakeRotationPositions.length;
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.X).whenPressed(
                 new InstantCommand(() -> {
                     currentIndex = (currentIndex - 1 + intakeRotationPositions.length) % intakeRotationPositions.length; // Wrap to the end
                     robot.intakeRotation.setPosition(intakeRotationPositions[currentIndex]);
                 })
         );
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
+        soloButtonController.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(() -> {
             if (isCloseAndTransfer) {
                 new IntakePeckerCommand(robot).schedule();
             } else {
@@ -108,7 +106,7 @@ public class Solo extends CommandOpMode {
             isCloseAndTransfer = !isCloseAndTransfer;
         });
 
-        ahnafLigmaController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
+        soloButtonController.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
                 new SequentialCommandGroup(
                         new CustomBucketDropCommand(robot),
                         new InstantCommand(() -> {
@@ -132,34 +130,24 @@ public class Solo extends CommandOpMode {
             robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        //Ahnaf's Controls:
-
         if (driverControlUnlocked) {
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
-                            0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
-                            0.48 * Math.tan(1.12 * ahnafController.left_stick_x)
+                            0.48 * Math.tan(1.12 * soloController.left_stick_y),
+                            0.48 * Math.tan(1.12 * soloController.left_stick_x)
                     ),
-                    -ahnafController.right_stick_x
+                    -soloController.right_stick_x
             ));
         }
 
-        //Swetha's Controls:
         //Extendo Slides Stuff:
         if (extendoBoolean) {
             robot.extendoSubsystem.extendoSlidesLoop();
         }
 
-        if (swethaController.left_stick_x > 0.1) {
-            extendoBoolean = false;
-            robot.extendoMotor.setPower(-1);
-        } else {
-            extendoBoolean = true;
-        }
-
         telemetry.update();
 
-        if (ahnafController.cross) {
+        if (soloController.cross) {
             currentIndex = 2;
             if (robot.extendoMotor.getCurrentPosition() > (Globals.EXTENDO_MAX_EXTENSION / 2) + 50) {
                 schedule(
@@ -175,19 +163,10 @@ public class Solo extends CommandOpMode {
             }
         }
 
-        if (ahnafController.circle) {
+        if (soloController.circle) {
             extendoBoolean = true;
             schedule(
                     new ScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
-            );
-        }
-
-
-        if (swethaController.cross) {
-            currentIndex = 2;
-            extendoBoolean = true;
-            schedule(
-                    new NoClawScanningCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)
             );
         }
 
@@ -195,21 +174,8 @@ public class Solo extends CommandOpMode {
         if (!depositManualControl) {
             robot.depositSubsystem.outtakeSlidesLoop();
         }
-        if (depositManualControl) {
-            robot.depositSubsystem.depositManualControlLoop(-swethaController.right_stick_y);
-        }
 
-        if (swethaController.right_stick_y > 0) {
-            depositManualControl = true;
-        }
-
-        if (swethaController.dpad_left || swethaController.dpad_right || ahnafController.dpad_right || ahnafController.dpad_left) {
-            robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            depositManualControl = false;
-        }
-
-        if (ahnafController.dpad_right) {
+        if (soloController.dpad_right) {
             extendoBoolean = false;
             schedule(
                     new ParallelCommandGroup(
@@ -221,44 +187,31 @@ public class Solo extends CommandOpMode {
                     )
             );
         }
-
-        if (swethaController.dpad_right) {
-            schedule(
-                    new OuttakeCommand(robot, Globals.LIFT_MID_POS)
-            );
-        }
-
-        if (swethaController.dpad_left) {
-            schedule(
-                    new OuttakeCommand(robot, Globals.LIFT_PARK_POS)
-            );
-        }
-
-        if (ahnafController.dpad_left) {
+        
+        if (soloController.dpad_left) {
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_RETRACT_POS)
             );
         }
 
-        if (swethaController.left_trigger > 0.5) {
+        if (soloController.left_trigger > 0.5) {
             robot.leftHang.setPower(1);
             robot.rightHang.setPower(1);
         }
 
-        if (swethaController.left_trigger < 0.5) {
+        if (soloController.left_trigger < 0.5) {
             robot.leftHang.setPower(0);
             robot.rightHang.setPower(0);
         }
 
-        if (swethaController.right_trigger > 0.5) {
+        if (soloController.right_trigger > 0.5) {
             robot.leftHang.setPower(-1);
             robot.rightHang.setPower(-1);
         }
 
         //Overrides:
-        if (ahnafController.ps) {
-            ahnafController.rumble(1000);
-            swethaController.rumble(1000);
+        if (soloController.ps) {
+            soloController.rumble(1000);
             schedule(
                     new AllSystemInitializeCommand(robot)
             );
