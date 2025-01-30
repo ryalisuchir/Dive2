@@ -9,12 +9,12 @@ public class ZoneLookupTable {
     public ZoneLookupTable() {
         zoneTable = new HashMap<>();
         // Populate with example values
-        zoneTable.put(1, new double[]{3, 0.8});
-        zoneTable.put(2, new double[]{7, 0.8});
-        zoneTable.put(3, new double[]{11, 0.8});
-        zoneTable.put(4, new double[]{3, 0.5});
-        zoneTable.put(5, new double[]{7, 0.5});
-        zoneTable.put(6, new double[]{11, 0.5});
+        zoneTable.put(1, new double[]{3, 0.7});
+        zoneTable.put(2, new double[]{7, 0.7});
+        zoneTable.put(3, new double[]{11, 0.7});
+        zoneTable.put(4, new double[]{3, 0.45});
+        zoneTable.put(5, new double[]{7, 0.45});
+        zoneTable.put(6, new double[]{11, 0.45});
     }
 
     public double[] getZoneInfo(int zone) {
