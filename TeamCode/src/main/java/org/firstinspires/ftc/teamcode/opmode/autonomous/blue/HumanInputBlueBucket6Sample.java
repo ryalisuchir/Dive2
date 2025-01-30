@@ -72,6 +72,12 @@ public class HumanInputBlueBucket6Sample extends OpMode {
     private long lastBlinkTime = 0;
     private boolean showNumber = true;
 
+    private boolean prevDpadUp = false;
+    private boolean prevDpadDown = false;
+    private boolean prevDpadLeft = false;
+    private boolean prevDpadRight = false;
+    private boolean prevCross = false;
+
 
     @Override
     public void init() {
@@ -186,8 +192,9 @@ public class HumanInputBlueBucket6Sample extends OpMode {
             telemetry.addData("Submersible Second Cycle: ", submersibleSecondZone);
         }
 
-        if (gamepad1.cross) {
-            isLocked = true;
+        // Rising edge detection for the cross button
+        if (gamepad1.cross && !prevCross) {
+            isLocked = true; // Lock the selection only on the rising edge
         }
 
         if (!isLocked) {
@@ -197,24 +204,40 @@ public class HumanInputBlueBucket6Sample extends OpMode {
             telemetry.addData("Cycle 1: ", (isCycleOneSelected && !showNumber && !isLocked ? " " : submersibleFirstZone));
             telemetry.addData("Cycle 2: ", (!isCycleOneSelected && !showNumber && !isLocked ? " " : submersibleSecondZone));
 
-            if (gamepad1.dpad_left || gamepad1.dpad_right) {
+            // Rising edge detection for dpad_left and dpad_right
+            if (gamepad1.dpad_left && !prevDpadLeft) {
+                isCycleOneSelected = !isCycleOneSelected;
+            }
+            if (gamepad1.dpad_right && !prevDpadRight) {
                 isCycleOneSelected = !isCycleOneSelected;
             }
 
-            if (gamepad1.dpad_down || gamepad1.dpad_up) {
+            // Rising edge detection for dpad_up and dpad_down
+            if (gamepad1.dpad_up && !prevDpadUp) {
                 if (isCycleOneSelected) {
-                    submersibleFirstZone = gamepad1.dpad_up ? (submersibleFirstZone % 6) + 1 : (submersibleFirstZone == 1 ? 6 : submersibleFirstZone - 1);
+                    submersibleFirstZone = (submersibleFirstZone % 6) + 1;
+                }
+            }
+            if (gamepad1.dpad_down && !prevDpadDown) {
+                if (isCycleOneSelected) {
+                    submersibleFirstZone = (submersibleFirstZone == 1 ? 6 : submersibleFirstZone - 1);
                 } else {
-                    submersibleSecondZone = gamepad1.dpad_down ? (submersibleSecondZone % 6) + 1 : (submersibleSecondZone == 1 ? 6 : submersibleSecondZone - 1);
+                    submersibleSecondZone = (submersibleSecondZone == 1 ? 6 : submersibleSecondZone - 1);
                 }
             }
         }
+
+        // Update the previous states of the buttons
+        prevDpadUp = gamepad1.dpad_up;
+        prevDpadDown = gamepad1.dpad_down;
+        prevDpadLeft = gamepad1.dpad_left;
+        prevDpadRight = gamepad1.dpad_right;
+        prevCross = gamepad1.cross; // Update the previous state of the cross button
 
         long currentTime = System.currentTimeMillis();
         if (!isLocked && currentTime - lastBlinkTime > 500) {
             showNumber = !showNumber;
             lastBlinkTime = currentTime;
-
         }
 
         CommandScheduler.getInstance().run();
