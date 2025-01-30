@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.autonomous.dontrun;
+package org.firstinspires.ftc.teamcode.opmode.autonomous.separate;
 
 import android.util.Log;
 
@@ -30,9 +30,9 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.Collections;
 
-@Disabled
 @Autonomous
-public class BlueBucketSide1Specimen3Sample extends OpMode {
+@Disabled
+public class RedBucketSide1Specimen3Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
@@ -54,8 +54,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
-                .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(57.9, 54.5, Math.toRadians(90)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(57.9, 54.5, Math.toRadians(90)), Math.toRadians(-90.00));
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -65,7 +64,7 @@ public class BlueBucketSide1Specimen3Sample extends OpMode {
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(66.5, 51, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(66, 51, Math.toRadians(90)), Math.toRadians(90));
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
