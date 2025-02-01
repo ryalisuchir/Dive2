@@ -46,7 +46,7 @@ public class BlueHPSide4Specimen extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 34, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
@@ -61,7 +61,7 @@ public class BlueHPSide4Specimen extends OpMode {
                         new ProfileAccelConstraint(-60, 85)
                 )
                 .strafeToLinearHeading(
-                        new Vector2d(-37, 20), Math.toRadians(90),
+                        new Vector2d(-37, 27), Math.toRadians(90),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 )
@@ -77,7 +77,7 @@ public class BlueHPSide4Specimen extends OpMode {
                         new ProfileAccelConstraint(-60, 85)
                 )
                 .strafeToConstantHeading(
-                        new Vector2d(-35, 20),
+                        new Vector2d(-35, 27),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
@@ -101,7 +101,7 @@ public class BlueHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-7, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7, 35, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
@@ -132,7 +132,7 @@ public class BlueHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-20, 58, Math.toRadians(0)), Math.toRadians(180),
+                        new Pose2d(-15, 58, Math.toRadians(0)), Math.toRadians(180),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 );

@@ -101,7 +101,7 @@ public class RedHPSide4Specimen extends OpMode {
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-7, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7, 35, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
