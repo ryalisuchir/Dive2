@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmode.autonomous.blue;
 
 import android.util.Log;
 
+import androidx.core.view.WindowInsetsAnimationCompat;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Action;
@@ -16,6 +18,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -47,6 +50,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
+@Disabled
 public class BlueBucket6Sample extends OpMode {
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
     //Vision Initialization:
