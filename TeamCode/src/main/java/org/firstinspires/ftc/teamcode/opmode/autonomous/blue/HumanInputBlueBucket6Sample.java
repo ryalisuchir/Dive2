@@ -144,7 +144,7 @@ public class HumanInputBlueBucket6Sample extends OpMode {
 
         movement10 = movement92.endTrajectory().fresh()
                 .setReversed(false)
-                .strafeToConstantHeading(new Vector2d(54, 50), null, new ProfileAccelConstraint(-85, 85));
+                .strafeToConstantHeading(new Vector2d(56, 54), null, new ProfileAccelConstraint(-85, 85));
 
         movement1A = movement1.build();
         movement2A = movement2.build();
@@ -215,14 +215,14 @@ public class HumanInputBlueBucket6Sample extends OpMode {
             // Rising edge detection for dpad_up and dpad_down
             if (gamepad1.dpad_up && !prevDpadUp) {
                 if (isCycleOneSelected) {
-                    submersibleFirstZone = (submersibleFirstZone % 6) + 1;
+                    submersibleFirstZone = (submersibleFirstZone % 4) + 1;
                 }
             }
             if (gamepad1.dpad_down && !prevDpadDown) {
                 if (isCycleOneSelected) {
-                    submersibleFirstZone = (submersibleFirstZone == 1 ? 6 : submersibleFirstZone - 1);
+                    submersibleFirstZone = (submersibleFirstZone == 1 ? 4 : submersibleFirstZone - 1);
                 } else {
-                    submersibleSecondZone = (submersibleSecondZone == 1 ? 6 : submersibleSecondZone - 1);
+                    submersibleSecondZone = (submersibleSecondZone == 1 ? 4 : submersibleSecondZone - 1);
                 }
             }
         }
@@ -246,8 +246,6 @@ public class HumanInputBlueBucket6Sample extends OpMode {
     @Override
     public void start() {
         time_since_start = new ElapsedTime();
-
-
         movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToSplineHeading(
@@ -278,8 +276,6 @@ public class HumanInputBlueBucket6Sample extends OpMode {
         movement8B = movement82.build();
 
         CommandScheduler.getInstance().schedule(
-                new ParallelCommandGroup(
-//                        new HangUpCommand(robot.hangSubsystem, 1, 900),
                         new SequentialCommandGroup(
                                 //First Drop:
                                 new ParallelCommandGroup(
@@ -384,7 +380,7 @@ public class HumanInputBlueBucket6Sample extends OpMode {
                                                 new OuttakeTransferReadyCommand(robot)
                                         ),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1600),
+                                                new WaitCommand(1800),
                                                 new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * lookupTable.getZoneInfo(submersibleFirstZone)[1])
                                         )
                                 ),
@@ -452,7 +448,7 @@ public class HumanInputBlueBucket6Sample extends OpMode {
                                                 new ActionCommand(movement8B, Collections.emptySet())
                                         ),
                                         new SequentialCommandGroup(
-                                                new WaitCommand(1600),
+                                                new WaitCommand(1800),
                                                 new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * lookupTable.getZoneInfo(submersibleSecondZone)[1])
                                         )
                                 ),
@@ -521,7 +517,6 @@ public class HumanInputBlueBucket6Sample extends OpMode {
                                         )
                                 )
                         )
-                )
         );
     }
 
