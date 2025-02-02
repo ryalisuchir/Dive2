@@ -32,12 +32,12 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.Outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.InsanelyFastTransfer;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.DoubleSlowPeck;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
-import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
 import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -46,10 +46,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.Collections;
-import java.util.Map;
 
 @Autonomous
-public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
+public class Red6PieceShawarma extends OpMode { //may veer bless us
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
     TrajectoryActionBuilder movement1, movement2, movement3, movement4, movement5, movement6, movement7, movement8, movement9, movement82, movement92, movement10;
     //Vision Initialization:
@@ -95,7 +94,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
 
         movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
                 .splineToLinearHeading(
-                        new Pose2d(59, 58, Math.toRadians(45)), Math.toRadians(45),
+                        new Pose2d(58, 59, Math.toRadians(45)), Math.toRadians(45),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -103,7 +102,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
         movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(54.5, 48.5, Math.toRadians(90)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(54.2, 49.2, Math.toRadians(90)), Math.toRadians(0));
 
         movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -113,7 +112,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
         movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(64, 50, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(63.6, 51, Math.toRadians(90)), Math.toRadians(90));
 
         movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -123,7 +122,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
         movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(62.5, 46, Math.toRadians(135)), Math.toRadians(40));
+                        new Pose2d(62.5, 46.5, Math.toRadians(135)), Math.toRadians(40));
 
         movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -132,7 +131,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
         movement9 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(27, 7, Math.toRadians(0)))
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(58, 55), Math.toRadians(45.00)
+                        new Vector2d(56, 53), Math.toRadians(45.00)
                 );
 
         movement92 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(27, 3, Math.toRadians(0)))
@@ -359,7 +358,7 @@ public class HumanInputRedBucket6Sample extends OpMode { //may veer bless us
                                 )
                         ),
                         new WaitCommand(150),
-                        new SlowIntakePeckerCommand(robot),
+                        new DoubleSlowPeck(robot),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new RetractedTransferCommand(robot),

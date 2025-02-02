@@ -9,12 +9,12 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.slides.Deposit
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
-public class CustomOuttakeCommand extends SequentialCommandGroup {
+public class CustomLowBucketCommand extends SequentialCommandGroup {
 
-    public CustomOuttakeCommand(RobotHardware robot) {
+    public CustomLowBucketCommand(RobotHardware robot) {
         super(
                 new ParallelCommandGroup(
-                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_HIGH_POS),
+                        new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_MID_POS),
                         new SequentialCommandGroup(
                                 new WaitCommand(600),
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.BUCKET)
