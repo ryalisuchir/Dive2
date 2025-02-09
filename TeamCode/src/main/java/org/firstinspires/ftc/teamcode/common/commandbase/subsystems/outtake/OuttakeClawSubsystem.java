@@ -16,21 +16,6 @@ public class OuttakeClawSubsystem extends SubsystemBase {
         outtakeClaw = outtakeClawInput;
     }
 
-    public void outtakeClawOpen() {
-        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_OPEN);
-        clawState = Globals.OuttakeClawState.OPEN;
-    }
-
-    public void outtakeClawClosed() {
-        outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_CLOSED);
-        clawState = Globals.OuttakeClawState.CLOSED;
-    }
-
-    public void outtakeClawCustom(double clawInput) {
-        outtakeClaw.setPosition(clawInput);
-        clawState = Globals.OuttakeClawState.CUSTOM;
-    }
-
     public void update(Globals.OuttakeClawState outtakeClawState) {
         clawState = outtakeClawState;
         switch (outtakeClawState) {
@@ -39,9 +24,6 @@ public class OuttakeClawSubsystem extends SubsystemBase {
                 break;
             case CLOSED:
                 outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_CLOSED);
-                break;
-            case OPEN_TRANSFER:
-                outtakeClaw.setPosition(Globals.OUTTAKE_CLAW_TRANSFER);
                 break;
         }
     }

@@ -14,12 +14,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.DeferredCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.CameraScanningPositionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.utility.KalmanFilter;
@@ -136,7 +136,7 @@ public class HypotheticalVisionAuto extends OpMode {
                         new WaitUntilCommand(() -> !isScanning),
                         new ParallelCommandGroup(
                                 new DeferredCommand(() ->
-                                        new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                        new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                         robot.extendoSubsystem
                                 ),
                                 new DeferredCommand(() ->

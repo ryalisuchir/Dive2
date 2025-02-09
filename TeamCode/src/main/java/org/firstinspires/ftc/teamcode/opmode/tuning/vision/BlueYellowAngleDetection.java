@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.CameraScanningPositionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
@@ -81,7 +81,7 @@ public class BlueYellowAngleDetection extends OpMode {
         telemetry.addData("Rotation Position: ", lastEstimate);
 
         if (scanning) {
-            CommandScheduler.getInstance().schedule(new ScanningCommand(robot, lastEstimate + offset, Globals.EXTENDO_MAX_RETRACTION));
+            CommandScheduler.getInstance().schedule(new IntakeCommand(robot, lastEstimate + offset, Globals.EXTENDO_MAX_RETRACTION));
         } else {
             CommandScheduler.getInstance().schedule(new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION));
         }

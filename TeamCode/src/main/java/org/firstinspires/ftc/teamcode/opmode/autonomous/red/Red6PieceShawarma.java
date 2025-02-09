@@ -20,21 +20,19 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.ActionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.DeferredCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.SetIntakeDownCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.CameraScanningPositionCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.IntakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.intake.ScanningCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.BucketDropCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.outtake.OuttakeTransferReadyCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.InsanelyFastTransfer;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.RetractedTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.DoubleSlowPeck;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.IntakePeckerCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.transfer.ground.utility.SlowIntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RegularTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.DeferredCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.SetIntakeDownCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.CameraScanningPositionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.BucketDropCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RetractedTransferCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.IntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
@@ -305,7 +303,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                         new SlowIntakePeckerCommand(robot),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new InsanelyFastTransfer(robot),
+                                        new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 ),
                                 new SequentialCommandGroup(
@@ -333,7 +331,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                         new SlowIntakePeckerCommand(robot),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new InsanelyFastTransfer(robot),
+                                        new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 ),
                                 new SequentialCommandGroup(
@@ -358,7 +356,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                                 )
                         ),
                         new WaitCommand(150),
-                        new DoubleSlowPeck(robot),
+                        new SlowIntakePeckerCommand(robot),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new RetractedTransferCommand(robot),
@@ -413,7 +411,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                                 new WaitUntilCommand(() -> !isScanning),
                                 new ParallelCommandGroup(
                                         new DeferredCommand(() ->
-                                                new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                                new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                                 robot.extendoSubsystem
                                         ),
                                         new DeferredCommand(() ->
@@ -430,7 +428,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                         ),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new InsanelyFastTransfer(robot),
+                                        new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 ),
                                 new SequentialCommandGroup(
@@ -481,7 +479,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                                 new WaitUntilCommand(() -> !isScanning),
                                 new ParallelCommandGroup(
                                         new DeferredCommand(() ->
-                                                new ScanningCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
+                                                new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                                 robot.extendoSubsystem
                                         ),
                                         new DeferredCommand(() ->
@@ -498,7 +496,7 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
                         ),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
-                                        new InsanelyFastTransfer(robot),
+                                        new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 ),
                                 new SequentialCommandGroup(

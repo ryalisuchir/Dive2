@@ -41,17 +41,13 @@ public class OuttakeArmSubsystem extends SubsystemBase {
                 leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_RAISING);
                 rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_RAISING);
                 break;
-            case SPECIMEN:
-                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN);
-                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN);
-                break;
             case SPECIMEN_INTAKE:
-                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_INTAKE);
-                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_INTAKE);
+                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_INTAKE);
+                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_INTAKE);
                 break;
             case SPECIMEN_OUTTAKE:
-                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_LOWER);
-                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_LOWER);
+                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
+                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
                 break;
         }
     }

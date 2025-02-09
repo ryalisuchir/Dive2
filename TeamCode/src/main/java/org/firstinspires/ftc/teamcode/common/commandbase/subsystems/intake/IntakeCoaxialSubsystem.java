@@ -9,18 +9,12 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class IntakeCoaxialSubsystem extends SubsystemBase {
 
-    private final ServoImplEx coaxialLeft, coaxialRight;
+    public final ServoImplEx coaxialLeft, coaxialRight;
     public Globals.IntakeCoaxialState intakeCoaxialState = Globals.IntakeCoaxialState.REST;
 
     public IntakeCoaxialSubsystem(ServoImplEx coaxialLeftInput, ServoImplEx coaxialRightInput) {
         coaxialLeft = coaxialLeftInput;
         coaxialRight = coaxialRightInput;
-    }
-
-    public void intakeCoaxialCustom(double coaxialInput) {
-        coaxialLeft.setPosition(coaxialInput);
-        coaxialRight.setPosition(coaxialInput);
-        intakeCoaxialState = Globals.IntakeCoaxialState.CUSTOM;
     }
 
     public void update(Globals.IntakeCoaxialState intakeCoaxialStateInput) {
@@ -29,10 +23,6 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
             case REST:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);
                 coaxialRight.setPosition(Globals.INTAKE_COAXIAL_RESTING);
-                break;
-            case BETWEEN:
-                coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_BETWEEN);
-                coaxialRight.setPosition(Globals.INTAKE_COAXIAL_BETWEEN);
                 break;
             case TRANSFER:
                 coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);

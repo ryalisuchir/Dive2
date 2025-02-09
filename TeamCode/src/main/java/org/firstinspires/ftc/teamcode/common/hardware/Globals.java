@@ -36,20 +36,19 @@ public class Globals {
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
     public static int EXTENDO_MAX_RETRACTION = -5;
-    public static double EXTENDO_MAX_TOLERANCE = 20;
+    public static double EXTENDO_MAX_TOLERANCE = 10;
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
-    public static double OUTTAKE_CLAW_TRANSFER = 0.7;
     public static double OUTTAKE_CLAW_CLOSED = 0.48;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
     public static double OUTTAKE_ARM_BUCKET = 0.66;
     public static double OUTTAKE_ARM_DUNK = 0.76;
-    public static double OUTTAKE_ARM_INTAKE = 0.8;
 
-    public static double OUTTAKE_ARM_SPECIMEN = 0.7;
-    public static double OUTTAKE_ARM_SPECIMEN_LOWER = 0.85;
+    public static double OUTTAKE_ARM_SPECIMEN_INTAKE = 0.8;
+    public static double OUTTAKE_ARM_SPECIMEN_DROPOFF = 0.7;
+
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.5;
     public static double INTAKE_CLAW_TRANSFER = 0.18;
@@ -61,9 +60,7 @@ public class Globals {
 
     public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
-    public static double INTAKE_FOURBAR_LOW = 0.55;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.82; //0.8 //new was 0.89
-    public static double INTAKE_FOURBAR_BETWEEN = 0.82; //0.63 //new was .89
+    public static double INTAKE_FOURBAR_TRANSFER = 0.82;
     public static double INTAKE_FOURBAR_RESTING = 0.83;
     public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 
@@ -102,10 +99,8 @@ public class Globals {
 
     //Intake States:
     public enum IntakeClawState {
-        CUSTOM,
         OPEN,
         CLOSED,
-        SPECIMEN,
         OPEN_TRANSFER
     }
 
@@ -116,12 +111,9 @@ public class Globals {
     }
 
     public enum IntakeCoaxialState {
-        CUSTOM,
         REST,
         TRANSFER,
-        SPECIMEN,
         INTAKE,
-        BETWEEN,
         CAMERA_READING
     }
 
@@ -129,19 +121,15 @@ public class Globals {
         CUSTOM,
         INTAKE,
         SCANNING, //optimal height for auto scanning
-        LOW,
         TRANSFER,
         RESTING,
-        BETWEEN,
         CAMERA_READING
     }
 
     //Outtake States:
     public enum OuttakeClawState {
-        CUSTOM,
         OPEN,
-        CLOSED,
-        OPEN_TRANSFER
+        CLOSED
     }
 
     public enum OuttakeArmState {
@@ -150,7 +138,6 @@ public class Globals {
         RAISING,
         BUCKET,
         DUNK,
-        SPECIMEN,
         SPECIMEN_INTAKE,
         SPECIMEN_OUTTAKE
     }

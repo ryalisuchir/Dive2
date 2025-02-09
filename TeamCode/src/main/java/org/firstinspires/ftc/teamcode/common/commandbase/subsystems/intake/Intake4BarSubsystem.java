@@ -34,10 +34,6 @@ public class Intake4BarSubsystem extends SubsystemBase {
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
                 intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_SCANNING);
                 break;
-            case LOW:
-                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_LOW);
-                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_LOW);
-                break;
             case TRANSFER:
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
                 intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_TRANSFER);
@@ -45,10 +41,6 @@ public class Intake4BarSubsystem extends SubsystemBase {
             case RESTING:
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_RESTING);
                 intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_RESTING);
-                break;
-            case BETWEEN:
-                intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
-                intake4BarRight.setPosition(Globals.INTAKE_FOURBAR_BETWEEN);
                 break;
             case CAMERA_READING:
                 intake4BarLeft.setPosition(Globals.INTAKE_FOURBAR_CAMERA_READING);

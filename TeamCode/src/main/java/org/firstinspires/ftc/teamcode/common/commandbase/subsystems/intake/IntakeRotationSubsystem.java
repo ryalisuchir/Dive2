@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class IntakeRotationSubsystem extends SubsystemBase {
 
-    private final ServoImplEx intakeRotation;
+    public final ServoImplEx intakeRotation;
     public Globals.IntakeRotationState intakeRotationState = Globals.IntakeRotationState.TRANSFER;
 
     public IntakeRotationSubsystem(ServoImplEx intakeRotationInput) {
