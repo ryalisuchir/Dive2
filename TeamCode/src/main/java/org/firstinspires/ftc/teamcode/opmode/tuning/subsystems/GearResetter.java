@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -13,7 +12,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
 @Autonomous
-@Disabled
 public class GearResetter extends OpMode {
     public static double fourBarPositionGeneral = 0.675;
     public static double coaxialPositionGeneral = 0;

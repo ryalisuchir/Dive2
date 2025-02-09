@@ -36,10 +36,10 @@ public class Globals {
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
     public static int EXTENDO_MAX_RETRACTION = -5;
-    public static double EXTENDO_MAX_TOLERANCE = 10;
+    public static double EXTENDO_MAX_TOLERANCE = 20;
     //Outtake Subsystem Constants
     public static double OUTTAKE_CLAW_OPEN = 0.7;
-    public static double OUTTAKE_CLAW_CLOSED = 0.48;
+    public static double OUTTAKE_CLAW_CLOSED = 0.54;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
@@ -50,13 +50,12 @@ public class Globals {
     public static double OUTTAKE_ARM_SPECIMEN_DROPOFF = 0.7;
 
     //Intake Subsystem Constants
-    public static double INTAKE_CLAW_OPEN = 0.5;
-    public static double INTAKE_CLAW_TRANSFER = 0.18;
-    public static double INTAKE_CLAW_SPECIMEN = 0.6;
-    public static double INTAKE_CLAW_CLOSED = 0.13;
+    public static double INTAKE_CLAW_OPEN = 0.55;
+    public static double INTAKE_CLAW_TRANSFER = 0.20;
+    public static double INTAKE_CLAW_CLOSED = 0.17;
 
-    public static double INTAKE_ROTATION_REST = 0.55;
-    public static double INTAKE_ROTATION_TRANSFER = 0.55;
+    public static double INTAKE_ROTATION_REST = 0.56;
+    public static double INTAKE_ROTATION_TRANSFER = 0.56;
 
     public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
@@ -67,15 +66,12 @@ public class Globals {
     public static double INTAKE_COAXIAL_RESTING = 0.5;
     public static double INTAKE_COAXIAL_INTAKE = 0; //0.01
     public static double INTAKE_COAXIAL_TRANSFER = 0.66; //0.8 change to 0.66
-    public static double INTAKE_COAXIAL_BETWEEN = 0.66; //0.75 new was 0.66
     public static double INTAKE_COAXIAL_CAMERA_READING = 0.29; //0.29
 
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
-    public static Pose2d BLUE_CLOSE_START_POSE = new Pose2d(17, 64, Math.toRadians(270));
     public static Pose2d BLUE_SIDEWAYS_START_POSE = new Pose2d(41, 64, Math.toRadians(0));
     public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
-    public static Pose2d BLUE_FAR_START_POSE_REVERSED = new Pose2d(-18, 66.43, Math.toRadians(90));
 
 
     //Slide States:

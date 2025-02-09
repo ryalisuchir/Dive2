@@ -7,11 +7,11 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.BucketDropCommand;
@@ -25,7 +25,6 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 @TeleOp
-@Disabled
 public class SubsystemTest extends CommandOpMode {
     private RobotHardware robot;
     private boolean isCloseAndTransfer = true; // Track toggle state
@@ -132,6 +131,12 @@ public class SubsystemTest extends CommandOpMode {
         if (gamepad1.left_bumper || gamepad1.right_bumper) {
             schedule(
                     new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
+            );
+        }
+
+        if (gamepad2.cross) {
+            schedule(
+                    new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, 50)
             );
         }
 

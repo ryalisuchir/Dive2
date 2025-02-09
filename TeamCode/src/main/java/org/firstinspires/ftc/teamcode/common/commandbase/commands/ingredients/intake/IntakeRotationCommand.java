@@ -48,6 +48,6 @@ public class IntakeRotationCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(setPosition - intakeRotationSubsystem.intakeRotation.getPosition()) < 0.0001);
+        return true;
     }
 }

@@ -15,9 +15,8 @@ public class ClawTransferCommand extends SequentialCommandGroup {
     public ClawTransferCommand(RobotHardware robot) {
         super(
                 new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.CLOSED),
-                new WaitCommand(75),
                 new IntakeClawCommand(robot.intakeClawSubsystem, Globals.IntakeClawState.OPEN),
-                new WaitCommand(75),
+                new WaitCommand(90),
                 new ParallelCommandGroup(
                         new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
                         new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_RETRACTION)

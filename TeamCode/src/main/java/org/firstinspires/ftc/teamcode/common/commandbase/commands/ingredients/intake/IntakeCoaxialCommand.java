@@ -44,6 +44,6 @@ public class IntakeCoaxialCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(setPosition - intakeCoaxialSubsystem.coaxialLeft.getPosition()) < 0.0001);
+        return true;
     }
 }

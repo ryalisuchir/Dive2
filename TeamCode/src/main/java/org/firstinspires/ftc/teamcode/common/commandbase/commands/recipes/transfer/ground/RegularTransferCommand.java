@@ -16,11 +16,11 @@ public class RegularTransferCommand extends SequentialCommandGroup {
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
                                 new SequentialCommandGroup(
-                                        new WaitCommand(150),
+                                        new WaitCommand(90),
                                         new TransferCommand(robot)
                                 )
                         ),
-                        new WaitCommand(300),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new ClawTransferCommand(robot)
                         )

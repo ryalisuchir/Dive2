@@ -55,7 +55,7 @@ public class OuttakeArmCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(setPosition - outtakeArmSubsystem.leftOuttakeArm.getPosition()) < 0.0001);
+        return true;
     }
 
 }

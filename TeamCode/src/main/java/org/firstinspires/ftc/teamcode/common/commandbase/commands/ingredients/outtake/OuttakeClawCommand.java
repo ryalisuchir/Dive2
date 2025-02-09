@@ -37,6 +37,6 @@ public class OuttakeClawCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(setPosition - outtakeClawSubsystem.outtakeClaw.getPosition()) < 0.0001);
+        return true;
     }
 }

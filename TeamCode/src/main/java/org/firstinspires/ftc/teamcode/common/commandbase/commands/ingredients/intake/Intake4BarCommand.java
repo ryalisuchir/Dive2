@@ -54,7 +54,7 @@ public class Intake4BarCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(setPosition - intake4BarSubsystem.intake4BarRight.getPosition()) < 0.0001);
+        return true;
     }
 
 }
