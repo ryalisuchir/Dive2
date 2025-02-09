@@ -1,24 +1,26 @@
 package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.Range;
 
 @Config
 @TeleOp(name = "Slides Test with Dashboard", group = "Test")
 public class OuttakeSlidesTuning extends LinearOpMode {
 
-    // PID coefficients adjustable via FTC Dashboard
-    public static double kP = 0;
-    public static double kD = 0;
-    public static double targetPosition = 0;
-
-    private DcMotorEx leftLift;
-    private DcMotorEx rightLift;
+    public static double p = 0.011;
+    public static double i = 0;
+    public static double d = 0.0002;
+    public static double f = 0.00016;
+    private static final PIDFController extendoPIDF = new PIDFController(p, i, d, f);
+    public static double setPoint = 0;
+    public static double maxPowerConstant = 1.0;
+    public DcMotorEx leftLift, rightLift;
+    int motorPos = 0;
 
     @Override
     public void runOpMode() {
@@ -33,42 +35,30 @@ public class OuttakeSlidesTuning extends LinearOpMode {
         rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Connect to FTC Dashboard
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-
         // Variables for PD control
-        double error;
-        double prevError = 0;
-        double derivative;
-        double output;
-
         waitForStart();
 
         while (opModeIsActive()) {
             // Calculate error
-            error = targetPosition - rightLift.getCurrentPosition();
+            motorPos = rightLift.getCurrentPosition();
 
-            // Calculate derivative
-            derivative = error - prevError;
+            extendoPIDF.setP(p);
+            extendoPIDF.setI(i);
+            extendoPIDF.setD(d);
+            extendoPIDF.setF(f);
 
-            // PD control output
-            output = (kP * error) + (kD * derivative);
+            extendoPIDF.setSetPoint(setPoint);
 
-            // Apply power to motors
-            leftLift.setPower(output);
-            rightLift.setPower(output);
+            double maxPower = (f * motorPos) + maxPowerConstant;
+            double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
 
-            // Update previous error
-            prevError = error;
+            rightLift.setPower(power);
+            leftLift.setPower(power);
 
             // Send telemetry data to FTC Dashboard
-            telemetry.addData("Target Position", targetPosition);
+            telemetry.addData("Target Position", setPoint);
             telemetry.addData("Current Position", rightLift.getCurrentPosition());
-            telemetry.addData("Error", error);
-            telemetry.addData("P Term", kP * error);
-            telemetry.addData("D Term", kD * derivative);
-            telemetry.addData("Output", output);
+            telemetry.addData("Error", setPoint - rightLift.getCurrentPosition());
             telemetry.update();
         }
     }

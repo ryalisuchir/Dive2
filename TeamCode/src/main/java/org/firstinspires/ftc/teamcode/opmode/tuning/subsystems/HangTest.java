@@ -18,12 +18,11 @@ import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 @Config
 @Disabled
 public class HangTest extends OpMode {
-    private RobotHardware robot;
-    AnalogInput rightInput, leftInput;
     public static double target = 120;
     public static double p = 0.02;
-
+    AnalogInput rightInput, leftInput;
     boolean isDoneGoingOut = false;
+    private RobotHardware robot;
 
     @Override
     public void init() {
@@ -52,7 +51,9 @@ public class HangTest extends OpMode {
 
     @Override
     public void start() {
-        CommandScheduler.getInstance().schedule(new HangUpCommand(robot.hangSubsystem, -1, 2200).whenFinished(() -> {isDoneGoingOut = true;}));
+        CommandScheduler.getInstance().schedule(new HangUpCommand(robot.hangSubsystem, -1, 2200).whenFinished(() -> {
+            isDoneGoingOut = true;
+        }));
     }
 
     @Override

@@ -11,7 +11,6 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
-import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -249,28 +248,28 @@ public class YellowBlueDetection extends OpenCvPipeline {
 //        }
 //    }
 
-void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
-    if (!contoursList.isEmpty()) {
-        double largestArea = 0;
-        MatOfPoint largestContour = null;
+    void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
+        if (!contoursList.isEmpty()) {
+            double largestArea = 0;
+            MatOfPoint largestContour = null;
 
-        for (MatOfPoint contour : contoursList) {
-            double contourArea = Imgproc.contourArea(contour);
-            if (contourArea > AREA_THRESHOLD && contourArea > largestArea) {
-                largestArea = contourArea;
-                largestContour = contour;
+            for (MatOfPoint contour : contoursList) {
+                double contourArea = Imgproc.contourArea(contour);
+                if (contourArea > AREA_THRESHOLD && contourArea > largestArea) {
+                    largestArea = contourArea;
+                    largestContour = contour;
+                }
             }
-        }
 
-        for (MatOfPoint contour : contoursList) {
-            if (contour.equals(largestContour)) {
-                analyzeContour(contour, input, "Green"); // Mark the largest as green
-            } else {
-                analyzeContour(contour, input, color);
+            for (MatOfPoint contour : contoursList) {
+                if (contour.equals(largestContour)) {
+                    analyzeContour(contour, input, "Green"); // Mark the largest as green
+                } else {
+                    analyzeContour(contour, input, color);
+                }
             }
         }
     }
-}
 
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {

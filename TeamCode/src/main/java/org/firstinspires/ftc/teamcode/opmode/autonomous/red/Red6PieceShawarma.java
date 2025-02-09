@@ -20,19 +20,19 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RegularTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.SetIntakeDownCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.CameraScanningPositionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.BucketDropCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeTransferReadyCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RegularTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.SlowIntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
@@ -57,12 +57,11 @@ public class Red6PieceShawarma extends OpMode { //may veer bless us
     double angle = 0;
     double lastEstimate;
     boolean isScanning = false;
+    //Human Input for Vision:
+    ZoneLookupTable lookupTable;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
-
-    //Human Input for Vision:
-    ZoneLookupTable lookupTable;
     private int submersibleFirstZone = 1;
     private int submersibleSecondZone = 1;
     private boolean isCycleOneSelected = true;

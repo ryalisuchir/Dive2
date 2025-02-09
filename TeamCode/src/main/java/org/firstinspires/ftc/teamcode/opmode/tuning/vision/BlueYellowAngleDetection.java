@@ -25,17 +25,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class BlueYellowAngleDetection extends OpMode {
     public static boolean scanning = false;
     public static double offset = 0;
-
+    private final double area = 0;
+    private final double lastArea = 0;
     RobotHardware robot;
     OpenCvWebcam webcam;
     YellowBlueDetection sampleDetection;
-
     private double estimate = 0; // Current estimate
     private double lastEstimate = 0; // Preserved last valid estimate
-
-    private final double area = 0;
-    private final double lastArea = 0;
-
 
     @Override
     public void init() {

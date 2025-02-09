@@ -5,7 +5,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,17 +23,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class FisheyeViewing extends OpMode {
     public static boolean scanning = false;
     public static double offset = 0;
-
+    private final double area = 0;
+    private final double lastArea = 0;
     RobotHardware robot;
     OpenCvWebcam webcam;
     FishEyeYellowBlueDetection sampleDetection;
-
     private double estimate = 0; // Current estimate
     private double lastEstimate = 0; // Preserved last valid estimate
-
-    private final double area = 0;
-    private final double lastArea = 0;
-
 
     @Override
     public void init() {

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.wall;
 
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
