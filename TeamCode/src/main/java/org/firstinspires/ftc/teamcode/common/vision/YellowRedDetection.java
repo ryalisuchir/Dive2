@@ -201,44 +201,68 @@ public class YellowRedDetection extends OpenCvPipeline {
         Imgproc.dilate(output, output, dilateElement);
     }
 
+//    void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
+//        if (!contoursList.isEmpty()) {
+//            double smallestDistance = Double.MAX_VALUE;
+//            MatOfPoint closestContour = null;
+//
+//            Point fovCenter = Globals.cameraCenter;
+//
+//            for (MatOfPoint contour : contoursList) {
+//                double contourArea = Imgproc.contourArea(contour);
+//                if (contourArea > AREA_THRESHOLD) {
+//                    Rect boundingRect = Imgproc.boundingRect(contour);
+//                    Point contourCenter = new Point(
+//                            boundingRect.x + boundingRect.width / 2.0,
+//                            boundingRect.y + boundingRect.height / 2.0
+//                    );
+//
+//                    // Calculate the distance to the center of the FOV
+//                    double distance = Math.sqrt(
+//                            Math.pow(contourCenter.x - fovCenter.x, 2) +
+//                                    Math.pow(contourCenter.y - fovCenter.y, 2)
+//                    );
+//
+//                    if (distance < smallestDistance) {
+//                        smallestDistance = distance;
+//                        closestContour = contour;
+//                    }
+//                }
+//            }
+//
+//            for (MatOfPoint contour : contoursList) {
+//                if (contour.equals(closestContour)) {
+//                    analyzeContour(contour, input, "Green"); // Mark the closest as green
+//                } else {
+//                    analyzeContour(contour, input, color);
+//                }
+//            }
+//        }
+//    }
+
     void processContours(ArrayList<MatOfPoint> contoursList, Mat input, String color) {
         if (!contoursList.isEmpty()) {
-            double smallestDistance = Double.MAX_VALUE;
-            MatOfPoint closestContour = null;
-
-            Point fovCenter = Globals.cameraCenter;
+            double largestArea = 0;
+            MatOfPoint largestContour = null;
 
             for (MatOfPoint contour : contoursList) {
                 double contourArea = Imgproc.contourArea(contour);
-                if (contourArea > AREA_THRESHOLD) {
-                    Rect boundingRect = Imgproc.boundingRect(contour);
-                    Point contourCenter = new Point(
-                            boundingRect.x + boundingRect.width / 2.0,
-                            boundingRect.y + boundingRect.height / 2.0
-                    );
-
-                    // Calculate the distance to the center of the FOV
-                    double distance = Math.sqrt(
-                            Math.pow(contourCenter.x - fovCenter.x, 2) +
-                                    Math.pow(contourCenter.y - fovCenter.y, 2)
-                    );
-
-                    if (distance < smallestDistance) {
-                        smallestDistance = distance;
-                        closestContour = contour;
-                    }
+                if (contourArea > AREA_THRESHOLD && contourArea > largestArea) {
+                    largestArea = contourArea;
+                    largestContour = contour;
                 }
             }
 
             for (MatOfPoint contour : contoursList) {
-                if (contour.equals(closestContour)) {
-                    analyzeContour(contour, input, "Green"); // Mark the closest as green
+                if (contour.equals(largestContour)) {
+                    analyzeContour(contour, input, "Green"); // Mark the largest as green
                 } else {
                     analyzeContour(contour, input, color);
                 }
             }
         }
     }
+
 
     void analyzeContour(MatOfPoint contour, Mat input, String color) {
         Point[] points = contour.toArray();

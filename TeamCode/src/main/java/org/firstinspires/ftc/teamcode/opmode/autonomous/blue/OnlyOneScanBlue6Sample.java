@@ -46,7 +46,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Collections;
 
 @Autonomous
-public class Blue6PieceShawarma extends OpMode { //may veer bless us
+public class OnlyOneScanBlue6Sample extends OpMode { //may veer bless us
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
     TrajectoryActionBuilder movement1, movement2, movement3, movement4, movement5, movement6, movement7, movement8, movement9, movement82, movement92, movement10;
     //Vision Initialization:
@@ -391,26 +391,6 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
                                 new WaitUntilCommand(() -> !isScanning),
                                 new ParallelCommandGroup(
                                         new DeferredCommand(() ->
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
                                                 new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
                                                 robot.extendoSubsystem
                                         ),
@@ -452,26 +432,6 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
                         ),
                         //Vision stuff:
                         new SequentialCommandGroup(
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
                                 new WaitCommand(500),
                                 new InstantCommand(() -> {
                                     isScanning = true;
