@@ -42,21 +42,41 @@ public class FishEyeYellowBlueDetection extends OpenCvPipeline {
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     ArrayList<AnalyzedStone> internalStoneList = new ArrayList<>();
     volatile ArrayList<AnalyzedStone> clientStoneList = new ArrayList<>();
-    Mat cameraMatrix = new Mat(3, 3, CvType.CV_64FC1);
+    Mat cameraMatrix = new Mat(3, 3, CvType.CV_64F);
     MatOfDouble distCoeffs = new MatOfDouble();
     Stage[] stages = Stage.values();
     int stageNum = 0;
+    Size imageSize;
+    Mat map1, map2, undistorted;
 
-    public FishEyeYellowBlueDetection() {
-        double fx = 800;
-        double fy = 800;
-        double cx = 320;
-        double cy = 240;
+    public FishEyeYellowBlueDetection() { //i freaking love null robotics for these dist coefficients
+        double fx = 240.664; //c920: 800
+        double fy = 240.664; //c920: 800
+        double cx = 317.733; //c920: 320
+        double cy = 241.573; //c920: 240
 
         cameraMatrix.put(0, 0,
                 fx, 0, cx,
                 0, fy, cy,
                 0, 0, 1);
+
+        distCoeffs = new MatOfDouble(-0.314051, 0.0985827, -0.013461, -0.00191856, 0.000475908);
+        imageSize = new Size(640, 480);
+
+        map1 = new Mat();
+        map2 = new Mat();
+
+        Calib3d.initUndistortRectifyMap(
+                cameraMatrix,
+                distCoeffs,
+                new Mat(),
+                cameraMatrix,
+                imageSize,
+                CvType.CV_32FC1,
+                map1,
+                map2
+        );
+
     }
 
     static Point[] orderPoints(Point[] pts) {
@@ -163,47 +183,27 @@ public class FishEyeYellowBlueDetection extends OpenCvPipeline {
         if (input.empty()) {
             return input;
         }
-
-        // Undistort the fisheye image
-        Mat undistorted = new Mat();
-        Size imageSize = new Size(input.width(), input.height());
-        Mat map1 = new Mat();
-        Mat map2 = new Mat();
-
-        // Initialize distortion coefficients
-        distCoeffs = new MatOfDouble(-0.314051, 0.0985827, -0.013461, -0.00191856, 0.000475908);
-
-        // Precompute the undistortion and rectification transformation
-        Calib3d.initUndistortRectifyMap(
-                cameraMatrix,
-                distCoeffs,
-                new Mat(),
-                cameraMatrix,
-                imageSize,
-                CvType.CV_32FC1,
-                map1,
-                map2
-        );
-
+        undistorted = new Mat();
         Imgproc.remap(input, undistorted, map1, map2, Imgproc.INTER_LINEAR);
+        undistorted.copyTo(input); //Basically replaces the input frame with the undistorted copy
 
-        // Process the undistorted frame
-        Imgproc.cvtColor(undistorted, hsvMat, Imgproc.COLOR_RGB2HSV);
+        // Reuse existing Mats to avoid memory leaks
+        Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
         // Process yellow and blue masks
         Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, ycrcbMat);
-        morphMask(ycrcbMat, blueThresholdMat);
+        morphMask(ycrcbMat, blueThresholdMat); // Reusing `blueThresholdMat` for morphed yellow mask
 
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
         Imgproc.findContours(blueThresholdMat, yellowContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-        processContours(yellowContoursList, undistorted, "Yellow");
+        processContours(yellowContoursList, input, "Yellow");
 
         Core.inRange(hsvMat, BLUE_LOWER_BOUND, BLUE_UPPER_BOUND, blueThresholdMat);
         morphMask(blueThresholdMat, morphedBlueThreshold);
 
         ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
         Imgproc.findContours(morphedBlueThreshold, blueContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-        processContours(blueContoursList, undistorted, "Blue");
+        processContours(blueContoursList, input, "Blue");
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
@@ -213,13 +213,13 @@ public class FishEyeYellowBlueDetection extends OpenCvPipeline {
             case YCrCb:
                 return ycrcbMat;
             case MASKS:
-                return blueThresholdMat;
+                return blueThresholdMat; // Reusing the Mat object
             case MASKS_NR:
                 return morphedBlueThreshold;
             case CONTOURS:
                 return contoursOnPlainImageMat;
             default:
-                return undistorted;
+                return input;
         }
     }
 
