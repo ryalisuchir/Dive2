@@ -62,8 +62,8 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
-    private int submersibleFirstZone = 1;
-    private int submersibleSecondZone = 1;
+    private int submersibleFirstZone = 2;
+    private int submersibleSecondZone = 2;
     private boolean isCycleOneSelected = true;
     private boolean isLocked = false;
     private long lastBlinkTime = 0;
@@ -91,7 +91,7 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
 
         movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_SIDEWAYS_START_POSE)
                 .splineToLinearHeading(
-                        new Pose2d(58, 59, Math.toRadians(45)), Math.toRadians(45),
+                        new Pose2d(60, 59, Math.toRadians(45)), Math.toRadians(45),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -109,7 +109,7 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(63.6, 51, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(63.6, 49.8, Math.toRadians(90)), Math.toRadians(90));
 
         movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -119,7 +119,7 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(62.5, 46.5, Math.toRadians(135)), Math.toRadians(40));
+                        new Pose2d(62.5, 46.3, Math.toRadians(124)), Math.toRadians(40));
 
         movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -128,13 +128,13 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         movement9 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(27, 7, Math.toRadians(0)))
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(56, 53), Math.toRadians(45.00)
+                        new Vector2d(56, 56), Math.toRadians(45.00)
                 );
 
         movement92 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(27, 3, Math.toRadians(0)))
                 .setReversed(false)
                 .splineTo(
-                        new Vector2d(59, 58), Math.toRadians(45.00),
+                        new Vector2d(59, 60), Math.toRadians(45.00),
                         null,
                         new ProfileAccelConstraint(-30, 85)
                 );
@@ -245,26 +245,16 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         time_since_start = new ElapsedTime();
         movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToSplineHeading(
-                        new Pose2d(31, lookupTable.getZoneInfo(submersibleFirstZone)[0], Math.toRadians(0)), Math.toRadians(180.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToSplineHeading(
-                        new Pose2d(27, lookupTable.getZoneInfo(submersibleFirstZone)[0], Math.toRadians(0)), Math.toRadians(180.00), //first sub grab
+                .splineTo(
+                        new Vector2d(31, lookupTable.getZoneInfo(submersibleFirstZone)[0]), Math.toRadians(180),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
 
         movement82 = movement9.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToSplineHeading(
-                        new Pose2d(31, lookupTable.getZoneInfo(submersibleSecondZone)[0], Math.toRadians(0)), Math.toRadians(180.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToSplineHeading(
-                        new Pose2d(27, lookupTable.getZoneInfo(submersibleSecondZone)[0], Math.toRadians(0)), Math.toRadians(180.00), //second sub grab
+                .splineTo(
+                        new Vector2d(31, lookupTable.getZoneInfo(submersibleSecondZone)[0]), Math.toRadians(180),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 );
@@ -355,7 +345,7 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
                                 )
                         ),
                         new WaitCommand(150),
-                        new SlowIntakePeckerCommand(robot),
+                        new IntakePeckerCommand(robot),
                         new ParallelCommandGroup(
                                 new SequentialCommandGroup(
                                         new RetractedTransferCommand(robot),

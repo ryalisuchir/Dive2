@@ -33,6 +33,11 @@ public class IntakeCoaxialCommand extends CommandBase {
                 intakeCoaxialSubsystem.coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
                 intakeCoaxialSubsystem.coaxialRight.setPosition(Globals.INTAKE_COAXIAL_TRANSFER);
                 break;
+            case CAMERA_READING:
+                setPosition = Globals.INTAKE_COAXIAL_CAMERA_READING;
+                intakeCoaxialSubsystem.coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_CAMERA_READING);
+                intakeCoaxialSubsystem.coaxialRight.setPosition(Globals.INTAKE_COAXIAL_CAMERA_READING);
+                break;
             case REST:
                 setPosition = Globals.INTAKE_COAXIAL_RESTING;
                 intakeCoaxialSubsystem.coaxialLeft.setPosition(Globals.INTAKE_COAXIAL_RESTING);

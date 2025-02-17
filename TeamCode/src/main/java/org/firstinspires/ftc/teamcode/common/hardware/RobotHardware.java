@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.hardware.configuration.LynxConstants;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.HangSubsystem;
@@ -35,6 +37,7 @@ public class RobotHardware {
     //2 is right
     public ServoImplEx intakeRotation, intakeClaw, intakeCoaxialLeft, intakeCoaxialRight, intake4BarLeft, intake4BarRight; //Intake servos
     public ServoImplEx outtakeArmLeft, outtakeArmRight, outtakeClaw; //Outtake servos
+    public double voltage;
     public CRServo leftHang, rightHang;
     public Intake4BarSubsystem intake4BarSubsystem;
     public IntakeClawSubsystem intakeClawSubsystem;
@@ -48,11 +51,21 @@ public class RobotHardware {
     public PinpointDrive pinpointDrive;
     public HangSubsystem hangSubsystem;
     List<LynxModule> allHubs;
+    LynxModule CONTROL_HUB, EXPANSION_HUB;
 
 
     public RobotHardware(HardwareMap hardwareMap, Pose2d initialPose, boolean autoBoolean) {
         //Optimizing Loop Times:
         allHubs = hardwareMap.getAll(LynxModule.class);
+
+        if(allHubs.get(0).isParent() && LynxConstants.isEmbeddedSerialNumber(allHubs.get(0).getSerialNumber())) {
+            CONTROL_HUB = allHubs.get(0);
+            EXPANSION_HUB = allHubs.get(1);
+        } else {
+            CONTROL_HUB = allHubs.get(1);
+            EXPANSION_HUB = allHubs.get(0);
+        }
+
 
         //Configuration of all motors:
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
@@ -62,6 +75,8 @@ public class RobotHardware {
         leftLift = hardwareMap.get(DcMotorEx.class, "leftLift");
         rightLift = hardwareMap.get(DcMotorEx.class, "rightLift");
         extendoMotor = hardwareMap.get(DcMotorEx.class, "extendoMotor");
+        voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
+
         //Reversing motors:
         rightRear.setDirection(DcMotorEx.Direction.FORWARD);
         rightFront.setDirection(DcMotorEx.Direction.FORWARD);
@@ -147,7 +162,9 @@ public class RobotHardware {
 
     public void clearCache() {
         for (LynxModule hub : allHubs) {
-            hub.clearBulkCache();
+            if (hub.getDeviceName().equals("Servo Hub 3")) return;
+            CONTROL_HUB.clearBulkCache();
+            EXPANSION_HUB.clearBulkCache();
         }
     }
 
@@ -155,6 +172,7 @@ public class RobotHardware {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
+
         CommandScheduler.getInstance().run();
         extendoSubsystem.extendoSlidesLoop();
         depositSubsystem.outtakeSlidesLoop();

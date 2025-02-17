@@ -16,9 +16,9 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class ExtendoSubsystem extends SubsystemBase {
-    public static double p = 0.0245;
+    public static double p = 0.017;
     public static double i = 0;
-    public static double d = 0.0003;
+    public static double d = 0;
     public static double f = 0;
     private static final PIDFController extendoPIDF = new PIDFController(p, i, d, f);
     public static double setPoint = 0;
@@ -41,6 +41,24 @@ public class ExtendoSubsystem extends SubsystemBase {
             Globals.ExtendoFailState extendoFailState = Globals.ExtendoFailState.FAILED_RETRACT; //Internal problem
             extendoState = REST;
         }
+    }
+
+    public void extendoSlidesLoop(double currentP) {
+        timer.reset();
+
+        motorPos = extendoMotor.getCurrentPosition();
+
+        extendoPIDF.setP(currentP * p);
+        extendoPIDF.setI(i);
+        extendoPIDF.setD(d);
+        extendoPIDF.setF(f);
+
+        extendoPIDF.setSetPoint(setPoint);
+
+        double maxPower = (f * motorPos) + maxPowerConstant;
+        double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
+
+        extendoMotor.setPower(power);
     }
 
     public void extendoSlidesLoop() {

@@ -25,13 +25,13 @@ public class Globals {
     public static Globals.OuttakeArmState outtakeArmState = OuttakeArmState.TRANSFER;
 
     // Lift Subsystem Constants
-    public static int LIFT_HIGH_POS = 1850;
-    public static int LIFT_MID_POS = 980;
-    public static int LIFT_PARK_POS = 502;
-    public static int LIFT_SPECIMEN_POS = 742;
-    public static int LIFT_SPECIMEN_DROP = 220;
+    public static int LIFT_HIGH_POS = 1120;
+    public static int LIFT_MID_POS = 550;
+    public static int LIFT_PARK_POS = 200;
+    public static int LIFT_SPECIMEN_POS = 550;
+    public static int LIFT_SPECIMEN_DROP = 140;
     public static int LIFT_RETRACT_POS = 0;
-    public static double LIFT_MAX_TOLERANCE = 25;
+    public static double LIFT_MAX_TOLERANCE = 15;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;

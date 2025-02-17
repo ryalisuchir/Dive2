@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.tuning.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @Config
 @TeleOp(name = "Slides Test with Dashboard", group = "Test")
+@Disabled
 public class ExtendoSlidesTuning extends LinearOpMode {
 
     public static double p = 0.011;

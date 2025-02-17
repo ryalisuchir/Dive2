@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -15,10 +16,10 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 
 @Config
 public class DepositSubsystem extends SubsystemBase {
-    public static double p = 0.011;
+    public static double p = 0.01;
     public static double i = 0;
-    public static double d = 0.0002;
-    public static double f = 0.00016;
+    public static double d = 0;
+    public static double f = 0;
     private static final PIDFController slidePIDF = new PIDFController(p, i, d, f);
     public static double setPoint = 0;
     public static double maxPowerConstant = 1.0;
@@ -30,6 +31,25 @@ public class DepositSubsystem extends SubsystemBase {
     public DepositSubsystem(DcMotorEx depoLeftInput, DcMotorEx depoRightInput) {
         leftLift = depoLeftInput;
         rightLift = depoRightInput;
+    }
+
+    public void outtakeSlidesLoop(double currentP) {
+        timer.reset();
+
+        motorPosition = rightLift.getCurrentPosition();
+
+        slidePIDF.setP(currentP * p);
+        slidePIDF.setI(i);
+        slidePIDF.setD(d);
+        slidePIDF.setF(f);
+
+        slidePIDF.setSetPoint(setPoint);
+
+        double maxPower = (f * motorPosition) + maxPowerConstant;
+        double power = Range.clip(slidePIDF.calculate(motorPosition, setPoint), -0.6, maxPower);
+
+        leftLift.setPower(power);
+        rightLift.setPower(power);
     }
 
     public void outtakeSlidesLoop() {
@@ -45,7 +65,7 @@ public class DepositSubsystem extends SubsystemBase {
         slidePIDF.setSetPoint(setPoint);
 
         double maxPower = (f * motorPosition) + maxPowerConstant;
-        double power = Range.clip(slidePIDF.calculate(motorPosition, setPoint), -maxPower, maxPower);
+        double power = Range.clip(slidePIDF.calculate(motorPosition, setPoint), -0.6, maxPower);
 
         leftLift.setPower(power);
         rightLift.setPower(power);

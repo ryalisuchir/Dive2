@@ -16,7 +16,7 @@ public class CustomHighBucketCommand extends SequentialCommandGroup { // TeleOp 
                 new ParallelCommandGroup(
                         new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_HIGH_POS),
                         new SequentialCommandGroup(
-                                new WaitCommand(600),
+                                new WaitCommand(450),
                                 new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.BUCKET)
                         )
                 )

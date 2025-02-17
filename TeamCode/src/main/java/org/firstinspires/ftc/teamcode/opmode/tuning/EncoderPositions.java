@@ -22,8 +22,6 @@ public class EncoderPositions extends OpMode {
     public void init() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, true);
 
-        analogInput = hardwareMap.get(AnalogInput.class, "clawInput");
-
         telemetry.addData("Ready: ", "Initialized robot.");
         telemetry.update();
 
@@ -36,8 +34,6 @@ public class EncoderPositions extends OpMode {
         telemetry.addData("leftLift: ", robot.leftLift.getCurrentPosition());
         telemetry.addData("rightLift: ", robot.rightLift.getCurrentPosition());
         telemetry.addData("extendoMotor: ", robot.extendoMotor.getCurrentPosition());
-
-        telemetry.addData("Claw Position: ", analogInput.getVoltage() / 3.3 * 360);
 
         telemetry.addLine("IMU:");
         telemetry.addData("Pitch (Degrees): ", robot.pinpointDrive.lazyImu.get().getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));
