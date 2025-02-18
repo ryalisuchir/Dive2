@@ -36,6 +36,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.Deferr
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
+import org.firstinspires.ftc.teamcode.common.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -160,21 +161,8 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
         webcam.setPipeline(sampleDetection);
 
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                telemetry.addData("Camera Error: ", errorCode);
-            }
-        });
-
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
-        FtcDashboard.getInstance().startCameraStream(webcam, 60);
     }
 
     @Override
@@ -369,7 +357,8 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
                                 new SequentialCommandGroup(
                                         new WaitCommand(1800),
                                         new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * lookupTable.getZoneInfo(submersibleFirstZone)[1])
-                                )
+                                ),
+                                new InstantCommand(this::turnCameraOn)
                         ),
                         //Vision stuff:
                         new SequentialCommandGroup(
@@ -512,30 +501,7 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.depositSubsystem.outtakeSlidesLoop();
-        robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
-
-        telemetry.addLine("Currently running: 0+6 (0 Specimen 6 High Basket)");
-        double time = System.currentTimeMillis();
-        telemetry.addData("Time Elapsed: ", time_since_start);
-        telemetry.addData("Current Loop Time: ", time - loop);
-        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", Globals.extendoState);
-        telemetry.addData("Outtake State: ", Globals.outtakeState);
-        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
-        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
-        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
-        telemetry.addData("FourBar State: ", Globals.fourBarState);
-        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
-        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
-
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
-            Log.i("Extendo Failed:", "FAILED_EXTENSION");
-        }
-
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
-            Log.i("Extendo Failed:", "FAILED_RETRACTION");
-        }
 
         if (isScanning) {
             double greenAngle = sampleDetection.getAngleOfGreenSample();
@@ -553,9 +519,22 @@ public class Blue6PieceShawarma extends OpMode { //may veer bless us
             }
         }
 
-        loop = time;
         telemetry.update();
         robot.clearCache();
+    }
+
+    public void turnCameraOn() {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                telemetry.addData("Camera Error: ", errorCode);
+            }
+        });
     }
 
     @Override

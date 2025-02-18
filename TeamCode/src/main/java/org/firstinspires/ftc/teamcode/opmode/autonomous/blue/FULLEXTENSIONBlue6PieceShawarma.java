@@ -31,11 +31,13 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transf
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.SlowIntakePeckerCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.TransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.DeferredCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
+import org.firstinspires.ftc.teamcode.common.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -43,6 +45,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.util.Collection;
 import java.util.Collections;
 
 @Autonomous
@@ -102,7 +105,7 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
         movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(54.2, 49.2, Math.toRadians(90)), Math.toRadians(0));
+                .splineToLinearHeading(new Pose2d(54.2, 55, Math.toRadians(90)), Math.toRadians(0));
 
         movement3 = movement2.endTrajectory().fresh()
                 .setReversed(false)
@@ -112,7 +115,7 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
         movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(63.6, 49.8, Math.toRadians(90)), Math.toRadians(90));
+                        new Pose2d(63.6, 55, Math.toRadians(90)), Math.toRadians(90));
 
         movement5 = movement4.endTrajectory().fresh()
                 .setReversed(false)
@@ -122,7 +125,7 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
         movement6 = movement5.endTrajectory().fresh() //3rd sample grab
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(62.5, 46.3, Math.toRadians(124)), Math.toRadians(40));
+                        new Pose2d(58, 49, Math.toRadians(124)), Math.toRadians(40));
 
         movement7 = movement6.endTrajectory().fresh()
                 .setReversed(false)
@@ -194,6 +197,25 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
 
         // Rising edge detection for the cross button
         if (gamepad1.cross && !prevCross) {
+            movement8 = movement7.endTrajectory().fresh()
+                    .setReversed(true)
+                    .splineTo(
+                            new Vector2d(31, lookupTable.getZoneInfo(submersibleFirstZone)[0]), Math.toRadians(180),
+                            null,
+                            new ProfileAccelConstraint(-85, 85)
+                    );
+
+            movement82 = movement9.endTrajectory().fresh()
+                    .setReversed(true)
+                    .splineTo(
+                            new Vector2d(31, lookupTable.getZoneInfo(submersibleSecondZone)[0]), Math.toRadians(180),
+                            null,
+                            new ProfileAccelConstraint(-85, 85)
+                    );
+
+            movement8A = movement8.build();
+            movement8B = movement82.build();
+
             isLocked = true; // Lock the selection only on the rising edge
         }
 
@@ -246,25 +268,6 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
     @Override
     public void start() {
         time_since_start = new ElapsedTime();
-        movement8 = movement7.endTrajectory().fresh()
-                .setReversed(true)
-                .splineTo(
-                        new Vector2d(31, lookupTable.getZoneInfo(submersibleFirstZone)[0]), Math.toRadians(180),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                );
-
-        movement82 = movement9.endTrajectory().fresh()
-                .setReversed(true)
-                .splineTo(
-                        new Vector2d(31, lookupTable.getZoneInfo(submersibleSecondZone)[0]), Math.toRadians(180),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                );
-
-        movement8A = movement8.build();
-        movement8B = movement82.build();
-
         CommandScheduler.getInstance().schedule(
                 new SequentialCommandGroup(
                         //First Drop:
@@ -278,9 +281,17 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                         ),
                         //First Intake:
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 12;
+                                            MecanumDrive.PARAMS.headingGain = 12;
+                                            MecanumDrive.PARAMS.lateralGain = 12;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(0),
-                                        new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.38)
+                                        new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.8)
                                 ),
                                 new SequentialCommandGroup(
                                         new BucketDropCommand(robot),
@@ -294,6 +305,14 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                         new WaitCommand(250),
                         new SlowIntakePeckerCommand(robot),
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 4.2;
+                                            MecanumDrive.PARAMS.headingGain = 6.3;
+                                            MecanumDrive.PARAMS.lateralGain = 8;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
                                         new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
@@ -306,6 +325,14 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                         //Second Drop:
                         //Second Intake:
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 12;
+                                            MecanumDrive.PARAMS.headingGain = 12;
+                                            MecanumDrive.PARAMS.lateralGain = 12;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new ActionCommand(movement4A, Collections.emptySet())
@@ -316,12 +343,20 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                                 ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(0),
-                                        new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.5)
+                                        new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION * 0.8)
                                 )
                         ),
                         new WaitCommand(150),
                         new SlowIntakePeckerCommand(robot),
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 4.2;
+                                            MecanumDrive.PARAMS.headingGain = 6.3;
+                                            MecanumDrive.PARAMS.lateralGain = 8;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
                                         new RegularTransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
@@ -334,6 +369,14 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                         //Third Drop:
                         //Fourth Intake:
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 12;
+                                            MecanumDrive.PARAMS.headingGain = 12;
+                                            MecanumDrive.PARAMS.lateralGain = 12;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(200),
                                         new ActionCommand(movement6A, Collections.emptySet())
@@ -344,166 +387,27 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
                                 ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(0),
-                                        new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION * 0.38)
+                                        new IntakeCommand(robot, 0.75, Globals.EXTENDO_MAX_EXTENSION * 0.8)
                                 )
                         ),
                         new WaitCommand(150),
                         new IntakePeckerCommand(robot),
                         new ParallelCommandGroup(
+                                new DeferredCommand(() ->
+                                        new InstantCommand(() -> {
+                                            MecanumDrive.PARAMS.axialGain = 4.2;
+                                            MecanumDrive.PARAMS.headingGain = 6.3;
+                                            MecanumDrive.PARAMS.lateralGain = 8;
+                                        }),
+                                        robot.driveSubsystem
+                                ),
                                 new SequentialCommandGroup(
-                                        new RetractedTransferCommand(robot),
+                                        new TransferCommand(robot),
                                         new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
                                 ),
                                 new SequentialCommandGroup(
                                         new WaitCommand(100),
                                         new ActionCommand(movement7A, Collections.emptySet())
-                                )
-                        ),
-                        //Fourth Drop:
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new ActionCommand(movement8A, Collections.emptySet())
-                                ),
-                                new SequentialCommandGroup(
-                                        new BucketDropCommand(robot),
-                                        new OuttakeTransferReadyCommand(robot)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1800),
-                                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * lookupTable.getZoneInfo(submersibleFirstZone)[1])
-                                )
-                        ),
-                        //Vision stuff:
-                        new SequentialCommandGroup(
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
-                                                new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
-                                new IntakePeckerCommand(robot)
-                        ),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new RegularTransferCommand(robot),
-                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new ActionCommand(movement9A, Collections.emptySet())
-                                )
-                        ),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new BucketDropCommand(robot),
-                                        new OuttakeTransferReadyCommand(robot)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(200),
-                                        new ActionCommand(movement8B, Collections.emptySet())
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(1800),
-                                        new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) Globals.EXTENDO_MAX_EXTENSION * lookupTable.getZoneInfo(submersibleSecondZone)[1])
-                                )
-                        ),
-                        //Vision stuff:
-                        new SequentialCommandGroup(
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
-                                                new CameraScanningPositionCommand(robot, Globals.INTAKE_ROTATION_REST, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
-                                new WaitCommand(500),
-                                new InstantCommand(() -> {
-                                    isScanning = true;
-                                }),
-                                new WaitUntilCommand(() -> !isScanning),
-                                new ParallelCommandGroup(
-                                        new DeferredCommand(() ->
-                                                new IntakeCommand(robot, lastEstimate, (double) robot.extendoMotor.getCurrentPosition() - (Globals.EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES * yTravel)),
-                                                robot.extendoSubsystem
-                                        ),
-                                        new DeferredCommand(() ->
-                                                new ActionCommand(
-                                                        robot.driveSubsystem.trajectoryActionBuilder(robot.driveSubsystem.getPoseEstimate())
-                                                                .strafeToConstantHeading(new Vector2d(
-                                                                        robot.driveSubsystem.getPoseEstimate().position.x,
-                                                                        robot.driveSubsystem.getPoseEstimate().position.y + xTravel
-                                                                )).build()
-                                                        , Collections.emptySet())
-                                                , robot.driveSubsystem)
-                                ),
-                                new IntakePeckerCommand(robot)
-                        ),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new RegularTransferCommand(robot),
-                                        new OuttakeCommand(robot, Globals.LIFT_HIGH_POS)
-                                ),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(500),
-                                        new ActionCommand(movement9B, Collections.emptySet())
-                                )
-                        ),
-                        new ParallelCommandGroup(
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        new ActionCommand(movement10A, Collections.emptySet())
-                                ),
-                                new SequentialCommandGroup(
-                                        new BucketDropCommand(robot),
-                                        new OuttakeTransferReadyCommand(robot)
                                 )
                         )
                 )
@@ -515,30 +419,7 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.depositSubsystem.outtakeSlidesLoop();
-        robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
-
-        telemetry.addLine("Currently running: 0+6 (0 Specimen 6 High Basket)");
-        double time = System.currentTimeMillis();
-        telemetry.addData("Time Elapsed: ", time_since_start);
-        telemetry.addData("Current Loop Time: ", time - loop);
-        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", Globals.extendoState);
-        telemetry.addData("Outtake State: ", Globals.outtakeState);
-        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
-        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
-        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
-        telemetry.addData("FourBar State: ", Globals.fourBarState);
-        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
-        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
-
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
-            Log.i("Extendo Failed:", "FAILED_EXTENSION");
-        }
-
-        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
-            Log.i("Extendo Failed:", "FAILED_RETRACTION");
-        }
 
         if (isScanning) {
             double greenAngle = sampleDetection.getAngleOfGreenSample();
@@ -560,7 +441,6 @@ public class FULLEXTENSIONBlue6PieceShawarma extends OpMode { //may veer bless u
 
         }
 
-        loop = time;
         telemetry.update();
         robot.clearCache();
     }

@@ -204,9 +204,9 @@ public class MecanumDrive {
         public double maxAngAccel = 5; //This might screw everything up but it's okay! Was Math.PI before
 
         // path controller gains
-        public double axialGain = 4.2;
-        public double lateralGain = 6.3;
-        public double headingGain = 8; // shared with turn
+        public double axialGain = 4.2; //4.2
+        public double lateralGain = 6.3; //6.3
+        public double headingGain = 8; // shared with turn - 8
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;

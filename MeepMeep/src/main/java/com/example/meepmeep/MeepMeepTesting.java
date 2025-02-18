@@ -24,19 +24,43 @@ public class MeepMeepTesting {
                 .setConstraints(60, 80, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(61, 47, Math.toRadians(45)))
-                .setReversed(true)
-                .splineTo(
-                        new Vector2d(31, 7), Math.toRadians(180),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(0, -62, Math.toRadians(-90)))
+                .setTangent(Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(30,-40),Math.toRadians(-90),new TranslationalVelConstraint(200))
+                .setTangent(Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(50,-10),Math.toRadians(0))
+                .setTangent(Math.toRadians(-70))
 
-//                .splineToSplineHeading(
-//                        new Pose2d(27, -1, Math.toRadians(0)), Math.toRadians(45), //first sub grab
-//                        null,
-//                        new ProfileAccelConstraint(-85, 85)
-//                )
+                .splineToConstantHeading(new Vector2d(50, -45), Math.toRadians(-90))
+                // done push #1
+                .setTangent(Math.toRadians(135))
+                .splineToConstantHeading(new Vector2d(58,-10),Math.toRadians(-90))
+
+                .setTangent(Math.toRadians(-70))
+                .splineToConstantHeading(new Vector2d(58,-48),Math.toRadians(-90),new TranslationalVelConstraint(250))
+
+                .setTangent(Math.toRadians(135))
+                .splineToConstantHeading(new Vector2d(65,-10),Math.toRadians(-90))
+
+                .setTangent(Math.toRadians(-70))
+                .splineToConstantHeading(new Vector2d(65,-48),Math.toRadians(-90),new TranslationalVelConstraint(250))
+
+                .setTangent(Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(40,-61),Math.toRadians(-90))
+                .strafeTo(new Vector2d(0,-28),new TranslationalVelConstraint(150))
+                .splineToConstantHeading(new Vector2d(40,-61),Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(-1,-28),new TranslationalVelConstraint(150))
+
+                .splineToConstantHeading(new Vector2d(40,-61),Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(-2,-28),new TranslationalVelConstraint(150))
+
+                .splineToConstantHeading(new Vector2d(40,-61),Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(-3,-28),new TranslationalVelConstraint(150))
+
+                .splineToConstantHeading(new Vector2d(40,-61),Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(-4,-28),new TranslationalVelConstraint(150))
+
+
                 .build());
 
         Image fieldBackground = null;

@@ -29,17 +29,6 @@ public class DriveSubsystem extends SubsystemBase {
         drive.updatePoseEstimate();
     }
 
-    public void setDrivePowers(double x, double y, double angle) {
-        drive.setDrivePowers((new PoseVelocity2d(
-                        new Vector2d(
-                                x,
-                                y
-                        ),
-                        angle
-                ))
-        );
-    }
-
     public TrajectoryActionBuilder trajectoryActionBuilder(Pose2d startPose) {
         return drive.actionBuilder(startPose);
     }
