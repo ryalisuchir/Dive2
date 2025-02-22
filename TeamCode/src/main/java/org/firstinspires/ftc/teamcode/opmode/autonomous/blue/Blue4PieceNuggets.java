@@ -29,7 +29,7 @@ import java.util.Collections;
 
 @Autonomous
 public class Blue4PieceNuggets extends OpMode {
-    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A;
+    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement10A;
     private RobotHardware robot;
     private ElapsedTime time_since_start;
     private double loop;
@@ -46,56 +46,76 @@ public class Blue4PieceNuggets extends OpMode {
         robot.driveSubsystem.setPoseEstimate(Globals.BLUE_FAR_START_POSE);
 
         TrajectoryActionBuilder movement1 = robot.driveSubsystem.trajectoryActionBuilder(Globals.BLUE_FAR_START_POSE)
-                .splineToLinearHeading(new Pose2d(-7, 35, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(
+                        new Pose2d(-7, 34, Math.toRadians(-90)), Math.toRadians(-90),
+                        new TranslationalVelConstraint(30)
+                );
 
         TrajectoryActionBuilder movement2 = movement1.endTrajectory().fresh()
                 .setReversed(true)
                 .strafeToLinearHeading(
                         new Vector2d(-6, 42), Math.toRadians(180),
                         null,
-                        new ProfileAccelConstraint(-60, 85)
+                        new ProfileAccelConstraint(-85, 85)
                 )
                 .strafeToLinearHeading(
                         new Vector2d(-31, 42), Math.toRadians(180),
                         null,
-                        new ProfileAccelConstraint(-60, 85)
+                        new ProfileAccelConstraint(-85, 85)
                 )
                 .strafeToLinearHeading(
-                        new Vector2d(-31, 20), Math.toRadians(90),
+                        new Vector2d(-31, 10), Math.toRadians(90),
                         null,
-                        new ProfileAccelConstraint(-60, 85)
+                        new ProfileAccelConstraint(-85, 85)
                 )
-                .setTangent(180)
+                .setReversed(false)
                 .splineToConstantHeading(
-                        new Vector2d(-43, 30), Math.toRadians(90.00),
+                        new Vector2d(-46, 20), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToConstantHeading(
-                        new Vector2d(-40, 50), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .strafeToConstantHeading(
-                        new Vector2d(-38, 27),
+                        new Vector2d(-46, 55), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
-                .strafeToConstantHeading(
-                        new Vector2d(-49, 20),
+                .setReversed(true)
+                .splineToConstantHeading(
+                        new Vector2d(-46, 10), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
-                .strafeToConstantHeading(
-                        new Vector2d(-49, 50),
+                .setReversed(false)
+                .splineToConstantHeading(
+                        new Vector2d(-50, 20), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
-                .strafeToLinearHeading(new Vector2d(-28, 58), Math.toRadians(90))
-
-                .strafeToLinearHeading(
-                        new Vector2d(-28, 65), Math.toRadians(90),
-                        new TranslationalVelConstraint(6)
+                .splineToConstantHeading(
+                        new Vector2d(-50, 55), Math.toRadians(90.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .setReversed(true)
+                .splineToConstantHeading(
+                        new Vector2d(-50, 10), Math.toRadians(90.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .setReversed(false)
+                .splineToConstantHeading(
+                        new Vector2d(-55, 20), Math.toRadians(90.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .splineToConstantHeading(
+                        new Vector2d(-55, 55), Math.toRadians(90.00),
+                        null,
+                        new ProfileAccelConstraint(-85, 85)
+                )
+                .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
+                .splineTo(
+                        new Vector2d(-28, 62), Math.toRadians(90)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
@@ -105,10 +125,9 @@ public class Blue4PieceNuggets extends OpMode {
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27, 58, Math.toRadians(90)), Math.toRadians(90))
-                .splineToLinearHeading(
-                        new Pose2d(-27, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(6)
+                .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
+                .splineTo(
+                        new Vector2d(-28, 63), Math.toRadians(90)
                 );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
@@ -119,9 +138,8 @@ public class Blue4PieceNuggets extends OpMode {
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
-                .splineToLinearHeading(
-                        new Pose2d(-28, 65, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(6)
+                .splineTo(
+                        new Vector2d(-28, 63), Math.toRadians(90)
                 );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
@@ -130,6 +148,18 @@ public class Blue4PieceNuggets extends OpMode {
                 .splineToLinearHeading(new Pose2d(-10, 34, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
+                .splineTo(
+                        new Vector2d(-28, 63), Math.toRadians(90)
+                );
+
+        TrajectoryActionBuilder movement9 = movement8.endTrajectory().fresh()
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-10, 38, Math.toRadians(-90)), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(-10, 34, Math.toRadians(-90)), Math.toRadians(-90));
+
+        TrajectoryActionBuilder movement10 = movement9.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
                         new Pose2d(-15, 58, Math.toRadians(0)), Math.toRadians(180),
@@ -145,6 +175,8 @@ public class Blue4PieceNuggets extends OpMode {
         movement6A = movement6.build();
         movement7A = movement7.build();
         movement8A = movement8.build();
+        movement9A = movement9.build();
+        movement10A = movement10.build();
     }
 
     @Override
@@ -165,12 +197,8 @@ public class Blue4PieceNuggets extends OpMode {
                         //First Drop:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
-                                )
+                                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                         ),
-                        new WaitCommand(100),
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement2A, Collections.emptySet()),
@@ -188,9 +216,7 @@ public class Blue4PieceNuggets extends OpMode {
                                         )
                                 )
                         ),
-                        new WaitCommand(100),
                         new SpecimenClipCommand(robot),
-                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement4A, Collections.emptySet()),
                                 new SequentialCommandGroup(
@@ -207,7 +233,6 @@ public class Blue4PieceNuggets extends OpMode {
                                         )
                                 )
                         ),
-                        new WaitCommand(100),
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new ActionCommand(movement6A, Collections.emptySet()),
@@ -225,11 +250,28 @@ public class Blue4PieceNuggets extends OpMode {
                                         )
                                 )
                         ),
+                        new SpecimenClipCommand(robot),
+                        new ParallelCommandGroup(
+                                new ActionCommand(movement8A, Collections.emptySet()),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(200),
+                                        new SpecimenIntakeCommand(robot)
+                                )
+                        ),
+                        new ParallelCommandGroup(
+                                new SpecimenGrabAndTransferAndLiftCommand(robot),
+                                new SequentialCommandGroup(
+                                        new WaitCommand(500),
+                                        new ParallelCommandGroup(
+                                                new ActionCommand(movement9A, Collections.emptySet())
+                                        )
+                                )
+                        ),
                         new WaitCommand(100),
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
                                 new OuttakeTransferReadyCommand(robot),
-                                new ActionCommand(movement8A, Collections.emptySet()),
+                                new ActionCommand(movement10A, Collections.emptySet()),
                                 new SequentialCommandGroup(
                                         new WaitCommand(700),
                                         new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
@@ -244,26 +286,9 @@ public class Blue4PieceNuggets extends OpMode {
     public void loop() {
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        robot.depositSubsystem.outtakeSlidesLoop();
-        robot.extendoSubsystem.currentLoop();
         robot.extendoSubsystem.extendoSlidesLoop();
+        robot.depositSubsystem.outtakeSlidesLoop();
 
-        telemetry.addLine("Currently running: 4+0 (4 Specimen)");
-        double time = System.currentTimeMillis();
-        telemetry.addData("Time Elapsed: ", time_since_start);
-        telemetry.addData("Current Loop Time: ", time - loop);
-        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-        telemetry.addData("Extendo State: ", Globals.extendoState);
-        telemetry.addData("Outtake State: ", Globals.outtakeState);
-        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
-        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
-        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
-        telemetry.addData("FourBar State: ", Globals.fourBarState);
-        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
-        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
-
-
-        loop = time;
         telemetry.update();
         robot.clearCache();
     }

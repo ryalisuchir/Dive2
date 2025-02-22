@@ -50,6 +50,11 @@ public class OuttakeArmCommand extends CommandBase {
                 outtakeArmSubsystem.leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
                 outtakeArmSubsystem.rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
                 break;
+            case SPECIMEN_SMASH:
+                setPosition = Globals.OUTTAKE_ARM_SPECIMEN_SMASH;
+                outtakeArmSubsystem.leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_SMASH);
+                outtakeArmSubsystem.rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_SMASH);
+                break;
         }
     }
 

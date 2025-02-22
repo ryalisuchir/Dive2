@@ -16,7 +16,6 @@ public class TransferCommand extends SequentialCommandGroup {
         super(
                 new ParallelCommandGroup(
                         new ExtendoSlidesCommand(robot.extendoSubsystem, Globals.EXTENDO_MAX_RETRACTION),
-                        new IntakeClawCommand(robot.intakeClawSubsystem, Globals.IntakeClawState.OPEN_TRANSFER),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.TRANSFER),
                         new IntakeCoaxialCommand(robot.intakeCoaxialSubsystem, Globals.IntakeCoaxialState.TRANSFER),
                         new IntakeRotationCommand(robot.intakeRotationSubsystem, Globals.INTAKE_ROTATION_TRANSFER)

@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 public class ExtendoSubsystem extends SubsystemBase {
     public static double p = 0.017;
     public static double i = 0;
-    public static double d = 0;
+    public static double d = 0.0013;
     public static double f = 0;
     private static final PIDFController extendoPIDF = new PIDFController(p, i, d, f);
     public static double setPoint = 0;
@@ -62,6 +62,28 @@ public class ExtendoSubsystem extends SubsystemBase {
     }
 
     public void extendoSlidesLoop() {
+        timer.reset();
+
+        motorPos = extendoMotor.getCurrentPosition();
+
+        if (setPoint < 1 && motorPos < 10) {
+            extendoMotor.setPower(-1);
+        } else {
+            extendoPIDF.setP(p);
+            extendoPIDF.setI(i);
+            extendoPIDF.setD(d);
+            extendoPIDF.setF(f);
+
+            extendoPIDF.setSetPoint(setPoint);
+
+            double maxPower = (f * motorPos) + maxPowerConstant;
+            double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
+
+            extendoMotor.setPower(power);
+        }
+    }
+
+    public void extendoSlidesLoop(double p, double i, double d, double f) {
         timer.reset();
 
         motorPos = extendoMotor.getCurrentPosition();

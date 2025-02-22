@@ -49,6 +49,10 @@ public class OuttakeArmSubsystem extends SubsystemBase {
                 leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
                 rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_DROPOFF);
                 break;
+            case SPECIMEN_SMASH:
+                leftOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_SMASH);
+                rightOuttakeArm.setPosition(Globals.OUTTAKE_ARM_SPECIMEN_SMASH);
+                break;
         }
     }
 

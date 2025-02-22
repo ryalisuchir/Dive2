@@ -28,8 +28,8 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1120;
     public static int LIFT_MID_POS = 550;
     public static int LIFT_PARK_POS = 200;
-    public static int LIFT_SPECIMEN_POS = 550;
-    public static int LIFT_SPECIMEN_DROP = 140;
+    public static int LIFT_SPECIMEN_POS = 340; //510
+    public static int LIFT_SPECIMEN_DROP = 100;
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 15;
 
@@ -38,8 +38,8 @@ public class Globals {
     public static int EXTENDO_MAX_RETRACTION = -5;
     public static double EXTENDO_MAX_TOLERANCE = 20;
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.7;
-    public static double OUTTAKE_CLAW_CLOSED = 0.54;
+    public static double OUTTAKE_CLAW_OPEN = 0.73;
+    public static double OUTTAKE_CLAW_CLOSED = 0.47;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;
@@ -47,11 +47,12 @@ public class Globals {
     public static double OUTTAKE_ARM_DUNK = 0.76;
 
     public static double OUTTAKE_ARM_SPECIMEN_INTAKE = 0.8;
-    public static double OUTTAKE_ARM_SPECIMEN_DROPOFF = 0.7;
+    public static double OUTTAKE_ARM_SPECIMEN_DROPOFF = 0.57;
+    public static double OUTTAKE_ARM_SPECIMEN_SMASH = 0.8;
 
     //Intake Subsystem Constants
     public static double INTAKE_CLAW_OPEN = 0.55;
-    public static double INTAKE_CLAW_TRANSFER = 0.20;
+    public static double INTAKE_CLAW_TRANSFER = 0.25;
     public static double INTAKE_CLAW_CLOSED = 0.17;
 
     public static double INTAKE_ROTATION_REST = 0.56;
@@ -59,7 +60,7 @@ public class Globals {
 
     public static double INTAKE_FOURBAR_INTAKE = 0.58;
     public static double INTAKE_FOURBAR_SCANNING = 0.675;
-    public static double INTAKE_FOURBAR_TRANSFER = 0.82;
+    public static double INTAKE_FOURBAR_TRANSFER = 0.83;
     public static double INTAKE_FOURBAR_RESTING = 0.83;
     public static double INTAKE_FOURBAR_CAMERA_READING = 0.83;
 
@@ -71,7 +72,7 @@ public class Globals {
     //Auto Positions:
     public static Pose2d DEFAULT_START_POSE = new Pose2d(0, 0, Math.toRadians(0));
     public static Pose2d BLUE_SIDEWAYS_START_POSE = new Pose2d(41, 64, Math.toRadians(0));
-    public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-18, 66.43, Math.toRadians(-90));
+    public static Pose2d BLUE_FAR_START_POSE = new Pose2d(-7, 66.43, Math.toRadians(-90));
 
 
     //Slide States:
@@ -135,7 +136,8 @@ public class Globals {
         BUCKET,
         DUNK,
         SPECIMEN_INTAKE,
-        SPECIMEN_OUTTAKE
+        SPECIMEN_OUTTAKE,
+        SPECIMEN_SMASH
     }
 
 }

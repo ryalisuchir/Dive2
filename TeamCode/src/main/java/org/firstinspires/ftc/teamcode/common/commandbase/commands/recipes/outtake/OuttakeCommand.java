@@ -36,9 +36,9 @@ public class OuttakeCommand extends SequentialCommandGroup {
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_MID_POS)
                     )
             );
-        } else if (liftPositionInput == Globals.LIFT_SPECIMEN_POS) {
+        } else if ((liftPositionInput - Globals.LIFT_SPECIMEN_POS) < 0.5) {
             commandGroup.addCommands(
-                    new ParallelCommandGroup(
+                    new SequentialCommandGroup(
                             new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_OUTTAKE),
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_SPECIMEN_POS)
                     )

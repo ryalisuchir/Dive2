@@ -41,24 +41,18 @@ public class Duo extends CommandOpMode {
     Gamepad ahnafController, swethaController;
     GamepadEx ahnafButtonController, swethaButtonController;
     boolean extendoBoolean = true;
-    boolean hangHasGoneOut = false;
-    boolean hangIsGoingOut = false;
     private RobotHardware robot;
     private boolean depositManualControl;
     private boolean driverControlUnlocked;
     private boolean isCloseAndTransfer = true; // Track toggle state
-    private ElapsedTime time_since_start;
 
     private int currentIndex = 2; //for rotation
 
     @Override
     public void initialize() {
-        time_since_start = new ElapsedTime();
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, false);
         ahnafController = gamepad1;
         swethaController = gamepad2;
-
-        robot.leftLift.setCurrentAlert(9.0, CurrentUnit.AMPS);
 
         ahnafButtonController = new GamepadEx(gamepad1);
         swethaButtonController = new GamepadEx(gamepad2);
@@ -124,13 +118,6 @@ public class Duo extends CommandOpMode {
                 )
         );
 
-//        new Trigger(() -> time_since_start.time(TimeUnit.SECONDS) > 108)
-//                .whenActive(
-//                        new ParallelCommandGroup(
-//                                new HangUpCommand(robot.hangSubsystem, -1, 2220),
-//                                new InstantCommand(() -> {ahnafController.rumble(1000); swethaController.rumble(1000);})
-//                        ), false); // last param is for interruptibility
-
     }
 
     @Override
@@ -139,13 +126,6 @@ public class Duo extends CommandOpMode {
         //Loop:
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
-        telemetry.addData("Slides Current: ", robot.leftLift.getCurrent(CurrentUnit.AMPS));
-
-
-        if (robot.leftLift.isOverCurrent() && robot.leftLift.getPower() < 0) {
-            robot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
 
         //Ahnaf's Controls:
 
@@ -162,7 +142,7 @@ public class Duo extends CommandOpMode {
         //Swetha's Controls:
         //Extendo Slides Stuff:
         if (extendoBoolean) {
-            robot.extendoSubsystem.extendoSlidesLoop();
+            robot.extendoSubsystem.extendoSlidesLoop(0.015, 0, 0, 0);
         }
 
         if (swethaController.left_stick_x > 0.1) {
@@ -305,13 +285,5 @@ public class Duo extends CommandOpMode {
             robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-        telemetry.addData("Extendo State: ", Globals.extendoState);
-        telemetry.addData("Outtake State: ", Globals.outtakeState);
-        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
-        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
-        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
-        telemetry.addData("FourBar State: ", Globals.fourBarState);
-        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
-        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
     }
 }

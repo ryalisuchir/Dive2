@@ -33,5 +33,9 @@ public class DriveSubsystem extends SubsystemBase {
         return drive.actionBuilder(startPose);
     }
 
+    public TrajectoryActionBuilder trajectoryActionBuilder(Pose2d startPose, boolean extraCorrection) {
+        return drive.actionBuilder(startPose, extraCorrection);
+    }
+
 
 }
