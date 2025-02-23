@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.common.hardware;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 
+
 import org.opencv.core.Point;
 
 @Config
@@ -35,11 +36,11 @@ public class Globals {
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
-    public static int EXTENDO_MAX_RETRACTION = -5;
-    public static double EXTENDO_MAX_TOLERANCE = 20;
+    public static int EXTENDO_MAX_RETRACTION = -10;
+    public static double EXTENDO_MAX_TOLERANCE = 25;
     //Outtake Subsystem Constants
-    public static double OUTTAKE_CLAW_OPEN = 0.73;
-    public static double OUTTAKE_CLAW_CLOSED = 0.47;
+    public static double OUTTAKE_CLAW_OPEN = 0.66;
+    public static double OUTTAKE_CLAW_CLOSED = 0.52;
 
     public static double OUTTAKE_ARM_TRANSFER = 0.21; //0.08, new was 0.19
     public static double OUTTAKE_ARM_RAISING = 0.46;

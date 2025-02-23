@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.OuttakeArmCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
@@ -36,7 +37,7 @@ public class OuttakeCommand extends SequentialCommandGroup {
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_MID_POS)
                     )
             );
-        } else if ((liftPositionInput - Globals.LIFT_SPECIMEN_POS) < 0.5) {
+        } else if (liftPositionInput == Globals.LIFT_SPECIMEN_POS) {
             commandGroup.addCommands(
                     new SequentialCommandGroup(
                             new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_OUTTAKE),
@@ -46,7 +47,8 @@ public class OuttakeCommand extends SequentialCommandGroup {
         } else if (liftPositionInput == Globals.LIFT_RETRACT_POS) {
             commandGroup.addCommands(
                     new ParallelCommandGroup(
-                            new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
+                            new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.TRANSFER),
+                            new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN),
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS)
                     )
             );

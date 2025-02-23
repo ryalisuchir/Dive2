@@ -66,9 +66,6 @@ public class ExtendoSubsystem extends SubsystemBase {
 
         motorPos = extendoMotor.getCurrentPosition();
 
-        if (setPoint < 1 && motorPos < 10) {
-            extendoMotor.setPower(-1);
-        } else {
             extendoPIDF.setP(p);
             extendoPIDF.setI(i);
             extendoPIDF.setD(d);
@@ -80,7 +77,7 @@ public class ExtendoSubsystem extends SubsystemBase {
             double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
 
             extendoMotor.setPower(power);
-        }
+
     }
 
     public void extendoSlidesLoop(double p, double i, double d, double f) {

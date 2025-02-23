@@ -51,6 +51,7 @@ public class Duo extends CommandOpMode {
     @Override
     public void initialize() {
         robot = new RobotHardware(hardwareMap, Globals.DEFAULT_START_POSE, false);
+
         ahnafController = gamepad1;
         swethaController = gamepad2;
 
@@ -125,11 +126,12 @@ public class Duo extends CommandOpMode {
 
         //Loop:
         CommandScheduler.getInstance().run();
-        robot.driveSubsystem.updatePoseEstimate();
+//        robot.driveSubsystem.updatePoseEstimate();
 
         //Ahnaf's Controls:
 
         if (driverControlUnlocked) {
+
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
@@ -144,6 +146,8 @@ public class Duo extends CommandOpMode {
         if (extendoBoolean) {
             robot.extendoSubsystem.extendoSlidesLoop(0.015, 0, 0, 0);
         }
+
+        telemetry.addData("Extendo Power: ", robot.extendoMotor.getPower());
 
         if (swethaController.left_stick_x > 0.1) {
             extendoBoolean = false;

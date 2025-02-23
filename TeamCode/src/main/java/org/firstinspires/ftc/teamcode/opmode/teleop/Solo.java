@@ -120,10 +120,12 @@ public class Solo extends CommandOpMode {
 
         //Loop:
         CommandScheduler.getInstance().run();
-        robot.driveSubsystem.updatePoseEstimate();
+//        robot.driveSubsystem.updatePoseEstimate();
         telemetry.addData("Slides Current: ", robot.leftLift.getCurrent(CurrentUnit.AMPS));
 
         if (driverControlUnlocked) {
+
+
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             0.48 * Math.tan(1.12 * soloController.left_stick_y),
