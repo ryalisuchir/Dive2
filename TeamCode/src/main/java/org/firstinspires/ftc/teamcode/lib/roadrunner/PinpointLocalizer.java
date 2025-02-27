@@ -5,27 +5,18 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.PinpointView;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.Objects;
 
 @Config
 public final class PinpointLocalizer implements Localizer {
-    public static class Params {
-        public double parYTicks = 0.0; // y position of the parallel encoder (in tick units)
-        public double perpXTicks = 0.0; // x position of the perpendicular encoder (in tick units)
-    }
-
     public static Params PARAMS = new Params();
-
     public final GoBildaPinpointDriver driver;
     public final GoBildaPinpointDriver.EncoderDirection initialParDirection, initialPerpDirection;
     public final double inPerTick;
-
     private Pose2d txWorldPinpoint;
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
-
     public PinpointLocalizer(HardwareMap hardwareMap, double inPerTick, Pose2d initialPose) {
         // TODO: make sure your config has a Pinpoint device with this name
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
@@ -48,13 +39,13 @@ public final class PinpointLocalizer implements Localizer {
     }
 
     @Override
-    public void setPose(Pose2d pose) {
-        txWorldPinpoint = pose.times(txPinpointRobot.inverse());
+    public Pose2d getPose() {
+        return txWorldPinpoint.times(txPinpointRobot);
     }
 
     @Override
-    public Pose2d getPose() {
-        return txWorldPinpoint.times(txPinpointRobot);
+    public void setPose(Pose2d pose) {
+        txWorldPinpoint = pose.times(txPinpointRobot.inverse());
     }
 
     @Override
@@ -67,5 +58,10 @@ public final class PinpointLocalizer implements Localizer {
             return new PoseVelocity2d(robotVelocity, driver.getHeadingVelocity());
         }
         return new PoseVelocity2d(new Vector2d(0, 0), 0);
+    }
+
+    public static class Params {
+        public double parYTicks = 0.0; // y position of the parallel encoder (in tick units)
+        public double perpXTicks = 0.0; // x position of the perpendicular encoder (in tick units)
     }
 }

@@ -12,19 +12,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.IntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.wall.SpecimenGrabAndTransferAndLiftCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 @Autonomous
 public class Red5PieceNuggets extends OpMode {
@@ -107,17 +104,17 @@ public class Red5PieceNuggets extends OpMode {
 
         paths.add( //path 3 - get to the hp for a specimen - regular grab
                 robot.follower.pathBuilder()
-                .addPath(
-                        new BezierCurve(
-                                new Point(39.497, 64.183, Point.CARTESIAN),
-                                new Point(22.834, 63.566, Point.CARTESIAN),
-                                new Point(25.920, 28.800, Point.CARTESIAN),
-                                new Point(26.949, 32.914, Point.CARTESIAN),
-                                new Point(3.086, 32.503, Point.CARTESIAN)
+                        .addPath(
+                                new BezierCurve(
+                                        new Point(39.497, 64.183, Point.CARTESIAN),
+                                        new Point(22.834, 63.566, Point.CARTESIAN),
+                                        new Point(25.920, 28.800, Point.CARTESIAN),
+                                        new Point(26.949, 32.914, Point.CARTESIAN),
+                                        new Point(3.086, 32.503, Point.CARTESIAN)
+                                )
                         )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
-                .build()
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(180))
+                        .build()
         );
 
         paths.add( //path 4 - get to bar for another specimen drop
