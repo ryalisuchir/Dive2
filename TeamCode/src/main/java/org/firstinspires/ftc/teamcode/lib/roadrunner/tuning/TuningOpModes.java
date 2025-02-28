@@ -44,7 +44,7 @@ import java.util.List;
 
 public final class TuningOpModes {
     // TODO: change this to TankDrive.class if you're using tank
-    public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
+    public static final Class<?> DRIVE_CLASS = PinpointLocalizer.class;
 
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
@@ -81,7 +81,7 @@ public final class TuningOpModes {
 
 
             public int getParEncoderVelocity() {
-                return (int) Math.round(vel.linearVel.x / pl.inPerTick);
+                return (int) Math.round(vel.linearVel.x);
             }
 
             @Override
@@ -92,7 +92,7 @@ public final class TuningOpModes {
             }
 
             public int getPerpEncoderVelocity() {
-                return (int) Math.round(vel.linearVel.y / pl.inPerTick);
+                return (int) Math.round(vel.linearVel.y);
             }
 
             @Override

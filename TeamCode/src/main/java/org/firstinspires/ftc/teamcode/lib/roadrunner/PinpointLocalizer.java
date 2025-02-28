@@ -7,27 +7,22 @@ import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 import java.util.Objects;
 
 @Config
 public final class PinpointLocalizer implements Localizer {
-    public static Params PARAMS = new Params();
     public final GoBildaPinpointDriver driver;
     public final GoBildaPinpointDriver.EncoderDirection initialParDirection, initialPerpDirection;
-    public final double inPerTick;
     private Pose2d txWorldPinpoint;
     private Pose2d txPinpointRobot = new Pose2d(0, 0, 0);
-    public PinpointLocalizer(HardwareMap hardwareMap, double inPerTick, Pose2d initialPose) {
-        // TODO: make sure your config has a Pinpoint device with this name
-        //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
+    public PinpointLocalizer(HardwareMap hardwareMap, Pose2d initialPose) {
         driver = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 
-        this.inPerTick = inPerTick;
-        double mmPerTick = 25.4 * inPerTick;
-        driver.setEncoderResolution(1 / mmPerTick);
-        driver.setOffsets(mmPerTick * PARAMS.parYTicks, mmPerTick * PARAMS.perpXTicks);
+        driver.setEncoderResolution(19.89436789f);
+        driver.setOffsets(DistanceUnit.MM.fromInches(2.486136954703216), DistanceUnit.MM.fromInches(5.203429930760357));
 
-        // TODO: reverse encoder directions if needed
         initialParDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
         initialPerpDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
 
@@ -58,10 +53,5 @@ public final class PinpointLocalizer implements Localizer {
             return new PoseVelocity2d(robotVelocity, driver.getHeadingVelocity());
         }
         return new PoseVelocity2d(new Vector2d(0, 0), 0);
-    }
-
-    public static class Params {
-        public double parYTicks = 0.0; // y position of the parallel encoder (in tick units)
-        public double perpXTicks = 0.0; // x position of the perpendicular encoder (in tick units)
     }
 }
