@@ -26,6 +26,13 @@ public class OuttakeCommand extends SequentialCommandGroup {
                             new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_HIGH_POS)
                     )
             );
+        } else if (liftPositionInput == Globals.LIFT_AUTO_HIGH_POS) {
+            commandGroup.addCommands(
+                    new ParallelCommandGroup(
+                            new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.RAISING),
+                            new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_AUTO_HIGH_POS)
+                    )
+            );
         } else if (liftPositionInput == Globals.LIFT_PARK_POS) {
             commandGroup.addCommands(
                     new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_PARK_POS)

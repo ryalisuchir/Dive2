@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.RetractCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake.SpecimenIntakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeCommand;
+import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.specimen.OuttakeSlideResetter;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.specimen.SpecimenClipCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.specimen.SpecimenReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RegularTransferCommand;
@@ -65,7 +66,10 @@ public class Duo extends CommandOpMode {
         ahnafButtonController.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> depositManualControl = false),
-                        new SpecimenIntakeCommand(robot)
+                        new SequentialCommandGroup(
+                                new SpecimenIntakeCommand(robot),
+                                new OuttakeSlideResetter(robot.depositSubsystem)
+                        )
                 )
         );
 

@@ -47,7 +47,6 @@
 //import java.util.Collections;
 //
 //@Autonomous
-//@Disabled
 //public class Field2Red6Sample extends OpMode { //may veer bless us
 //    Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement8B, movement9B, movement10A;
 //    TrajectoryActionBuilder movement1, movement2, movement3, movement4, movement5, movement6, movement7, movement8, movement9, movement82, movement92, movement10;

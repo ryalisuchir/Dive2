@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.roadrunner;
+package org.firstinspires.ftc.teamcode.common.pathing.roadrunner;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
-import org.firstinspires.ftc.teamcode.common.roadrunner.messages.PoseMessage;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.messages.PoseMessage;
 
 public class PinpointDrive extends MecanumDrive {
     public static Params PARAMS = new Params();

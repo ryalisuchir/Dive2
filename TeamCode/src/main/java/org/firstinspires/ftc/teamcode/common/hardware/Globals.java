@@ -10,7 +10,7 @@ import org.opencv.core.Point;
 public class Globals {
     public static double extendoStaticMax = 15;
 
-    public static double visionOffset = -0.8;
+    public static double visionOffset = -1.0;
     public static Point cameraCenter = new Point(320, 180);
 
     public static double EXTENDO_MAX_EXTENSION_TICKS_IN_INCHES = 472 / 21.26;
@@ -27,12 +27,12 @@ public class Globals {
 
     // Lift Subsystem Constants
     public static int LIFT_HIGH_POS = 1120;
+    public static int LIFT_AUTO_HIGH_POS = 1080;
     public static int LIFT_MID_POS = 550;
     public static int LIFT_PARK_POS = 200;
-    public static int LIFT_SPECIMEN_POS = 340; //510
-    public static int LIFT_SPECIMEN_DROP = 100;
+    public static int LIFT_SPECIMEN_POS = 330; //510
     public static int LIFT_RETRACT_POS = 0;
-    public static double LIFT_MAX_TOLERANCE = 15;
+    public static double LIFT_MAX_TOLERANCE = 25;
 
     //Extendo Subsystem Constants
     public static int EXTENDO_MAX_EXTENSION = 472;
@@ -52,8 +52,8 @@ public class Globals {
     public static double OUTTAKE_ARM_SPECIMEN_SMASH = 0.8;
 
     //Intake Subsystem Constants
-    public static double INTAKE_CLAW_OPEN = 0.55;
-    public static double INTAKE_CLAW_TRANSFER = 0.25;
+    public static double INTAKE_CLAW_OPEN = 0.60;
+    public static double INTAKE_CLAW_TRANSFER = 0.3;
     public static double INTAKE_CLAW_CLOSED = 0.17;
 
     public static double INTAKE_ROTATION_REST = 0.56;

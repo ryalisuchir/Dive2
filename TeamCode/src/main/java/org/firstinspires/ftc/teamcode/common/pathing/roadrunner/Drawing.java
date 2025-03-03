@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.roadrunner;
+package org.firstinspires.ftc.teamcode.common.pathing.roadrunner;
 
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.roadrunner.Pose2d;

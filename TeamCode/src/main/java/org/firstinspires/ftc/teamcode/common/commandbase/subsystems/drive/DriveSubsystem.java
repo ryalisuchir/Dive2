@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.subsystems.drive;
 
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
-import org.firstinspires.ftc.teamcode.common.roadrunner.PinpointDrive;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.PinpointDrive;
 
 public class DriveSubsystem extends SubsystemBase {
     private final PinpointDrive drive;
@@ -33,8 +31,12 @@ public class DriveSubsystem extends SubsystemBase {
         return drive.actionBuilder(startPose);
     }
 
-    public TrajectoryActionBuilder trajectoryActionBuilder(Pose2d startPose, boolean extraCorrection) {
-        return drive.actionBuilder(startPose, extraCorrection);
+    public TrajectoryActionBuilder whatTheSigma(Pose2d startPose) {
+        return drive.whatTheSigma(startPose);
+    }
+
+    public TrajectoryActionBuilder trajectoryActionBuilderWithExtendo(Pose2d startPose) {
+        return drive.actionBuilderWithExtendo(startPose);
     }
 
 

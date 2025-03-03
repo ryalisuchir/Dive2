@@ -25,18 +25,22 @@ public class YellowRedDetection extends OpenCvPipeline {
     static final Scalar YELLOW_LOWER_BOUND = new Scalar(20, 100, 100); // Adjust the lower bound for yellow
     static final Scalar YELLOW_UPPER_BOUND = new Scalar(30, 255, 255); // Adjust the upper bound for yellow
 
-    // Updated Red color bounds
-    static final Scalar RED_LOWER_BOUND = new Scalar(0, 100, 100); // Adjust the lower bound for red
-    static final Scalar RED_UPPER_BOUND = new Scalar(10, 255, 255); // Adjust the upper bound for red
+    static final Scalar BLUE_LOWER_BOUND1 = new Scalar(160, 100, 100); // Adjust the lower bound for blue
+    static final Scalar BLUE_UPPER_BOUND1 = new Scalar(180, 255, 255); // Adjust the upper bound for blue
 
-    static final Scalar RED = new Scalar(0, 0, 255); // Use red for visualization
+    static final Scalar BLUE_LOWER_BOUND2 = new Scalar(0, 100, 100); // Adjust the lower bound for blue
+    static final Scalar BLUE_UPPER_BOUND2 = new Scalar(10, 255, 255); // Adjust the upper bound for blue
+
+    static final Scalar BLUE = new Scalar(0, 100, 100);
     private static final String defaultSavePath = "/sdcard/EasyOpenCV";
     public double AREA_THRESHOLD = 4000;
     public MatOfPoint3f axisPoints;
     Mat ycrcbMat = new Mat();
     Mat hsvMat = new Mat();
-    Mat yellowThresholdMat = new Mat();
-    Mat morphedYellowThreshold = new Mat();
+    Mat blueThresholdMat = new Mat();
+    Mat combinedMat = new Mat();
+    Mat blueThresholdMat1 = new Mat();
+    Mat morphedBlueThreshold = new Mat();
     Mat contoursOnPlainImageMat = new Mat();
     Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
     Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3.5, 3.5));
@@ -59,24 +63,6 @@ public class YellowRedDetection extends OpenCvPipeline {
                 0, 0, 1);
 
         distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
-    }
-
-    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
-        Point[] points = new Point[4];
-        rect.points(points);
-
-        Scalar colorScalar = getColorScalar(color);
-
-        for (int i = 0; i < 4; ++i) {
-            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
-        }
-    }
-
-    static Scalar getColorScalar(String color) {
-        if (color.equals("Green")) {
-            return new Scalar(0, 255, 0); // Green color
-        }
-        return RED;
     }
 
     static Point[] orderPoints(Point[] pts) {
@@ -146,6 +132,35 @@ public class YellowRedDetection extends OpenCvPipeline {
                 1);
     }
 
+    static void drawRotatedRect(RotatedRect rect, Mat drawOn, String color) {
+        Point[] points = new Point[4];
+        rect.points(points);
+
+        Scalar colorScalar = getColorScalar(color);
+
+        for (int i = 0; i < 4; ++i) {
+            Imgproc.line(drawOn, points[i], points[(i + 1) % 4], colorScalar, 2);
+        }
+    }
+
+    static Scalar getColorScalar(String color) {
+        if (color.equals("Green")) {
+            return new Scalar(0, 255, 0); // Green color
+        }
+        return BLUE;
+    }
+
+    @Override
+    public void onViewportTapped() {
+        int nextStageNum = stageNum + 1;
+
+        if (nextStageNum >= stages.length) {
+            nextStageNum = 0;
+        }
+
+        stageNum = nextStageNum;
+    }
+
     @Override
     public Mat processFrame(Mat input) {
         internalStoneList.clear();
@@ -158,21 +173,22 @@ public class YellowRedDetection extends OpenCvPipeline {
         // Reuse existing Mats to avoid memory leaks
         Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        // Process yellow mask
-        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, yellowThresholdMat);
-        morphMask(yellowThresholdMat, morphedYellowThreshold); // Reusing `morphedYellowThreshold` for yellow mask
+        // Process yellow and blue masks
+        Core.inRange(hsvMat, YELLOW_LOWER_BOUND, YELLOW_UPPER_BOUND, ycrcbMat);
+        morphMask(ycrcbMat, blueThresholdMat); // Reusing `blueThresholdMat` for morphed yellow mask
 
         ArrayList<MatOfPoint> yellowContoursList = new ArrayList<>();
-        Imgproc.findContours(morphedYellowThreshold, yellowContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(blueThresholdMat, yellowContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         processContours(yellowContoursList, input, "Yellow");
 
-        // Process red mask (replacing blue mask with red)
-        Core.inRange(hsvMat, RED_LOWER_BOUND, RED_UPPER_BOUND, yellowThresholdMat); // Reusing the same Mat
-        morphMask(yellowThresholdMat, morphedYellowThreshold);
+        Core.inRange(hsvMat, BLUE_LOWER_BOUND1, BLUE_UPPER_BOUND1, blueThresholdMat);
+        Core.inRange(hsvMat, BLUE_LOWER_BOUND2, BLUE_UPPER_BOUND2, blueThresholdMat1);
+        Core.bitwise_or(blueThresholdMat1, blueThresholdMat, combinedMat);
+        morphMask(combinedMat, morphedBlueThreshold);
 
-        ArrayList<MatOfPoint> redContoursList = new ArrayList<>();
-        Imgproc.findContours(morphedYellowThreshold, redContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-        processContours(redContoursList, input, "Red");
+        ArrayList<MatOfPoint> blueContoursList = new ArrayList<>();
+        Imgproc.findContours(morphedBlueThreshold, blueContoursList, contoursOnPlainImageMat, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        processContours(blueContoursList, input, "Blue");
 
         clientStoneList = new ArrayList<>(internalStoneList);
 
@@ -182,9 +198,9 @@ public class YellowRedDetection extends OpenCvPipeline {
             case YCrCb:
                 return ycrcbMat;
             case MASKS:
-                return yellowThresholdMat; // Reusing the Mat object
+                return blueThresholdMat; // Reusing the Mat object
             case MASKS_NR:
-                return morphedYellowThreshold;
+                return morphedBlueThreshold;
             case CONTOURS:
                 return contoursOnPlainImageMat;
             default:
@@ -390,6 +406,9 @@ public class YellowRedDetection extends OpenCvPipeline {
             return Double.NaN;  // Indicate that no "green" sample was found
         }
     }
+
+
+
 
     public Point getGreenSampleCoordinates() {
         AnalyzedStone greenSample = null;

@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
+import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -25,11 +26,14 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class BlueYellowAngleDetection extends OpMode {
     public static boolean scanning = false;
     public static double offset = 0;
-    private final double area = 0;
-    private final double lastArea = 0;
+
     RobotHardware robot;
     OpenCvWebcam webcam;
     YellowBlueDetection sampleDetection;
+    double x = 0;
+    double y = 0;
+    double lastX = 0;
+    double lastY = 0;
     private double estimate = 0; // Current estimate
     private double lastEstimate = 0; // Preserved last valid estimate
 
@@ -68,13 +72,27 @@ public class BlueYellowAngleDetection extends OpMode {
             if (!Double.isNaN(greenAngle)) {
                 estimate = (greenAngle % 180) / 180;
                 lastEstimate = estimate;
+                try {
+                    x = sampleDetection.getGreenSampleCoordinates().x;
+                    y = sampleDetection.getGreenSampleCoordinates().y;
+                } catch (RuntimeException e) {
+                    telemetry.addLine("Error");
+                }
+
+                lastX = x;
+                lastY = y;
             } else {
                 estimate = lastEstimate;
+                x = lastX;
+                y = lastY;
             }
         }
 
         telemetry.addData("Claw Angle: ", lastEstimate);
         telemetry.addData("Rotation Position: ", lastEstimate);
+
+        telemetry.addData("X: ", lastX);
+        telemetry.addData("Y: ", lastY);
 
         if (scanning) {
             CommandScheduler.getInstance().schedule(new IntakeCommand(robot, lastEstimate + offset, Globals.EXTENDO_MAX_RETRACTION));

@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 @Config
 public class DepositSubsystem extends SubsystemBase {
     public static double p = 0.01;
-    public static double i = 0;
+    public static double i = 0.001;
     public static double d = 0;
     public static double f = 0;
     private static final PIDFController slidePIDF = new PIDFController(p, i, d, f);
@@ -33,12 +33,12 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift = depoRightInput;
     }
 
-    public void outtakeSlidesLoop(double currentP) {
+    public void outtakeSlidesLoop() {
         timer.reset();
 
         motorPosition = rightLift.getCurrentPosition();
 
-        slidePIDF.setP(currentP * p);
+        slidePIDF.setP(p);
         slidePIDF.setI(i);
         slidePIDF.setD(d);
         slidePIDF.setF(f);
@@ -52,14 +52,14 @@ public class DepositSubsystem extends SubsystemBase {
         rightLift.setPower(power);
     }
 
-    public void outtakeSlidesLoop() {
+    public void outtakeSlidesLoop(double dterm) {
         timer.reset();
 
         motorPosition = rightLift.getCurrentPosition();
 
         slidePIDF.setP(p);
         slidePIDF.setI(i);
-        slidePIDF.setD(d);
+        slidePIDF.setD(dterm);
         slidePIDF.setF(f);
 
         slidePIDF.setSetPoint(setPoint);

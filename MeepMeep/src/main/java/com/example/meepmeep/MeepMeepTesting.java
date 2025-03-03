@@ -24,68 +24,17 @@ public class MeepMeepTesting {
                 .setConstraints(60, 80, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-7, 34, Math.toRadians(-90)))
-                .setReversed(true)
-                .strafeToLinearHeading(
-                        new Vector2d(-6, 42), Math.toRadians(180),
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(27, 0, Math.toRadians(0)))
+                .setReversed(false)
+                .splineToSplineHeading(
+                        new Pose2d(55, 49, Math.toRadians(45.00)), Math.toRadians(45.00),
                         null,
-                        new ProfileAccelConstraint(-85, 85)
+                        new ProfileAccelConstraint(-60, 85)
                 )
-                .strafeToLinearHeading(
-                        new Vector2d(-31, 42), Math.toRadians(180),
+                .splineToLinearHeading(
+                        new Pose2d(59, 53, Math.toRadians(45.00)), Math.toRadians(45.00),
                         null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .strafeToLinearHeading(
-                        new Vector2d(-31, 10), Math.toRadians(90),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .setTangent(180)
-                .splineToConstantHeading(
-                        new Vector2d(-46, 20), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-46, 55), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-46, 10), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-55, 20), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-55, 55), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-55, 10), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-60, 20), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-                .splineToConstantHeading(
-                        new Vector2d(-60, 55), Math.toRadians(90.00),
-                        null,
-                        new ProfileAccelConstraint(-85, 85)
-                )
-
-                .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
-                .splineTo(
-                        new Vector2d(-28, 62), Math.toRadians(90)
+                        new ProfileAccelConstraint(-60, 85)
                 )
                 .build());
 

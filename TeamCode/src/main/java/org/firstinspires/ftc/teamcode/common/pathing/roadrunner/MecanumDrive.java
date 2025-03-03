@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.common.roadrunner;
+package org.firstinspires.ftc.teamcode.common.pathing.roadrunner;
 
 import androidx.annotation.NonNull;
 
@@ -41,6 +41,7 @@ import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -48,10 +49,10 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.common.roadrunner.messages.DriveCommandMessage;
-import org.firstinspires.ftc.teamcode.common.roadrunner.messages.MecanumCommandMessage;
-import org.firstinspires.ftc.teamcode.common.roadrunner.messages.MecanumLocalizerInputsMessage;
-import org.firstinspires.ftc.teamcode.common.roadrunner.messages.PoseMessage;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.messages.DriveCommandMessage;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.messages.MecanumCommandMessage;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.messages.MecanumLocalizerInputsMessage;
+import org.firstinspires.ftc.teamcode.common.pathing.roadrunner.messages.PoseMessage;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -178,44 +179,39 @@ public class MecanumDrive {
         );
     }
 
-    public TrajectoryActionBuilder actionBuilder(Pose2d beginPose, boolean extraCorrection) {
-        if (extraCorrection) {
-            return new TrajectoryActionBuilder(
-                    TurnAction::new,
-                    FollowTrajectoryActionWithCorrection::new,
-                    new TrajectoryBuilderParams(
-                            1e-6,
-                            new ProfileParams(
-                                    0.25, 0.1, 1e-2
-                            )
-                    ),
-                    beginPose, 0.0,
-                    defaultTurnConstraints,
-                    defaultVelConstraint, defaultAccelConstraint
-            );
-        } else {
-            return new TrajectoryActionBuilder(
-                    TurnAction::new,
-                    FollowTrajectoryAction::new,
-                    new TrajectoryBuilderParams(
-                            1e-6,
-                            new ProfileParams(
-                                    0.25, 0.1, 1e-2
-                            )
-                    ),
-                    beginPose, 0.0,
-                    defaultTurnConstraints,
-                    defaultVelConstraint, defaultAccelConstraint
-            );
-        }
+    public TrajectoryActionBuilder actionBuilderWithExtendo(Pose2d beginPose) {
+        return new TrajectoryActionBuilder(
+                TurnAction::new,
+                FollowTrajectoryActionWithCorrectionWithExtendoOut::new,
+                new TrajectoryBuilderParams(
+                        1e-6,
+                        new ProfileParams(
+                                0.25, 0.1, 1e-2
+                        )
+                ),
+                beginPose, 0.0,
+                defaultTurnConstraints,
+                defaultVelConstraint, defaultAccelConstraint
+        );
+    }
+
+    public TrajectoryActionBuilder whatTheSigma(Pose2d beginPose) {
+        return new TrajectoryActionBuilder(
+                TurnAction::new,
+                FollowTrajectoryAction::new,
+                new TrajectoryBuilderParams(
+                        1e-6,
+                        new ProfileParams(
+                                0.25, 0.1, 1e-2
+                        )
+                ),
+                beginPose, 0.0,
+                defaultTurnConstraints,
+                defaultVelConstraint, defaultAccelConstraint
+        );
     }
 
     public static class Params {
-        public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-
         public double inPerTick = 1;
         public double lateralInPerTick = 0.5492253962240305;
         public double trackWidthTicks = 11.838583;
@@ -463,9 +459,10 @@ public class MecanumDrive {
             PoseVelocity2d robotVelRobot = updatePoseEstimate();
             Pose2d error = txWorldTarget.value().minusExp(pose);
 
-            if ((t >= timeTrajectory.duration && (Math.toDegrees(error.heading.toDouble()) < 3) //edited
-                    && robotVelRobot.angVel < Math.toRadians(2.5))
-                    || t >= timeTrajectory.duration + 3) {
+            if ((t >= timeTrajectory.duration && ((Math.toDegrees(error.heading.toDouble()) < 3) //edited
+                    && robotVelRobot.angVel < Math.toRadians(2.5)) && error.position.norm() < 2
+                    && robotVelRobot.linearVel.norm() < 0.5)
+                    || t >= timeTrajectory.duration + 0.3) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);
@@ -476,6 +473,112 @@ public class MecanumDrive {
 
             PoseVelocity2dDual<Time> command = new HolonomicController(
                     PARAMS.axialGain, PARAMS.lateralGain, PARAMS.headingGain,
+                    PARAMS.axialVelGain, PARAMS.lateralVelGain, PARAMS.headingVelGain
+            )
+                    .compute(txWorldTarget, pose, robotVelRobot);
+            driveCommandWriter.write(new DriveCommandMessage(command));
+
+            MecanumKinematics.WheelVelocities<Time> wheelVels = kinematics.inverse(command);
+            double voltage = voltageSensor.getVoltage();
+
+            final MotorFeedforward feedforward = new MotorFeedforward(PARAMS.kS,
+                    PARAMS.kV / PARAMS.inPerTick, PARAMS.kA / PARAMS.inPerTick);
+            double leftFrontPower = feedforward.compute(wheelVels.leftFront) / voltage;
+            double leftBackPower = feedforward.compute(wheelVels.leftBack) / voltage;
+            double rightBackPower = feedforward.compute(wheelVels.rightBack) / voltage;
+            double rightFrontPower = feedforward.compute(wheelVels.rightFront) / voltage;
+            mecanumCommandWriter.write(new MecanumCommandMessage(
+                    voltage, leftFrontPower, leftBackPower, rightBackPower, rightFrontPower
+            ));
+
+            leftFront.setPower(leftFrontPower);
+            leftBack.setPower(leftBackPower);
+            rightBack.setPower(rightBackPower);
+            rightFront.setPower(rightFrontPower);
+
+            p.put("x", pose.position.x);
+            p.put("y", pose.position.y);
+            p.put("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
+
+            p.put("xError", error.position.x);
+            p.put("yError", error.position.y);
+            p.put("headingError (deg)", Math.toDegrees(error.heading.toDouble()));
+
+            // only draw when active; only one drive action should be active at a time
+            Canvas c = p.fieldOverlay();
+            drawPoseHistory(c);
+
+            c.setStroke("#4CAF50");
+            Drawing.drawRobot(c, txWorldTarget.value());
+
+            c.setStroke("#3F51B5");
+            Drawing.drawRobot(c, pose);
+
+            c.setStroke("#4CAF50FF");
+            c.setStrokeWidth(1);
+            c.strokePolyline(xPoints, yPoints);
+
+            return true;
+        }
+
+        @Override
+        public void preview(Canvas c) {
+            c.setStroke("#4CAF507A");
+            c.setStrokeWidth(1);
+            c.strokePolyline(xPoints, yPoints);
+        }
+    }
+
+    public final class FollowTrajectoryActionWithCorrectionWithExtendoOut implements Action {
+        public final TimeTrajectory timeTrajectory;
+        private final double[] xPoints, yPoints;
+        private double beginTs = -1;
+
+        public FollowTrajectoryActionWithCorrectionWithExtendoOut(TimeTrajectory t) {
+            timeTrajectory = t;
+
+            List<Double> disps = com.acmerobotics.roadrunner.Math.range(
+                    0, t.path.length(),
+                    Math.max(2, (int) Math.ceil(t.path.length() / 2)));
+            xPoints = new double[disps.size()];
+            yPoints = new double[disps.size()];
+            for (int i = 0; i < disps.size(); i++) {
+                Pose2d p = t.path.get(disps.get(i), 1).value();
+                xPoints[i] = p.position.x;
+                yPoints[i] = p.position.y;
+            }
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket p) {
+            double t;
+            if (beginTs < 0) {
+                beginTs = Actions.now();
+                t = 0;
+            } else {
+                t = Actions.now() - beginTs;
+            }
+
+            Pose2dDual<Time> txWorldTarget = timeTrajectory.get(t);
+            targetPoseWriter.write(new PoseMessage(txWorldTarget.value()));
+            PoseVelocity2d robotVelRobot = updatePoseEstimate();
+            Pose2d error = txWorldTarget.value().minusExp(pose);
+
+            if ((t >= timeTrajectory.duration)) {
+                leftFront.setPower(0);
+                leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftBack.setPower(0);
+                leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightBack.setPower(0);
+                rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightFront.setPower(0);
+                rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+                return false;
+            }
+
+            PoseVelocity2dDual<Time> command = new HolonomicController(
+                    PARAMS.axialGain, PARAMS.lateralGain, 10,
                     PARAMS.axialVelGain, PARAMS.lateralVelGain, PARAMS.headingVelGain
             )
                     .compute(txWorldTarget, pose, robotVelRobot);
