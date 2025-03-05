@@ -135,7 +135,6 @@ public class Duo extends CommandOpMode {
         //Ahnaf's Controls:
 
         if (driverControlUnlocked) {
-
             robot.pinpointDrive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             0.48 * Math.tan(1.12 * ahnafController.left_stick_y),
