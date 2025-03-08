@@ -24,17 +24,12 @@ public class MeepMeepTesting {
                 .setConstraints(60, 80, Math.toRadians(180), Math.toRadians(180), 12)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(27, 0, Math.toRadians(0)))
-                .setReversed(false)
-                .splineToSplineHeading(
-                        new Pose2d(55, 49, Math.toRadians(45.00)), Math.toRadians(45.00),
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(61, 55, Math.toRadians(45.00)))
+                .setReversed(true)
+                .splineTo(
+                        new Vector2d(30, 0), Math.toRadians(180),
                         null,
-                        new ProfileAccelConstraint(-60, 85)
-                )
-                .splineToLinearHeading(
-                        new Pose2d(59, 53, Math.toRadians(45.00)), Math.toRadians(45.00),
-                        null,
-                        new ProfileAccelConstraint(-60, 85)
+                        new ProfileAccelConstraint(-85, 85)
                 )
                 .build());
 

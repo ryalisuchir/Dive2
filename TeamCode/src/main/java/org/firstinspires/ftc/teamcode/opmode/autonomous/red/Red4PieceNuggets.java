@@ -7,11 +7,13 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
@@ -65,12 +67,12 @@ public class Red4PieceNuggets extends OpMode {
                 )
                 .setTangent(180)
                 .splineToConstantHeading(
-                        new Vector2d(-43, 30), Math.toRadians(90.00),
+                        new Vector2d(-38, 30), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
                 .splineToConstantHeading(
-                        new Vector2d(-41, 50), Math.toRadians(90.00),
+                        new Vector2d(-39, 55), Math.toRadians(90.00),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 )
@@ -89,48 +91,48 @@ public class Red4PieceNuggets extends OpMode {
                         null,
                         new ProfileAccelConstraint(-85, 85)
                 )
-                .strafeToLinearHeading(new Vector2d(-28, 58), Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(-28, 55), Math.toRadians(90))
 
                 .strafeToLinearHeading(
                         new Vector2d(-28, 64), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement3 = movement2.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-7, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7, 34, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7, 33, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement4 = movement3.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-27, 58, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-29.5, 55, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-27, 64, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-29.5, 64, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement5 = movement4.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-7.5, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-7.5, 34, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-7.5, 33, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement6 = movement5.endTrajectory().fresh()
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-28, 58, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-29, 55, Math.toRadians(90)), Math.toRadians(90))
                 .splineToLinearHeading(
-                        new Pose2d(-28, 64, Math.toRadians(90)), Math.toRadians(90),
-                        new TranslationalVelConstraint(15)
+                        new Pose2d(-29, 64, Math.toRadians(90)), Math.toRadians(90),
+                        new TranslationalVelConstraint(10)
                 );
 
         TrajectoryActionBuilder movement7 = movement6.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-10, 38, Math.toRadians(-90)), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-10, 34, Math.toRadians(-90)), Math.toRadians(-90));
+                .splineToLinearHeading(new Pose2d(-10, 32, Math.toRadians(-90)), Math.toRadians(-90));
 
         TrajectoryActionBuilder movement8 = movement7.endTrajectory().fresh()
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(-15, 58, Math.toRadians(0)), Math.toRadians(180),
+                        new Pose2d(-17, 58, Math.toRadians(0)), Math.toRadians(180),
                         null,
                         new ProfileAccelConstraint(-60, 85)
                 );
@@ -161,10 +163,7 @@ public class Red4PieceNuggets extends OpMode {
                         //First Drop:
                         new ParallelCommandGroup(
                                 new ActionCommand(movement1A, Collections.emptySet()),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(300),
-                                        new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
-                                )
+                                new OuttakeCommand(robot, Globals.LIFT_SPECIMEN_POS)
                         ),
                         new SpecimenClipCommand(robot),
                         new ParallelCommandGroup(
@@ -227,7 +226,13 @@ public class Red4PieceNuggets extends OpMode {
                                         new WaitCommand(700),
                                         new IntakeCommand(robot, Globals.INTAKE_ROTATION_REST, Globals.EXTENDO_MAX_EXTENSION)
                                 )
-                        )
+                        ),
+                        new InstantCommand(() -> {
+                            robot.rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            robot.leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            robot.rightLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                            robot.leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                        })
                 )
         );
 

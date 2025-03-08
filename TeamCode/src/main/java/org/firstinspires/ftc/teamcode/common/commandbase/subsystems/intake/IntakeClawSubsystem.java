@@ -23,6 +23,11 @@ public class IntakeClawSubsystem extends SubsystemBase {
         clawState = Globals.IntakeClawState.OPEN;
     }
 
+    public void intakeClawCustom(double pos) {
+        intakeClaw.setPosition(pos);
+        clawState = Globals.IntakeClawState.OPEN;
+    }
+
     public void intakeClawClosed() {
         intakeClaw.setPosition(Globals.INTAKE_CLAW_CLOSED);
         clawState = Globals.IntakeClawState.CLOSED;

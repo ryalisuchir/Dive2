@@ -17,6 +17,12 @@ public class IntakeCoaxialSubsystem extends SubsystemBase {
         coaxialRight = coaxialRightInput;
     }
 
+    public void skibidi(double sus) {
+        coaxialRight.setPosition(sus);
+        coaxialLeft.setPosition(sus);
+        intakeCoaxialState = Globals.IntakeCoaxialState.TRANSFER;
+    }
+
     public void update(Globals.IntakeCoaxialState intakeCoaxialStateInput) {
         intakeCoaxialState = intakeCoaxialStateInput;
         switch (intakeCoaxialStateInput) {

@@ -13,7 +13,7 @@ public class IntakePeckerCommand extends SequentialCommandGroup {
         super(
                 new SequentialCommandGroup(
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.INTAKE),
-                        new WaitCommand(50),
+                        new WaitCommand(80),
                         new IntakeClawCommand(robot.intakeClawSubsystem, Globals.IntakeClawState.CLOSED),
                         new WaitCommand(125),
                         new Intake4BarCommand(robot.intake4BarSubsystem, Globals.FourBarState.SCANNING)

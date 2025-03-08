@@ -29,7 +29,7 @@ public class Globals {
     public static int LIFT_HIGH_POS = 1120;
     public static int LIFT_AUTO_HIGH_POS = 1080;
     public static int LIFT_MID_POS = 550;
-    public static int LIFT_PARK_POS = 200;
+    public static int LIFT_PARK_POS = 290;
     public static int LIFT_SPECIMEN_POS = 330; //510
     public static int LIFT_RETRACT_POS = 0;
     public static double LIFT_MAX_TOLERANCE = 25;

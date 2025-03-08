@@ -11,6 +11,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.AllSystemInitializeCommand;
@@ -29,6 +30,7 @@ import org.firstinspires.ftc.teamcode.common.hardware.ZoneLookupTable;
 import java.util.Collections;
 
 @Autonomous(preselectTeleOp = "Duo")
+@Disabled
 public class BothSides4Sample extends OpMode { //may veer bless us
     Action movement1A, movement2A, movement3A, movement4A, movement5A, movement6A, movement7A, movement8A, movement9A, movement9B, movement10A;
     TrajectoryActionBuilder movement1, movement2, movement3, movement4, movement5, movement6, movement7, movement9, movement92, movement10;

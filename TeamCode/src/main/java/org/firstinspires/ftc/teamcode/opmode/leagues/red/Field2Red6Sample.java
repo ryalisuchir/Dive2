@@ -523,31 +523,8 @@
 //    public void loop() {
 //        CommandScheduler.getInstance().run();
 //        robot.driveSubsystem.updatePoseEstimate();
-//        robot.depositSubsystem.outtakeSlidesLoop();
-//        robot.extendoSubsystem.currentLoop();
-//        robot.extendoSubsystem.extendoSlidesLoop();
-//
-//        telemetry.addLine("Currently running: 0+6 (0 Specimen 6 High Basket)");
-//        double time = System.currentTimeMillis();
-//        telemetry.addData("Time Elapsed: ", time_since_start);
-//        telemetry.addData("Current Loop Time: ", time - loop);
-//        telemetry.addData("Robot Position: ", robot.pinpointDrive.pose.position);
-//        telemetry.addData("Extendo State: ", Globals.extendoState);
-//        telemetry.addData("Outtake State: ", Globals.outtakeState);
-//        telemetry.addData("Intake Rotation State: ", Globals.intakeRotationState);
-//        telemetry.addData("Intake Coaxial State: ", Globals.intakeCoaxialState);
-//        telemetry.addData("Intake Claw State: ", Globals.intakeClawState);
-//        telemetry.addData("FourBar State: ", Globals.fourBarState);
-//        telemetry.addData("Outtake Arm State: ", Globals.outtakeArmState);
-//        telemetry.addData("Outtake Claw State: ", Globals.outtakeClawState);
-//
-//        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_EXTEND) {
-//            Log.i("Extendo Failed:", "FAILED_EXTENSION");
-//        }
-//
-//        if (Globals.extendoFailState == Globals.ExtendoFailState.FAILED_RETRACT) {
-//            Log.i("Extendo Failed:", "FAILED_RETRACTION");
-//        }
+//        robot.depositSubsystem.outtakeSlidesLoop(0.0002);
+//        robot.extendoSubsystem.extendoSlidesLoop(0.013,0,0.00025,0);
 //
 //        if (isScanning) {
 //            double greenAngle = sampleDetection.getAngleOfGreenSample();
@@ -565,8 +542,6 @@
 //            }
 //        }
 //
-//        loop = time;
-//        telemetry.update();
 //        robot.clearCache();
 //    }
 //
