@@ -130,7 +130,7 @@ public class Red5PieceShawarma extends OpMode { //may veer bless us
         movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 58,Math.toRadians(45)))
                 .setReversed(true)
                 .splineToLinearHeading(
-                        new Pose2d(58, 47, Math.toRadians(145)), Math.toRadians(40),
+                        new Pose2d(58, 48.7, Math.toRadians(145)), Math.toRadians(40),
                         new AngularVelConstraint(Math.PI * 0.8)
                 );
 
