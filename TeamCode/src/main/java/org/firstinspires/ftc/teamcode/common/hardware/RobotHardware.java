@@ -147,7 +147,8 @@ public class RobotHardware {
 
     public void clearCache() {
         for (LynxModule hub : allHubs) {
-            if (hub.getDeviceName().equals("Servo Hub") || hub.getDeviceName().equals("Servo Hub 4") || hub.getDeviceName().equals("pinpoint")) return;
+            if (hub.getDeviceName().equals("Servo Hub") || hub.getDeviceName().equals("Servo Hub 4") || hub.getDeviceName().equals("pinpoint"))
+                return;
             hub.clearBulkCache();
         }
     }

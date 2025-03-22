@@ -261,7 +261,7 @@ public class BothSides4Sample extends OpMode { //may veer bless us
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.depositSubsystem.outtakeSlidesLoop(0.0002);
-        robot.extendoSubsystem.extendoSlidesLoop(0.013,0,0.00025,0);
+        robot.extendoSubsystem.extendoSlidesLoop(0.013, 0, 0.00025, 0);
 
         robot.clearCache();
     }

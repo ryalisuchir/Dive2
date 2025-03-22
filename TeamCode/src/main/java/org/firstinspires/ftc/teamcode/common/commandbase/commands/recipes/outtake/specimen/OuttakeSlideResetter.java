@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.specimen;
 
-import android.webkit.WebStorage;
-
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.DepositSubsystem;
-import org.firstinspires.ftc.teamcode.common.commandbase.subsystems.slides.ExtendoSubsystem;
 
 public class OuttakeSlideResetter extends CommandBase {
 

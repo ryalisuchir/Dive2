@@ -66,17 +66,17 @@ public class ExtendoSubsystem extends SubsystemBase {
 
         motorPos = extendoMotor.getCurrentPosition();
 
-            extendoPIDF.setP(p);
-            extendoPIDF.setI(i);
-            extendoPIDF.setD(d);
-            extendoPIDF.setF(f);
+        extendoPIDF.setP(p);
+        extendoPIDF.setI(i);
+        extendoPIDF.setD(d);
+        extendoPIDF.setF(f);
 
-            extendoPIDF.setSetPoint(setPoint);
+        extendoPIDF.setSetPoint(setPoint);
 
-            double maxPower = (f * motorPos) + maxPowerConstant;
-            double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
+        double maxPower = (f * motorPos) + maxPowerConstant;
+        double power = Range.clip(extendoPIDF.calculate(motorPos, setPoint), -maxPower, maxPower);
 
-            extendoMotor.setPower(power);
+        extendoMotor.setPower(power);
 
     }
 

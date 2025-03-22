@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.DepositSlidesCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.OuttakeArmCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.ingredients.outtake.OuttakeClawCommand;
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
@@ -28,13 +27,13 @@ public class SpecimenClipCommand extends SequentialCommandGroup {
 //                                new DepositSlidesCommand(robot.depositSubsystem, Globals.LIFT_RETRACT_POS)
 //                        )
 //                )
-                        new ParallelCommandGroup(
-                                new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_SMASH),
-                                new SequentialCommandGroup(
-                                        new WaitCommand(150),
-                                        new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN)
-                                )
+                new ParallelCommandGroup(
+                        new OuttakeArmCommand(robot.outtakeArmSubsystem, Globals.OuttakeArmState.SPECIMEN_SMASH),
+                        new SequentialCommandGroup(
+                                new WaitCommand(150),
+                                new OuttakeClawCommand(robot.outtakeClawSubsystem, Globals.OuttakeClawState.OPEN)
                         )
+                )
         );
     }
 }

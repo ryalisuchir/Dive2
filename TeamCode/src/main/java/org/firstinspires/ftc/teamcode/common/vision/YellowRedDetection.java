@@ -408,8 +408,6 @@ public class YellowRedDetection extends OpenCvPipeline {
     }
 
 
-
-
     public Point getGreenSampleCoordinates() {
         AnalyzedStone greenSample = null;
 

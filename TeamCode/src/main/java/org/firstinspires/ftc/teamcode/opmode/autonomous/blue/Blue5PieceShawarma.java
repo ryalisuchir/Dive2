@@ -30,8 +30,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtak
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.outtake.OuttakeTransferReadyCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.DUPLICATESFORAUTO.DoubleRetracted;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RegularTransferCommand;
-import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.RetractedTransferCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.IntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.transfer.ground.utility.SlowIntakePeckerCommand;
 import org.firstinspires.ftc.teamcode.common.commandbase.commands.utility.ActionCommand;
@@ -98,7 +96,7 @@ public class Blue5PieceShawarma extends OpMode { //may veer bless us
                         new ProfileAccelConstraint(-85, 85)
                 );
 
-        movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 59,Math.toRadians(45)))
+        movement2 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 59, Math.toRadians(45)))
                 .setReversed(true)
                 .setTangent(Math.toRadians(45))
                 .splineToLinearHeading(
@@ -107,12 +105,12 @@ public class Blue5PieceShawarma extends OpMode { //may veer bless us
                         new ProfileAccelConstraint(-35, 35)
                 );
 
-        movement3 = robot.driveSubsystem.whatTheSigma(new Pose2d(54, 46,Math.toRadians(90)))
+        movement3 = robot.driveSubsystem.whatTheSigma(new Pose2d(54, 46, Math.toRadians(90)))
                 .setReversed(false)
                 .splineToLinearHeading(
                         new Pose2d(61, 57, Math.toRadians(45)), Math.toRadians(45));
 
-        movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 57,Math.toRadians(45)))
+        movement4 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 57, Math.toRadians(45)))
                 .setReversed(true)
                 .splineToLinearHeading(
                         new Pose2d(
@@ -121,19 +119,19 @@ public class Blue5PieceShawarma extends OpMode { //may veer bless us
                         new ProfileAccelConstraint(-35, 35)
                 );
 
-        movement5 = robot.driveSubsystem.whatTheSigma(new Pose2d(63.6, 48,Math.toRadians(90)))
+        movement5 = robot.driveSubsystem.whatTheSigma(new Pose2d(63.6, 48, Math.toRadians(90)))
                 .setReversed(false)
                 .splineToLinearHeading(
                         new Pose2d(64, 57, Math.toRadians(45)), Math.toRadians(45));
 
-        movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 58,Math.toRadians(45)))
+        movement6 = robot.driveSubsystem.trajectoryActionBuilder(new Pose2d(61, 58, Math.toRadians(45)))
                 .setReversed(true)
                 .splineToLinearHeading(
                         new Pose2d(58, 47, Math.toRadians(145)), Math.toRadians(40),
                         new AngularVelConstraint(Math.PI * 0.8)
                 );
 
-        movement7 = robot.driveSubsystem.whatTheSigma(new Pose2d(58, 47.2,Math.toRadians(145)))
+        movement7 = robot.driveSubsystem.whatTheSigma(new Pose2d(58, 47.2, Math.toRadians(145)))
                 .setReversed(false)
                 .splineToLinearHeading(new Pose2d(61, 56.5, Math.toRadians(45)), Math.toRadians(45));
 
@@ -145,7 +143,7 @@ public class Blue5PieceShawarma extends OpMode { //may veer bless us
                         new TranslationalVelConstraint(20)
                 );
 
-        movement10 = robot.driveSubsystem.whatTheSigma(new Pose2d(63, 61,Math.toRadians(45)))
+        movement10 = robot.driveSubsystem.whatTheSigma(new Pose2d(63, 61, Math.toRadians(45)))
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(35.96, 10.00, Math.toRadians(-180.00)), Math.toRadians(-180.00))
                 .splineToSplineHeading(
@@ -438,7 +436,7 @@ public class Blue5PieceShawarma extends OpMode { //may veer bless us
         CommandScheduler.getInstance().run();
         robot.driveSubsystem.updatePoseEstimate();
         robot.depositSubsystem.outtakeSlidesLoop(0.0002);
-        robot.extendoSubsystem.extendoSlidesLoop(0.013,0,0.00025,0);
+        robot.extendoSubsystem.extendoSlidesLoop(0.013, 0, 0.00025, 0);
 
         if (isScanning) {
             double greenAngle = sampleDetection.getAngleOfGreenSample();

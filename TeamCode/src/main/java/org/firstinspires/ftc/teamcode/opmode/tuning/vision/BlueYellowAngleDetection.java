@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.common.commandbase.commands.recipes.intake
 import org.firstinspires.ftc.teamcode.common.hardware.Globals;
 import org.firstinspires.ftc.teamcode.common.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.common.vision.YellowBlueDetection;
-import org.firstinspires.ftc.teamcode.common.vision.YellowRedDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
